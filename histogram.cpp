@@ -7,7 +7,7 @@ Histogram::Histogram(QImage &img)
             ++hist[qGray(img.pixel(i,j))];
         }
     }
-    auto* histSet = new QBarSet("sample");
+    auto* histSet = new QBarSet("Histogram");
 
     for (auto& lvl : hist) {
         *histSet << lvl;
@@ -17,6 +17,7 @@ Histogram::Histogram(QImage &img)
     barseries->append(histSet);
 
     auto* chart = new QChart();
+    barseries->setBarWidth(1);
     chart->addSeries(barseries);
 
     chartView = new QChartView(chart);
