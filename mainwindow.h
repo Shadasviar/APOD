@@ -24,6 +24,8 @@ private slots:
 
     void on_actionExit_triggered();
 
+    void on_mainTabWidget_tabCloseRequested(int index);
+
 private:
     Ui::MainWindow *ui;
     QFileInfo lastOpenedDir;

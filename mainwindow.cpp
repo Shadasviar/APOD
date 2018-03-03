@@ -2,12 +2,14 @@
 #include "ui_mainwindow.h"
 #include <QFileDialog>
 #include <memory>
+#include "imageworkspace.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    ui->mainTabWidget->removeTab(0);
 }
 
 MainWindow::~MainWindow()
@@ -23,13 +25,11 @@ void MainWindow::on_actionOpen_triggered()
                 lastOpenedDir.absolutePath()
                 );
     lastOpenedDir = QFileInfo(filename);
-    currentImage.load(filename);
-    scene.clear();
-    scene.addPixmap(QPixmap::fromImage(currentImage));
-    scene.setSceneRect(currentImage.rect());
-    ui->graphicsView->setScene(&scene);
+    QImage img(filename);
+    auto *tab = new ImageWorkspace(std::move(img), this);
+    ui->mainTabWidget->addTab(tab, filename);
 
-    updateHist();
+    //updateHist();
 }
 
 void MainWindow::on_actionExit_triggered()
@@ -39,8 +39,13 @@ void MainWindow::on_actionExit_triggered()
 
 void MainWindow::updateHist()
 {
-    Histogram* hist = new Histogram(currentImage);
+    /*Histogram* hist = new Histogram(currentImage);
     delete ui->imgWorkspaceSplitter->replaceWidget(1, hist->getQChartView());
     ui->left_widget = hist->getQChartView();
-    repaint();
+    repaint();*/
+}
+
+void MainWindow::on_mainTabWidget_tabCloseRequested(int index)
+{
+    delete ui->mainTabWidget->widget(index);
 }
