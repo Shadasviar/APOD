@@ -10,20 +10,17 @@ class Histogram : public QChartView
 {
     Q_OBJECT
 public:
-    Histogram(QImage& img);
+    Histogram(QImage& img, QWidget* parent = nullptr);
     virtual ~Histogram(){
-        delete chartView;
         delete m_tooltip;
         delete m_coordX;
         delete m_coordY;
     }
 
-    QChartView* getQChartView() {return chartView;}
     void mouseMoveEvent(QMouseEvent* event) override;
 
 private:
     long hist[256] = {0};
-    QChartView* chartView;
     QGraphicsSimpleTextItem *m_coordX;
     QGraphicsSimpleTextItem *m_coordY;
     Callout *m_tooltip;

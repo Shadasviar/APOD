@@ -21,10 +21,10 @@ public:
 
 private slots:
     void on_actionOpen_triggered();
-
     void on_actionExit_triggered();
-
     void on_mainTabWidget_tabCloseRequested(int index);
+    void on_histButton_toggled(bool checked);
+    void on_mainTabWidget_currentChanged(int index);
 
 private:
     Ui::MainWindow *ui;
@@ -34,7 +34,16 @@ private:
     QImage currentImage;
     QGraphicsScene scene;
 
-    void updateHist();
+    struct toolState {
+        QToolButton* tool;
+        bool state;
+    };
+
+    QList<QToolButton*> _toolsList;
+    QMap<QWidget*, QList<toolState>> _toolsStateList;
+    void dumpToolsState(QWidget *index);
+    void restoreToolsState(QWidget* index);
+    QWidget* _preTabIndex = nullptr;
 };
 
 #endif // MAINWINDOW_H

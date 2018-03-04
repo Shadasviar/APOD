@@ -29,13 +29,15 @@ SOURCES += \
         mainwindow.cpp \
         histogram.cpp \
         callout.cpp \
-    imageworkspace.cpp
+    imageworkspace.cpp \
+    toolsarea.cpp
 
 HEADERS += \
         mainwindow.h \
         histogram.h \
         callout.h \
-    imageworkspace.h
+    imageworkspace.h \
+    toolsarea.h
 
 FORMS += \
         mainwindow.ui

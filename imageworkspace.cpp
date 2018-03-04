@@ -4,11 +4,11 @@ ImageWorkspace::ImageWorkspace(QWidget *parent) : QWidget(parent),
     _layout(this),
     _splitter(std::make_shared<QSplitter>(this)),
     _imageView(std::make_shared<QGraphicsView>(_splitter.get())),
-    _leftWidget(std::make_shared<QWidget>(_splitter.get()))
+    _tools(this)
 {
     _layout.addWidget(_splitter.get());
     _splitter->addWidget(_imageView.get());
-    _splitter->addWidget(_leftWidget.get());
+    _splitter->addWidget(&_tools);
 }
 
 ImageWorkspace::ImageWorkspace(QImage &&image, QWidget *parent): ImageWorkspace(parent)
@@ -23,4 +23,17 @@ ImageWorkspace::ImageWorkspace(QImage &&image, QWidget *parent): ImageWorkspace(
 ImageWorkspace::~ImageWorkspace()
 {
     _scene.clear();
+}
+
+void ImageWorkspace::addHist()
+{
+    Histogram *hist = new Histogram(_image);
+    _tools.addTool(hist, ToolsArea::Histogram);
+    repaint();
+}
+
+void ImageWorkspace::deleteHist()
+{
+    _tools.deleteTool(ToolsArea::Histogram);
+    repaint();
 }

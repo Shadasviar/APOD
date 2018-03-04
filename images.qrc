@@ -1,5 +1,8 @@
 <RCC>
     <qresource prefix="/">
         <file>Resources/folder_2_open-512.png</file>
+        <file>Resources/exit.png</file>
+        <file>Resources/tools.png</file>
+        <file>Resources/Histogram-512.png</file>
     </qresource>
 </RCC>

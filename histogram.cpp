@@ -1,6 +1,6 @@
 #include "histogram.h"
 
-Histogram::Histogram(QImage &img)
+Histogram::Histogram(QImage &img, QWidget *parent) : QChartView(parent)
 {
     for (int i(0); i < img.width(); ++i) {
         for (int j(0); j < img.height(); ++j) {
@@ -20,8 +20,8 @@ Histogram::Histogram(QImage &img)
     barseries->setBarWidth(1);
     chart->addSeries(barseries);
 
-    chartView = new QChartView(chart);
-    chartView->setRenderHint(QPainter::Antialiasing);
+    setChart(chart);
+    setRenderHint(QPainter::Antialiasing);
 
     m_tooltip = new Callout(chart);
     m_coordX = new QGraphicsSimpleTextItem();
@@ -35,21 +35,21 @@ Histogram::Histogram(QImage &img)
 
 void Histogram::mouseMoveEvent(QMouseEvent *event)
 {
-    m_coordX->setText(QString("X: %1").arg(chartView->chart()->mapToValue(event->pos()).x()));
-    m_coordY->setText(QString("Y: %1").arg(chartView->chart()->mapToValue(event->pos()).y()));
+    m_coordX->setText(QString("X: %1").arg(chart()->mapToValue(event->pos()).x()));
+    m_coordY->setText(QString("Y: %1").arg(chart()->mapToValue(event->pos()).y()));
     QGraphicsView::mouseMoveEvent(event);
 }
 
 void Histogram::keepCallout(int, QBarSet *)
 {
     m_callouts.append(m_tooltip);
-    m_tooltip = new Callout(chartView->chart());
+    m_tooltip = new Callout(chart());
 }
 
 void Histogram::tooltip(bool state, int index, QBarSet *bar)
 {
     if (m_tooltip == 0)
-        m_tooltip = new Callout(chartView->chart());
+        m_tooltip = new Callout(chart());
 
     if (state) {
         m_tooltip->setText(QString("X: %1 \nY: %2 ").arg(index).arg(bar->at(index)));
