@@ -137,7 +137,7 @@
              <bool>true</bool>
             </property>
             <property name="toolButtonStyle">
-             <enum>Qt::ToolButtonFollowStyle</enum>
+             <enum>Qt::ToolButtonTextBesideIcon</enum>
             </property>
             <property name="autoRaise">
              <bool>true</bool>
@@ -164,8 +164,8 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>250</width>
-           <height>226</height>
+           <width>232</width>
+           <height>60</height>
           </rect>
          </property>
          <attribute name="label">
