@@ -6,6 +6,14 @@ ToolsArea::ToolsArea(QWidget *parent) : QWidget(parent),
 
 }
 
+ToolsArea::~ToolsArea()
+{
+    for (auto& key : _enabledTools.keys()) {
+        delete _enabledTools[key];
+    }
+    _enabledTools.clear();
+}
+
 void ToolsArea::addTool(QWidget *tool, ToolsArea::AllowedTools type)
 {
     if (!_enabledTools.contains(type)) {

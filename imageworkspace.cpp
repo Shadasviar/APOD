@@ -1,13 +1,17 @@
 #include "imageworkspace.h"
+#include "histstretchwidget.h"
 
 ImageWorkspace::ImageWorkspace(QWidget *parent) : QWidget(parent),
     _layout(this),
-    _splitter(std::make_shared<QSplitter>(this)),
-    _imageView(std::make_shared<QGraphicsView>(_splitter.get())),
+    _imagesViews(this),
+    _imagesLayout(&_imagesViews),
+    _splitter(std::make_unique<QSplitter>(this)),
+    _imageView(std::make_unique<QGraphicsView>(_splitter.get())),
     _tools(this)
 {
+    _imagesLayout.addWidget(_imageView.get());
     _layout.addWidget(_splitter.get());
-    _splitter->addWidget(_imageView.get());
+    _splitter->addWidget(&_imagesViews);
     _splitter->addWidget(&_tools);
 }
 
@@ -27,7 +31,7 @@ ImageWorkspace::~ImageWorkspace()
 
 void ImageWorkspace::addHist()
 {
-    Histogram *hist = new Histogram(_image);
+    Histogram *hist = new Histogram(_image, this);
     _tools.addTool(hist, ToolsArea::Histogram);
     repaint();
 }
@@ -35,5 +39,27 @@ void ImageWorkspace::addHist()
 void ImageWorkspace::deleteHist()
 {
     _tools.deleteTool(ToolsArea::Histogram);
-    repaint();
+}
+
+void ImageWorkspace::addStretchHist()
+{
+    HistStretchWidget *histStr = new HistStretchWidget(_image, this);
+    _tools.addTool(histStr, ToolsArea::StretchHist);
+}
+
+void ImageWorkspace::deleteStretchHist()
+{
+    _tools.deleteTool(ToolsArea::StretchHist);
+}
+
+void ImageWorkspace::addPreview()
+{
+    _preview = std::make_unique<QGraphicsView>(_splitter.get());
+    _imagesLayout.addWidget(_preview.get());
+}
+
+void ImageWorkspace::deletePreview()
+{
+    _preview.reset();
+    _imagesLayout.removeWidget(_preview.get());
 }

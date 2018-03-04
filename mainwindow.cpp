@@ -13,6 +13,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     _toolsList = QList<QToolButton*>{
             ui->histButton,
+            ui->histStretch,
     };
 }
 
@@ -94,4 +95,36 @@ void MainWindow::restoreToolsState(QWidget *index)
         item.tool->setChecked(item.state);
     }
     _toolsStateList.remove(index);
+}
+
+void MainWindow::on_histStretch_toggled(bool checked)
+{
+    auto currentTab = qobject_cast<ImageWorkspace*>(ui->mainTabWidget->currentWidget());
+    if (checked) {
+        if (ui->mainTabWidget->currentWidget()){
+            currentTab->addStretchHist();
+        }
+    }
+    else {
+        if (ui->mainTabWidget->currentWidget()) {
+            currentTab->deleteStretchHist();
+        }
+    }
+    repaint();
+}
+
+void MainWindow::on_previewButton_toggled(bool checked)
+{
+    auto currentTab = qobject_cast<ImageWorkspace*>(ui->mainTabWidget->currentWidget());
+    if (checked) {
+        if (ui->mainTabWidget->currentWidget()){
+            currentTab->addPreview();
+        }
+    }
+    else {
+        if (ui->mainTabWidget->currentWidget()) {
+            currentTab->deletePreview();
+        }
+    }
+    repaint();
 }

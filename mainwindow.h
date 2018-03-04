@@ -26,6 +26,10 @@ private slots:
     void on_histButton_toggled(bool checked);
     void on_mainTabWidget_currentChanged(int index);
 
+    void on_histStretch_toggled(bool checked);
+
+    void on_previewButton_toggled(bool checked);
+
 private:
     Ui::MainWindow *ui;
     QFileInfo lastOpenedDir;

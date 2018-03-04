@@ -30,14 +30,16 @@ SOURCES += \
         histogram.cpp \
         callout.cpp \
     imageworkspace.cpp \
-    toolsarea.cpp
+    toolsarea.cpp \
+    histstretchwidget.cpp
 
 HEADERS += \
         mainwindow.h \
         histogram.h \
         callout.h \
     imageworkspace.h \
-    toolsarea.h
+    toolsarea.h \
+    histstretchwidget.h
 
 FORMS += \
         mainwindow.ui

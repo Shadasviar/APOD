@@ -19,14 +19,16 @@ public:
 
     void mouseMoveEvent(QMouseEvent* event) override;
 
-private:
-    long hist[256] = {0};
+protected:
+    static constexpr int _histMax = 256;
+    long hist[_histMax] = {0};
+    QBarSet *_histSet;
     QGraphicsSimpleTextItem *m_coordX;
     QGraphicsSimpleTextItem *m_coordY;
     Callout *m_tooltip;
     QList<Callout *> m_callouts;
 
-public slots:
+protected slots:
     void keepCallout(int, QBarSet*);
     void tooltip(bool state, int index, QBarSet*bar);
 };

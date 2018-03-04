@@ -14,9 +14,11 @@ public:
 
     enum AllowedTools {
         Histogram,
+        StretchHist,
     };
 
     explicit ToolsArea(QWidget *parent = nullptr);
+    virtual ~ToolsArea();
     void addTool(QWidget* tool, ToolsArea::AllowedTools type);
     void deleteTool(ToolsArea::AllowedTools type);
 

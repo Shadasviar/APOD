@@ -20,14 +20,24 @@ public:
     void addHist();
     void deleteHist();
 
+    void addStretchHist();
+    void deleteStretchHist();
+
+    void addPreview();
+    void deletePreview();
+
 signals:
 
 public slots:
 
 protected:
     QVBoxLayout _layout;
-    std::shared_ptr<QSplitter> _splitter;
-    std::shared_ptr<QGraphicsView>_imageView;
+    QFrame _imagesViews;
+    QVBoxLayout _imagesLayout;
+    std::unique_ptr<QSplitter> _splitter;
+    std::unique_ptr<QGraphicsView>_imageView;
+    std::unique_ptr<QGraphicsView> _preview;
+
     ToolsArea _tools;
     QImage _image;
     QGraphicsScene _scene;

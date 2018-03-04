@@ -7,14 +7,14 @@ Histogram::Histogram(QImage &img, QWidget *parent) : QChartView(parent)
             ++hist[qGray(img.pixel(i,j))];
         }
     }
-    auto* histSet = new QBarSet("Histogram");
+    _histSet = new QBarSet("Histogram");
 
     for (auto& lvl : hist) {
-        *histSet << lvl;
+        *_histSet << lvl;
     }
 
     auto* barseries = new QBarSeries();
-    barseries->append(histSet);
+    barseries->append(_histSet);
 
     auto* chart = new QChart();
     barseries->setBarWidth(1);
