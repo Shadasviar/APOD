@@ -6,6 +6,8 @@
 
 class HistStretchWidget : public Histogram
 {
+    Q_OBJECT
+
 public:
     HistStretchWidget(QImage& image, QWidget* parent = nullptr);
     ~HistStretchWidget() {
@@ -16,7 +18,10 @@ public:
     void mouseReleaseEvent(QMouseEvent *event);
 
     int mapToHistVal(QPointF pos);
-    QImage *strentchSelected();
+    void strentchSelected();
+
+signals:
+    void setPreview(QImage* img);
 
 protected:
     std::unique_ptr<QImage> _image;

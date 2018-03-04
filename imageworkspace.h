@@ -26,21 +26,22 @@ public:
     void addPreview();
     void deletePreview();
 
-signals:
-
-public slots:
+protected slots:
+    void modifyPreview(QImage* img);
 
 protected:
     QVBoxLayout _layout;
     QFrame _imagesViews;
     QVBoxLayout _imagesLayout;
-    std::unique_ptr<QSplitter> _splitter;
+    QSplitter* _splitter;
     std::unique_ptr<QGraphicsView>_imageView;
     std::unique_ptr<QGraphicsView> _preview;
 
     ToolsArea _tools;
     QImage _image;
+    QImage* _previewImage = nullptr;
     QGraphicsScene _scene;
+    QGraphicsScene _previewScene;
 };
 
 #endif // IMAGEWORKSPACE_H

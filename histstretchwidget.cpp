@@ -31,6 +31,8 @@ void HistStretchWidget::mouseReleaseEvent(QMouseEvent *event)
     _leftArrow->setPos(_lowBound);
     _leftArrow->setPixmap(QPixmap(":/Resources/left_arrow.png").scaled(30,30));
     this->scene()->addItem(_leftArrow);
+
+    strentchSelected();
 }
 
 int HistStretchWidget::mapToHistVal(QPointF pos)
@@ -40,7 +42,7 @@ int HistStretchWidget::mapToHistVal(QPointF pos)
     return this->chart()->mapToValue(chartPos).x();
 }
 
-QImage* HistStretchWidget::strentchSelected()
+void HistStretchWidget::strentchSelected()
 {
     QImage* res = new QImage();
     *res = _image->convertToFormat(QImage::Format_Grayscale8);
@@ -50,15 +52,26 @@ QImage* HistStretchWidget::strentchSelected()
     int px = 0;
     for (int i(0); i < res->width(); ++i) {
         for (int j(0); j < res->height(); ++j) {
-            px = res->pixel(i,j);
+            px = qGray(res->pixel(i,j));
             if (px > lower && px <= upper) {
                 px = (px - lower) * (_histMax/(upper - lower));
             } else {
                 px = 0;
             }
-            res->setPixel(i,j,px);
+            res->setPixel(i,j,qRgb(px,px,px));
+        }
+    }
+    emit setPreview(res);
+
+    for(auto&i : hist) i = 0;
+    for (int i(0); i < res->width(); ++i) {
+        for (int j(0); j < res->height(); ++j) {
+            ++hist[qGray(res->pixel(i,j))];
         }
     }
 
-    return res;
+    _histSet->remove(0, _histMax);
+    for (int i(0); i < _histMax; ++i) {
+        *_histSet << hist[i];
+    }
 }

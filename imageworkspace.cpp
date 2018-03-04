@@ -5,12 +5,12 @@ ImageWorkspace::ImageWorkspace(QWidget *parent) : QWidget(parent),
     _layout(this),
     _imagesViews(this),
     _imagesLayout(&_imagesViews),
-    _splitter(std::make_unique<QSplitter>(this)),
-    _imageView(std::make_unique<QGraphicsView>(_splitter.get())),
+    _splitter(new QSplitter(this)),
+    _imageView(std::make_unique<QGraphicsView>(_splitter)),
     _tools(this)
 {
     _imagesLayout.addWidget(_imageView.get());
-    _layout.addWidget(_splitter.get());
+    _layout.addWidget(_splitter);
     _splitter->addWidget(&_imagesViews);
     _splitter->addWidget(&_tools);
 }
@@ -44,6 +44,7 @@ void ImageWorkspace::deleteHist()
 void ImageWorkspace::addStretchHist()
 {
     HistStretchWidget *histStr = new HistStretchWidget(_image, this);
+    connect(histStr, &HistStretchWidget::setPreview, this, &ImageWorkspace::modifyPreview);
     _tools.addTool(histStr, ToolsArea::StretchHist);
 }
 
@@ -54,12 +55,26 @@ void ImageWorkspace::deleteStretchHist()
 
 void ImageWorkspace::addPreview()
 {
-    _preview = std::make_unique<QGraphicsView>(_splitter.get());
+    _preview = std::make_unique<QGraphicsView>(_splitter);
     _imagesLayout.addWidget(_preview.get());
 }
 
 void ImageWorkspace::deletePreview()
 {
     _preview.reset();
+    delete _previewImage;
+    _previewImage = nullptr;
     _imagesLayout.removeWidget(_preview.get());
+}
+
+void ImageWorkspace::modifyPreview(QImage *img)
+{
+    if (_preview) {
+        delete _previewImage;
+        _previewImage = img;
+        _previewScene.clear();
+        _previewScene.addPixmap(QPixmap::fromImage(*img));
+        _previewScene.setSceneRect(img->rect());
+        _preview->setScene(&_previewScene);
+    }
 }
