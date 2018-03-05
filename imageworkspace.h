@@ -8,6 +8,11 @@
 #include <memory>
 #include <QMap>
 #include "toolsarea.h"
+#include "histstretchwidget.h"
+
+class Preview {
+
+};
 
 class ImageWorkspace : public QWidget
 {
@@ -15,16 +20,7 @@ class ImageWorkspace : public QWidget
 public:
     explicit ImageWorkspace(QWidget *parent = nullptr);
     ImageWorkspace(QImage&& image, QWidget* parent = nullptr);
-    virtual ~ImageWorkspace();
-
-    void addHist();
-    void deleteHist();
-
-    void addStretchHist();
-    void deleteStretchHist();
-
-    void addPreview();
-    void deletePreview();
+    virtual ~ImageWorkspace();   
 
 protected slots:
     void modifyPreview(QImage* img);
@@ -42,6 +38,40 @@ protected:
     QImage* _previewImage = nullptr;
     QGraphicsScene _scene;
     QGraphicsScene _previewScene;
+
+public:
+    template <typename T>
+    void addToolsAreaItem(){
+        T* item = new T(_image, this);
+        doSpecifiedStaff<T>(item);
+        _tools.addTool(item);
+    }
+
+    template <typename T>
+    void deleteToolsAreaItem(){
+        _tools.deleteTool<T>();
+    }
+
+    template<typename T> void doSpecifiedStaff(T*){}
 };
+
+template<>
+inline void ImageWorkspace::doSpecifiedStaff<HistStretchWidget>(HistStretchWidget* item){
+    connect(item, &HistStretchWidget::setPreview, this, &ImageWorkspace::modifyPreview);
+}
+
+template <>
+inline void ImageWorkspace::addToolsAreaItem<Preview>(){
+    _preview = std::make_unique<QGraphicsView>(_splitter);
+    _imagesLayout.addWidget(_preview.get());
+}
+
+template <>
+inline void ImageWorkspace::deleteToolsAreaItem<Preview>(){
+    _preview.reset();
+    delete _previewImage;
+    _previewImage = nullptr;
+    _imagesLayout.removeWidget(_preview.get());
+}
 
 #endif // IMAGEWORKSPACE_H

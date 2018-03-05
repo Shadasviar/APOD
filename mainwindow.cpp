@@ -4,6 +4,21 @@
 #include <memory>
 #include "imageworkspace.h"
 
+/*Use macro because forward declaration of ui brokes template using*/
+#define toolButtonToggled(T, checked) \
+    auto currentTab = qobject_cast<ImageWorkspace*>(ui->mainTabWidget->currentWidget());\
+    if (checked) {\
+        if (ui->mainTabWidget->currentWidget()){\
+            currentTab->addToolsAreaItem<T>();\
+        }\
+    }\
+    else {\
+        if (ui->mainTabWidget->currentWidget()) {\
+            currentTab->deleteToolsAreaItem<T>();\
+        }\
+    }\
+
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -36,7 +51,6 @@ void MainWindow::on_actionOpen_triggered()
     _preTabIndex = ui->mainTabWidget->currentWidget();
     ui->mainTabWidget->addTab(tab, filename);
     ui->mainTabWidget->setCurrentWidget(tab);
-    //TODO: restore tools;
 }
 
 void MainWindow::on_actionExit_triggered()
@@ -54,18 +68,7 @@ void MainWindow::on_mainTabWidget_tabCloseRequested(int index)
 
 void MainWindow::on_histButton_toggled(bool checked)
 {
-    auto currentTab = qobject_cast<ImageWorkspace*>(ui->mainTabWidget->currentWidget());
-    if (checked) {
-        if (ui->mainTabWidget->currentWidget()){
-            currentTab->addHist();
-        }
-    }
-    else {
-        if (ui->mainTabWidget->currentWidget()) {
-            currentTab->deleteHist();
-        }
-    }
-    repaint();
+    toolButtonToggled(Histogram, checked);
 }
 
 void MainWindow::on_mainTabWidget_currentChanged(int index)
@@ -99,32 +102,10 @@ void MainWindow::restoreToolsState(QWidget *index)
 
 void MainWindow::on_histStretch_toggled(bool checked)
 {
-    auto currentTab = qobject_cast<ImageWorkspace*>(ui->mainTabWidget->currentWidget());
-    if (checked) {
-        if (ui->mainTabWidget->currentWidget()){
-            currentTab->addStretchHist();
-        }
-    }
-    else {
-        if (ui->mainTabWidget->currentWidget()) {
-            currentTab->deleteStretchHist();
-        }
-    }
-    repaint();
+    toolButtonToggled(HistStretchWidget, checked);
 }
 
 void MainWindow::on_previewButton_toggled(bool checked)
 {
-    auto currentTab = qobject_cast<ImageWorkspace*>(ui->mainTabWidget->currentWidget());
-    if (checked) {
-        if (ui->mainTabWidget->currentWidget()){
-            currentTab->addPreview();
-        }
-    }
-    else {
-        if (ui->mainTabWidget->currentWidget()) {
-            currentTab->deletePreview();
-        }
-    }
-    repaint();
+    toolButtonToggled(Preview,checked);
 }

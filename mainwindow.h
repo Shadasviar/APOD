@@ -4,6 +4,8 @@
 #include <QMainWindow>
 #include <QImage>
 #include <QGraphicsScene>
+#include <functional>
+#include "imageworkspace.h"
 
 #include "histogram.h"
 
@@ -25,9 +27,7 @@ private slots:
     void on_mainTabWidget_tabCloseRequested(int index);
     void on_histButton_toggled(bool checked);
     void on_mainTabWidget_currentChanged(int index);
-
     void on_histStretch_toggled(bool checked);
-
     void on_previewButton_toggled(bool checked);
 
 private:
@@ -45,9 +45,11 @@ private:
 
     QList<QToolButton*> _toolsList;
     QMap<QWidget*, QList<toolState>> _toolsStateList;
+    QWidget* _preTabIndex = nullptr;
     void dumpToolsState(QWidget *index);
     void restoreToolsState(QWidget* index);
-    QWidget* _preTabIndex = nullptr;
+
+
 };
 
 #endif // MAINWINDOW_H
