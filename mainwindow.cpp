@@ -3,6 +3,7 @@
 #include <QFileDialog>
 #include <memory>
 #include "imageworkspace.h"
+#include "histogramequalisation.h"
 
 /*Use macro because forward declaration of ui brokes template using*/
 #define toolButtonToggled(T, checked) \
@@ -108,4 +109,14 @@ void MainWindow::on_histStretch_toggled(bool checked)
 void MainWindow::on_previewButton_toggled(bool checked)
 {
     toolButtonToggled(Preview,checked);
+}
+
+void MainWindow::on_UPOButton_toggled(bool checked)
+{
+
+}
+
+void MainWindow::on_equiliseButton_toggled(bool checked)
+{
+    toolButtonToggled(HistogramEqualisation, checked);
 }

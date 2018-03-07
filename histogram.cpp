@@ -33,11 +33,24 @@ Histogram::Histogram(QImage &img, QWidget *parent) : QChartView(parent)
     this->setMouseTracking(true);
 }
 
+QPointF Histogram::getXSelection()
+{
+    QPoint res = {0,0};
+
+    return res;
+}
+
 void Histogram::mouseMoveEvent(QMouseEvent *event)
 {
     m_coordX->setText(QString("X: %1").arg(chart()->mapToValue(event->pos()).x()));
     m_coordY->setText(QString("Y: %1").arg(chart()->mapToValue(event->pos()).y()));
     QGraphicsView::mouseMoveEvent(event);
+}
+
+void Histogram::mousePressEvent(QMouseEvent *event)
+{
+    _lowBound.setX(event->pos().x());
+    _lowBound.setY(this->height() - 50);
 }
 
 void Histogram::keepCallout(int, QBarSet *)

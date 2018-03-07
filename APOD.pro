@@ -32,7 +32,8 @@ SOURCES += \
         callout.cpp \
     imageworkspace.cpp \
     toolsarea.cpp \
-    histstretchwidget.cpp
+    histstretchwidget.cpp \
+    histogramequalisation.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -40,10 +41,12 @@ HEADERS += \
         callout.h \
     imageworkspace.h \
     toolsarea.h \
-    histstretchwidget.h
+    histstretchwidget.h \
+    histogramequalisation.h
 
 FORMS += \
-        mainwindow.ui
+        mainwindow.ui \
+    histogramequalisation.ui
 
 RESOURCES += \
     images.qrc

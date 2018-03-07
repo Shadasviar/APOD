@@ -9,5 +9,7 @@
         <file>Resources/left_arrow.png</file>
         <file>Resources/right_arrow.png</file>
         <file>Resources/preview.png</file>
+        <file>Resources/math_ops.png</file>
+        <file>Resources/Histogrameq.png</file>
     </qresource>
 </RCC>

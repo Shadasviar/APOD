@@ -70,7 +70,7 @@
          <enum>QFrame::NoFrame</enum>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="toolsPage">
          <property name="geometry">
@@ -164,8 +164,8 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>232</width>
-           <height>60</height>
+           <width>250</width>
+           <height>226</height>
           </rect>
          </property>
          <attribute name="label">
@@ -186,6 +186,52 @@
             <property name="icon">
              <iconset resource="images.qrc">
               <normaloff>:/Resources/stretch.png</normaloff>:/Resources/stretch.png</iconset>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+            <property name="toolButtonStyle">
+             <enum>Qt::ToolButtonTextBesideIcon</enum>
+            </property>
+            <property name="autoRaise">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QToolButton" name="equiliseButton">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>Histogram equalization</string>
+            </property>
+            <property name="icon">
+             <iconset resource="images.qrc">
+              <normaloff>:/Resources/Histogrameq.png</normaloff>:/Resources/Histogrameq.png</iconset>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+            <property name="toolButtonStyle">
+             <enum>Qt::ToolButtonTextBesideIcon</enum>
+            </property>
+            <property name="autoRaise">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QToolButton" name="UPOButton">
+            <property name="text">
+             <string>Unary Point Operation</string>
+            </property>
+            <property name="icon">
+             <iconset resource="images.qrc">
+              <normaloff>:/Resources/math_ops.png</normaloff>:/Resources/math_ops.png</iconset>
             </property>
             <property name="checkable">
              <bool>true</bool>

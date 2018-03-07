@@ -17,7 +17,11 @@ public:
         delete m_coordY;
     }
 
+    QPointF getXSelection();
+
     void mouseMoveEvent(QMouseEvent* event) override;
+    void mousePressEvent(QMouseEvent *event) override;
+    void mouseReleaseEvent(QMouseEvent *event) override {}
 
 protected:
     static constexpr int _histMax = 256;
@@ -27,6 +31,8 @@ protected:
     QGraphicsSimpleTextItem *m_coordY;
     Callout *m_tooltip;
     QList<Callout *> m_callouts;
+    QPointF _lowBound;
+    QPointF _upBound;
 
 protected slots:
     void keepCallout(int, QBarSet*);
