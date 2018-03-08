@@ -14,7 +14,7 @@ class HistogramEqualisation : public QFrame
     Q_OBJECT
 
 public:
-    explicit HistogramEqualisation(QImage &img, QWidget *parent = 0);
+    explicit HistogramEqualisation(QImage *img, QWidget *parent = 0);
     ~HistogramEqualisation();
 
 private slots:
@@ -23,7 +23,7 @@ private slots:
 private:
     Ui::HistogramEqualisation *ui;
     std::unique_ptr<Histogram> _histogram;
-    QImage& _image;
+    QImage* _image;
 };
 
 #endif // HISTOGRAMEQUALISATION_H

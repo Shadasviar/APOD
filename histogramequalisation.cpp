@@ -1,7 +1,7 @@
 #include "histogramequalisation.h"
 #include "ui_histogramequalisation.h"
 
-HistogramEqualisation::HistogramEqualisation(QImage &img, QWidget *parent) :
+HistogramEqualisation::HistogramEqualisation(QImage *img, QWidget *parent) :
     QFrame(parent),
     ui(new Ui::HistogramEqualisation),
     _histogram(std::make_unique<Histogram>(img, this)),

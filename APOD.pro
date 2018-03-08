@@ -28,25 +28,22 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-        histogram.cpp \
-        callout.cpp \
     imageworkspace.cpp \
     toolsarea.cpp \
-    histstretchwidget.cpp \
-    histogramequalisation.cpp
+    histogramequalisation.cpp \
+    histogram.cpp
 
 HEADERS += \
         mainwindow.h \
-        histogram.h \
-        callout.h \
     imageworkspace.h \
     toolsarea.h \
-    histstretchwidget.h \
-    histogramequalisation.h
+    histogramequalisation.h \
+    histogram.h
 
 FORMS += \
         mainwindow.ui \
-    histogramequalisation.ui
+    histogramequalisation.ui \
+    histogram.ui
 
 RESOURCES += \
     images.qrc

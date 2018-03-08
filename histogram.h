@@ -1,42 +1,57 @@
 #ifndef HISTOGRAM_H
 #define HISTOGRAM_H
 
+#include <QFrame>
 #include <QtCharts>
 #include <QBarSeries>
 #include <memory>
-#include "callout.h"
 
-class Histogram : public QChartView
-{
+namespace Ui {
+class Histogram;
+}
+
+/****** HistView small subclass *********************************/
+class HistView : public QChartView {
     Q_OBJECT
 public:
-    Histogram(QImage& img, QWidget* parent = nullptr);
-    virtual ~Histogram(){
-        delete m_tooltip;
-        delete m_coordX;
-        delete m_coordY;
-    }
+    explicit HistView(QWidget *parent = 0):QChartView(parent){}
+    ~HistView(){}
 
-    QPointF getXSelection();
+    void mouseMoveEvent(QMouseEvent *event) override;
 
-    void mouseMoveEvent(QMouseEvent* event) override;
+signals:
+    void mouseMovedTo(QPointF x);
+};
+/*****************************************************************/
+
+class Histogram : public QFrame
+{
+    Q_OBJECT
+
+public:
+    explicit Histogram(QImage* img, QWidget *parent = 0);
+    ~Histogram();
     void mousePressEvent(QMouseEvent *event) override;
-    void mouseReleaseEvent(QMouseEvent *event) override {}
+    void mouseMoveEvent(QMouseEvent *event) override;
+    void mouseReleaseEvent(QMouseEvent *event) override;
+
+    static constexpr int maxLevels=256;
 
 protected:
-    static constexpr int _histMax = 256;
-    long hist[_histMax] = {0};
-    QBarSet *_histSet;
-    QGraphicsSimpleTextItem *m_coordX;
-    QGraphicsSimpleTextItem *m_coordY;
-    Callout *m_tooltip;
-    QList<Callout *> m_callouts;
-    QPointF _lowBound;
-    QPointF _upBound;
+    double _hist[maxLevels] {0};
+    std::unique_ptr<QBarSet> _histSet;
+    QImage* _image;
+    std::unique_ptr<HistView> _chartView;
+
+    std::unique_ptr<QGraphicsRectItem> _selectionRectangle;
+    QPoint _selectionBegin = {0,0};
+    bool _mousePressed = false;
 
 protected slots:
-    void keepCallout(int, QBarSet*);
-    void tooltip(bool state, int index, QBarSet*bar);
+    void chartMouseMovedTo(QPointF x);
+
+private:
+    Ui::Histogram *ui;
 };
 
 #endif // HISTOGRAM_H

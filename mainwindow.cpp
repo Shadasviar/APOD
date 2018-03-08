@@ -103,7 +103,7 @@ void MainWindow::restoreToolsState(QWidget *index)
 
 void MainWindow::on_histStretch_toggled(bool checked)
 {
-    toolButtonToggled(HistStretchWidget, checked);
+    //toolButtonToggled(HistStretchWidget, checked);
 }
 
 void MainWindow::on_previewButton_toggled(bool checked)

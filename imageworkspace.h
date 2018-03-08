@@ -8,7 +8,7 @@
 #include <memory>
 #include <QMap>
 #include "toolsarea.h"
-#include "histstretchwidget.h"
+//#include "histstretchwidget.h"
 
 class Preview {
 
@@ -42,7 +42,7 @@ protected:
 public:
     template <typename T>
     void addToolsAreaItem(){
-        T* item = new T(_image, this);
+        T* item = new T(&_image, this);
         doSpecifiedStaff<T>(item);
         _tools.addTool(item);
     }
@@ -54,11 +54,6 @@ public:
 
     template<typename T> void doSpecifiedStaff(T*){}
 };
-
-template<>
-inline void ImageWorkspace::doSpecifiedStaff<HistStretchWidget>(HistStretchWidget* item){
-    connect(item, &HistStretchWidget::setPreview, this, &ImageWorkspace::modifyPreview);
-}
 
 template <>
 inline void ImageWorkspace::addToolsAreaItem<Preview>(){

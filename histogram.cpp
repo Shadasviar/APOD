@@ -1,76 +1,87 @@
 #include "histogram.h"
+#include "ui_histogram.h"
 
-Histogram::Histogram(QImage &img, QWidget *parent) : QChartView(parent)
+Histogram::Histogram(QImage *img, QWidget *parent):
+    QFrame(parent),
+    _histSet(std::make_unique<QBarSet>("Histogram")),
+    _image(img),
+    _chartView(std::make_unique<HistView>(parent)),
+    _selectionRectangle(std::make_unique<QGraphicsRectItem>(0,0,0,0)),
+    ui(new Ui::Histogram)
 {
-    for (int i(0); i < img.width(); ++i) {
-        for (int j(0); j < img.height(); ++j) {
-            ++hist[qGray(img.pixel(i,j))];
+    ui->setupUi(this);
+
+    connect(_chartView.get(), &HistView::mouseMovedTo, this, &Histogram::chartMouseMovedTo);
+
+    for(int i(0); i < _image->width(); ++i){
+        for (int j(0); j < _image->height(); ++j) {
+            ++_hist[qGray(_image->pixel(i,j))];
         }
     }
-    _histSet = new QBarSet("Histogram");
 
-    for (auto& lvl : hist) {
+    for (auto& lvl: _hist) {
         *_histSet << lvl;
     }
 
     auto* barseries = new QBarSeries();
-    barseries->append(_histSet);
+    barseries->append(_histSet.get());
+    barseries->setBarWidth(1);
 
     auto* chart = new QChart();
-    barseries->setBarWidth(1);
     chart->addSeries(barseries);
 
-    setChart(chart);
-    setRenderHint(QPainter::Antialiasing);
+    _chartView->setChart(chart);
+    _chartView->setRenderHint(QPainter::Antialiasing);
 
-    m_tooltip = new Callout(chart);
-    m_coordX = new QGraphicsSimpleTextItem();
-    m_coordY = new QGraphicsSimpleTextItem();
+    ui->histLayout->addWidget(_chartView.get());
+    _chartView->setMouseTracking(true);
 
-    connect(barseries, &QBarSeries::clicked, this, &Histogram::keepCallout);
-    connect(barseries, &QBarSeries::hovered, this, &Histogram::tooltip);
-
+    _chartView->scene()->addItem(_selectionRectangle.get());
     this->setMouseTracking(true);
 }
 
-QPointF Histogram::getXSelection()
+void Histogram::chartMouseMovedTo(QPointF x)
 {
-    QPoint res = {0,0};
-
-    return res;
+    int x_val = _chartView->chart()->mapToValue(x).x();
+    ui->x_value_label->setText(QString("%1").arg(x_val));
+    ui->y_value_label->setText(QString("%1").arg(
+                                   x_val >= 0 && x_val < maxLevels
+                                                     ?_hist[x_val]
+                                                     : 0));
 }
 
-void Histogram::mouseMoveEvent(QMouseEvent *event)
+Histogram::~Histogram()
 {
-    m_coordX->setText(QString("X: %1").arg(chart()->mapToValue(event->pos()).x()));
-    m_coordY->setText(QString("Y: %1").arg(chart()->mapToValue(event->pos()).y()));
-    QGraphicsView::mouseMoveEvent(event);
+    delete ui;
 }
 
 void Histogram::mousePressEvent(QMouseEvent *event)
 {
-    _lowBound.setX(event->pos().x());
-    _lowBound.setY(this->height() - 50);
+    _selectionRectangle->setRect(_chartView->chart()->mapToScene(
+                                     _chartView->mapFromParent(event->pos())).x(),
+                                 0, 1, _chartView->height());
+    _selectionBegin = {event->pos()};
+    _mousePressed = true;
 }
 
-void Histogram::keepCallout(int, QBarSet *)
+void Histogram::mouseMoveEvent(QMouseEvent *event)
 {
-    m_callouts.append(m_tooltip);
-    m_tooltip = new Callout(chart());
-}
-
-void Histogram::tooltip(bool state, int index, QBarSet *bar)
-{
-    if (m_tooltip == 0)
-        m_tooltip = new Callout(chart());
-
-    if (state) {
-        m_tooltip->setText(QString("X: %1 \nY: %2 ").arg(index).arg(bar->at(index)));
-        m_tooltip->setAnchor(QPointF(index, bar->at(index)));
-        m_tooltip->setZValue(11);
-        m_tooltip->updateGeometry();
-        m_tooltip->show();
-    } else {
-        m_tooltip->hide();
+    if (_mousePressed) {
+        _selectionRectangle->setRect(
+            _selectionBegin.x(),
+            0,
+            _chartView->chart()->mapToScene(_chartView->mapFromParent(event->pos())).x() -
+                    _chartView->chart()->mapToScene(_chartView->mapFromParent(_selectionBegin)).x(),
+            _chartView->height());
     }
+}
+
+void Histogram::mouseReleaseEvent(QMouseEvent *event)
+{
+    _mousePressed = false;
+}
+
+void HistView::mouseMoveEvent(QMouseEvent *event)
+{
+    emit mouseMovedTo(event->pos());
 }
