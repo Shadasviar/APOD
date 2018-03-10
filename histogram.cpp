@@ -45,7 +45,7 @@ void Histogram::chartMouseMovedTo(QPointF x)
     ui->x_value_label->setText(QString("%1").arg(x_val));
     ui->y_value_label->setText(QString("%1").arg(
                                    x_val >= 0 && x_val < maxLevels
-                                                     ?_hist[x_val]
+                                                     ?(int)_hist[x_val]
                                                       : 0));
 }
 
@@ -71,6 +71,12 @@ Histogram::~Histogram()
 std::tuple<int, int> Histogram::getSelection()
 {
     return std::make_pair(_lowBound, _upBound);
+}
+
+std::array<double, Histogram::maxLevels> Histogram::histogram()
+{
+    auto res = _hist;
+    return res;
 }
 
 void HistView::mouseMoveEvent(QMouseEvent *event)

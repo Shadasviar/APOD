@@ -5,6 +5,7 @@
 #include <QtCharts>
 #include <QBarSeries>
 #include <memory>
+#include <array>
 
 namespace Ui {
 class Histogram;
@@ -37,12 +38,13 @@ public:
     explicit Histogram(QImage* img, QWidget *parent = 0);
     ~Histogram();
 
-    std::tuple<int,int> getSelection();
-
     static constexpr int maxLevels=256;
 
+    std::tuple<int,int> getSelection();
+    std::array<double, maxLevels> histogram();
+
 protected:
-    double _hist[maxLevels] {0};
+    std::array<double, maxLevels> _hist = {0};
     std::unique_ptr<QBarSet> _histSet;
     QImage* _image;
     std::unique_ptr<HistView> _chartView;

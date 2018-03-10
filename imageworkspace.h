@@ -9,6 +9,7 @@
 #include <QMap>
 #include "toolsarea.h"
 //#include "histstretchwidget.h"
+#include "histogramequalisation.h"
 
 class Preview {
 
@@ -54,6 +55,11 @@ public:
 
     template<typename T> void doSpecifiedStaff(T*){}
 };
+
+template<>
+inline void ImageWorkspace::doSpecifiedStaff<HistogramEqualisation>(HistogramEqualisation* hist){
+    connect(hist, &HistogramEqualisation::setPreview, this, &ImageWorkspace::modifyPreview);
+}
 
 template <>
 inline void ImageWorkspace::addToolsAreaItem<Preview>(){

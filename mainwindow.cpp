@@ -30,6 +30,7 @@ MainWindow::MainWindow(QWidget *parent) :
     _toolsList = QList<QToolButton*>{
             ui->histButton,
             ui->equiliseButton,
+            ui->previewButton,
     };
 }
 
