@@ -39,7 +39,12 @@ HistogramEqualisation::HistogramEqualisation(QImage *img, QWidget *parent) :
                         ++cnt;
                     }
                 }
-                return avg/cnt;
+                avg /= cnt;
+                if (avg > right[qGray(_image->pixel(i,j))])
+                    return right[qGray(_image->pixel(i,j))];
+                if (avg < left[qGray(_image->pixel(i,j))])
+                    return left[qGray(_image->pixel(i,j))];
+                return avg;
             },
         },
     };
