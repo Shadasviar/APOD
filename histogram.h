@@ -18,9 +18,14 @@ public:
     ~HistView(){}
 
     void mouseMoveEvent(QMouseEvent *event) override;
+    void mousePressEvent(QMouseEvent *event) override;
 
 signals:
     void mouseMovedTo(QPointF x);
+    void mousePressedAt(QPointF x);
+
+private:
+    QList<QGraphicsLineItem*> _lines;
 };
 /*****************************************************************/
 
@@ -31,9 +36,8 @@ class Histogram : public QFrame
 public:
     explicit Histogram(QImage* img, QWidget *parent = 0);
     ~Histogram();
-    void mousePressEvent(QMouseEvent *event) override;
-    void mouseMoveEvent(QMouseEvent *event) override;
-    void mouseReleaseEvent(QMouseEvent *event) override;
+
+    std::tuple<int,int> getSelection();
 
     static constexpr int maxLevels=256;
 
@@ -43,15 +47,16 @@ protected:
     QImage* _image;
     std::unique_ptr<HistView> _chartView;
 
-    std::unique_ptr<QGraphicsRectItem> _selectionRectangle;
-    QPoint _selectionBegin = {0,0};
-    bool _mousePressed = false;
+    int _lowBound {0};
+    int _upBound {maxLevels-1};
 
 protected slots:
     void chartMouseMovedTo(QPointF x);
+    void chartMousePressedAt(QPointF x);
 
 private:
     Ui::Histogram *ui;
+    bool _lastSetLower = false;
 };
 
 #endif // HISTOGRAM_H

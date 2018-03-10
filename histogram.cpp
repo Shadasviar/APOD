@@ -1,17 +1,18 @@
 #include "histogram.h"
 #include "ui_histogram.h"
+#include <utility>
 
 Histogram::Histogram(QImage *img, QWidget *parent):
     QFrame(parent),
     _histSet(std::make_unique<QBarSet>("Histogram")),
     _image(img),
     _chartView(std::make_unique<HistView>(parent)),
-    _selectionRectangle(std::make_unique<QGraphicsRectItem>(0,0,0,0)),
     ui(new Ui::Histogram)
 {
     ui->setupUi(this);
 
     connect(_chartView.get(), &HistView::mouseMovedTo, this, &Histogram::chartMouseMovedTo);
+    connect(_chartView.get(), &HistView::mousePressedAt, this, &Histogram::chartMousePressedAt);
 
     for(int i(0); i < _image->width(); ++i){
         for (int j(0); j < _image->height(); ++j) {
@@ -29,15 +30,13 @@ Histogram::Histogram(QImage *img, QWidget *parent):
 
     auto* chart = new QChart();
     chart->addSeries(barseries);
+    chart->setContentsMargins(-11,-11,-11,-11);
 
     _chartView->setChart(chart);
     _chartView->setRenderHint(QPainter::Antialiasing);
 
     ui->histLayout->addWidget(_chartView.get());
     _chartView->setMouseTracking(true);
-
-    _chartView->scene()->addItem(_selectionRectangle.get());
-    this->setMouseTracking(true);
 }
 
 void Histogram::chartMouseMovedTo(QPointF x)
@@ -47,7 +46,21 @@ void Histogram::chartMouseMovedTo(QPointF x)
     ui->y_value_label->setText(QString("%1").arg(
                                    x_val >= 0 && x_val < maxLevels
                                                      ?_hist[x_val]
-                                                     : 0));
+                                                      : 0));
+}
+
+void Histogram::chartMousePressedAt(QPointF x)
+{
+    if (_lastSetLower) {
+        _upBound = _chartView->chart()->mapToValue(x).x();
+    } else {
+        _lowBound = _chartView->chart()->mapToValue(x).x();
+    }
+    _lastSetLower = !_lastSetLower;
+    if (_lowBound > _upBound)
+        std::swap(_lowBound, _upBound);
+    if (_lowBound < 0) _lowBound = 0;
+    if (_upBound > maxLevels) _upBound = maxLevels - 1;
 }
 
 Histogram::~Histogram()
@@ -55,33 +68,23 @@ Histogram::~Histogram()
     delete ui;
 }
 
-void Histogram::mousePressEvent(QMouseEvent *event)
+std::tuple<int, int> Histogram::getSelection()
 {
-    _selectionRectangle->setRect(_chartView->chart()->mapToScene(
-                                     _chartView->mapFromParent(event->pos())).x(),
-                                 0, 1, _chartView->height());
-    _selectionBegin = {event->pos()};
-    _mousePressed = true;
-}
-
-void Histogram::mouseMoveEvent(QMouseEvent *event)
-{
-    if (_mousePressed) {
-        _selectionRectangle->setRect(
-            _selectionBegin.x(),
-            0,
-            _chartView->chart()->mapToScene(_chartView->mapFromParent(event->pos())).x() -
-                    _chartView->chart()->mapToScene(_chartView->mapFromParent(_selectionBegin)).x(),
-            _chartView->height());
-    }
-}
-
-void Histogram::mouseReleaseEvent(QMouseEvent *event)
-{
-    _mousePressed = false;
+    return std::make_pair(_lowBound, _upBound);
 }
 
 void HistView::mouseMoveEvent(QMouseEvent *event)
 {
     emit mouseMovedTo(event->pos());
+}
+
+void HistView::mousePressEvent(QMouseEvent *event)
+{
+    emit mousePressedAt(event->pos());
+    QGraphicsLineItem *line = scene()->addLine(event->pos().x(), 0, event->pos().x(), height());
+    _lines.append(line);
+    if (_lines.size() > 2) {
+        delete _lines.first();
+        _lines.pop_front();
+    }
 }
