@@ -39,6 +39,22 @@ UniversalPointOperation::~UniversalPointOperation()
     delete ui;
 }
 
+QImage *UniversalPointOperation::applyUPO(const QImage *img, std::array<int, UniversalPointOperation::maxLevels> op)
+{
+    QImage* res = new QImage();
+    *res = img->convertToFormat(QImage::Format_Grayscale8);
+
+    int px = 0;
+    for (int i(0); i < res->width(); ++i) {
+        for (int j(0); j < res->height(); ++j) {
+            px = op[qGray(img->pixel(i,j))];
+            res->setPixel(i, j, qRgb(px,px,px));
+        }
+    }
+
+    return res;
+}
+
 void UniversalPointOperation::refreshOperationTable()
 {
     auto a = [](QPointF p1, QPointF p2) -> double {
@@ -86,12 +102,14 @@ void UniversalPointOperation::chartMousePressedAt(QPointF x)
     int y_val = inRange(_chartView->chart()->mapToValue(x).y(),
                          0, maxLevels);
 
-    _points.insert({x_val, y_val});
+    _points.insert(QPointF(x_val, y_val));
     _lineSeries->clear();
     for (auto& point : _points)
         _lineSeries->append(point);
 
     refreshOperationTable();
+
+    emit setPreview(applyUPO(_image, _fFromX));
 }
 
 

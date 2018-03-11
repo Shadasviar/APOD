@@ -40,6 +40,8 @@ public:
     explicit UniversalPointOperation(QImage* img, QWidget *parent = 0);
     ~UniversalPointOperation();
 
+    static QImage* applyUPO(const QImage* img, std::array<int, maxLevels> op);
+
 private:
     Ui::UniversalPointOperation *ui;
     QImage* _image;
@@ -48,9 +50,9 @@ private:
 
     struct QPointFLess {
         bool operator() (const QPointF& a, const QPointF& b){
-            if (a.x() < b.x())
-                return true;
-            return a.y() < b.y();
+            if ((int)a.x() != (int)b.x())
+                return (int)a.x() < (int)b.x();
+            return (int)a.y() < (int)b.y();
         }
     };
     std::set<QPointF, QPointFLess> _points;
