@@ -6,7 +6,7 @@ Histogram::Histogram(QImage *img, QWidget *parent):
     QFrame(parent),
     _histSet(std::make_unique<QBarSet>("Histogram")),
     _image(img),
-    _chartView(std::make_unique<HistView>(parent)),
+    _chartView(std::make_unique<HistView>(this)),
     ui(new Ui::Histogram)
 {
     ui->setupUi(this);
@@ -29,6 +29,7 @@ Histogram::Histogram(QImage *img, QWidget *parent):
     barseries->setBarWidth(1);
 
     auto* chart = new QChart();
+    chart->legend()->hide();
     chart->addSeries(barseries);
     chart->setContentsMargins(-11,-11,-11,-11);
 

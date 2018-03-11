@@ -32,7 +32,8 @@ SOURCES += \
     toolsarea.cpp \
     histogramequalisation.cpp \
     histogram.cpp \
-    histogramstratching.cpp
+    histogramstratching.cpp \
+    universalpointoperation.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -41,13 +42,15 @@ HEADERS += \
     histogramequalisation.h \
     histogram.h \
     histogramstratching.h \
-    itoolwidget.h
+    itoolwidget.h \
+    universalpointoperation.h
 
 FORMS += \
         mainwindow.ui \
     histogramequalisation.ui \
     histogram.ui \
-    histogramstratching.ui
+    histogramstratching.ui \
+    universalpointoperation.ui
 
 RESOURCES += \
     images.qrc

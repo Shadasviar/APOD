@@ -70,7 +70,7 @@
          <enum>QFrame::NoFrame</enum>
         </property>
         <property name="currentIndex">
-         <number>1</number>
+         <number>2</number>
         </property>
         <widget class="QWidget" name="toolsPage">
          <property name="geometry">
@@ -248,8 +248,8 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>250</width>
-           <height>391</height>
+           <width>268</width>
+           <height>374</height>
           </rect>
          </property>
          <attribute name="label">
@@ -259,11 +259,11 @@
           <item>
            <widget class="QToolButton" name="UPOButton">
             <property name="text">
-             <string>Unary Point Operation</string>
+             <string>Universal Point Operation</string>
             </property>
             <property name="icon">
              <iconset resource="images.qrc">
-              <normaloff>:/Resources/math_ops.png</normaloff>:/Resources/math_ops.png</iconset>
+              <normaloff>:/Resources/point_op.png</normaloff>:/Resources/point_op.png</iconset>
             </property>
             <property name="checkable">
              <bool>true</bool>

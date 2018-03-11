@@ -5,6 +5,7 @@
 #include "imageworkspace.h"
 #include "histogramequalisation.h"
 #include "histogramstratching.h"
+#include "universalpointoperation.h"
 
 /*Use macro because forward declaration of ui brokes template using*/
 #define toolButtonToggled(T, checked) \
@@ -33,6 +34,7 @@ MainWindow::MainWindow(QWidget *parent) :
             ui->equiliseButton,
             ui->previewButton,
             ui->histStretch,
+            ui->UPOButton,
     };
 }
 
@@ -116,7 +118,7 @@ void MainWindow::on_previewButton_toggled(bool checked)
 
 void MainWindow::on_UPOButton_toggled(bool checked)
 {
-
+    toolButtonToggled(UniversalPointOperation,checked);
 }
 
 void MainWindow::on_equiliseButton_toggled(bool checked)

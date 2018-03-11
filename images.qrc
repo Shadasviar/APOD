@@ -11,5 +11,6 @@
         <file>Resources/preview.png</file>
         <file>Resources/math_ops.png</file>
         <file>Resources/Histogrameq.png</file>
+        <file>Resources/point_op.png</file>
     </qresource>
 </RCC>
