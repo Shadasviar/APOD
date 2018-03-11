@@ -10,6 +10,7 @@
 #include "toolsarea.h"
 #include "histogramstratching.h"
 #include "histogramequalisation.h"
+#include "itoolwidget.h"
 
 class Preview {
 
@@ -44,7 +45,7 @@ public:
     template <typename T>
     void addToolsAreaItem(){
         T* item = new T(&_image, this);
-        doSpecifiedStaff<T>(item);
+        doSpecifiedStuff<T>(item);
         _tools.addTool(item);
     }
 
@@ -53,18 +54,18 @@ public:
         _tools.deleteTool<T>();
     }
 
-    template<typename T> void doSpecifiedStaff(T*){}
+    template<typename T> void doSpecifiedStuff(T* x){
+        // Do common for generic and specialization
+        if (std::is_base_of<IToolWidget, T>()) {
+            doSpecifiedStuff((IToolWidget*)x);
+            return;
+        }
+        // Do generic only
+    }
+    void doSpecifiedStuff(IToolWidget* obj) {
+        connect(obj, &IToolWidget::setPreview, this, &ImageWorkspace::modifyPreview);
+    }
 };
-
-template<>
-inline void ImageWorkspace::doSpecifiedStaff<HistogramEqualisation>(HistogramEqualisation* hist){
-    connect(hist, &HistogramEqualisation::setPreview, this, &ImageWorkspace::modifyPreview);
-}
-
-template<>
-inline void ImageWorkspace::doSpecifiedStaff<HistogramStratching>(HistogramStratching* hist){
-    connect(hist, &HistogramStratching::setPreview, this, &ImageWorkspace::modifyPreview);
-}
 
 template <>
 inline void ImageWorkspace::addToolsAreaItem<Preview>(){

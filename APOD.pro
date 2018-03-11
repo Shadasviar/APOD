@@ -40,7 +40,8 @@ HEADERS += \
     toolsarea.h \
     histogramequalisation.h \
     histogram.h \
-    histogramstratching.h
+    histogramstratching.h \
+    itoolwidget.h
 
 FORMS += \
         mainwindow.ui \

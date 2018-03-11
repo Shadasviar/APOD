@@ -6,12 +6,13 @@
 #include <memory>
 #include <functional>
 #include <vector>
+#include "itoolwidget.h"
 
 namespace Ui {
 class HistogramEqualisation;
 }
 
-class HistogramEqualisation : public QFrame
+class HistogramEqualisation : public IToolWidget
 {
     Q_OBJECT
 
@@ -21,9 +22,6 @@ public:
 
 private slots:
     void on_pushButton_clicked();
-
-signals:
-    void setPreview(QImage*);
 
 private:
     Ui::HistogramEqualisation *ui;

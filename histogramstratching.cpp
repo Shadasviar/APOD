@@ -2,7 +2,7 @@
 #include "ui_histogramstratching.h"
 
 HistogramStratching::HistogramStratching(QImage *img, QWidget *parent) :
-    QFrame(parent),
+    IToolWidget(parent),
     ui(new Ui::HistogramStratching),
     _histogram(std::make_unique<Histogram>(img, this)),
     _image(img)
