@@ -4,6 +4,7 @@
 #include <memory>
 #include "imageworkspace.h"
 #include "histogramequalisation.h"
+#include "histogramstratching.h"
 
 /*Use macro because forward declaration of ui brokes template using*/
 #define toolButtonToggled(T, checked) \
@@ -31,6 +32,7 @@ MainWindow::MainWindow(QWidget *parent) :
             ui->histButton,
             ui->equiliseButton,
             ui->previewButton,
+            ui->histStretch,
     };
 }
 
@@ -104,7 +106,7 @@ void MainWindow::restoreToolsState(QWidget *index)
 
 void MainWindow::on_histStretch_toggled(bool checked)
 {
-    //toolButtonToggled(HistStretchWidget, checked);
+    toolButtonToggled(HistogramStratching, checked);
 }
 
 void MainWindow::on_previewButton_toggled(bool checked)

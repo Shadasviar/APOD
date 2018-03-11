@@ -31,19 +31,22 @@ SOURCES += \
     imageworkspace.cpp \
     toolsarea.cpp \
     histogramequalisation.cpp \
-    histogram.cpp
+    histogram.cpp \
+    histogramstratching.cpp
 
 HEADERS += \
         mainwindow.h \
     imageworkspace.h \
     toolsarea.h \
     histogramequalisation.h \
-    histogram.h
+    histogram.h \
+    histogramstratching.h
 
 FORMS += \
         mainwindow.ui \
     histogramequalisation.ui \
-    histogram.ui
+    histogram.ui \
+    histogramstratching.ui
 
 RESOURCES += \
     images.qrc

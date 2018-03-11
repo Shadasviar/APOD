@@ -8,7 +8,7 @@
 #include <memory>
 #include <QMap>
 #include "toolsarea.h"
-//#include "histstretchwidget.h"
+#include "histogramstratching.h"
 #include "histogramequalisation.h"
 
 class Preview {
@@ -59,6 +59,11 @@ public:
 template<>
 inline void ImageWorkspace::doSpecifiedStaff<HistogramEqualisation>(HistogramEqualisation* hist){
     connect(hist, &HistogramEqualisation::setPreview, this, &ImageWorkspace::modifyPreview);
+}
+
+template<>
+inline void ImageWorkspace::doSpecifiedStaff<HistogramStratching>(HistogramStratching* hist){
+    connect(hist, &HistogramStratching::setPreview, this, &ImageWorkspace::modifyPreview);
 }
 
 template <>
