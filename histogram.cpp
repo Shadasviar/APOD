@@ -68,7 +68,7 @@ Histogram::~Histogram()
     delete ui;
 }
 
-std::tuple<int, int> Histogram::getSelection()
+std::pair<int, int> Histogram::getSelection()
 {
     return std::make_pair(_lowBound, _upBound);
 }

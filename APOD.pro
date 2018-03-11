@@ -6,7 +6,7 @@
 
 QT       += core gui
 QT += charts
-CONFIG += c++14 strict_c++
+CONFIG += c++17 strict_c++
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 

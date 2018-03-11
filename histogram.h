@@ -40,7 +40,7 @@ public:
 
     static constexpr int maxLevels=256;
 
-    std::tuple<int,int> getSelection();
+    std::pair<int,int> getSelection();
     std::array<double, maxLevels> histogram();
 
 protected:

@@ -30,7 +30,7 @@ private:
     std::unique_ptr<Histogram> _histogram;
     QImage* _image;
 
-    enum Methods {Default = 0, Average = 0, Random, Neighbours};
+    enum Methods {Default = 0, Average = 0, Random, Neighbours, MinMax};
 
     std::vector<std::array<std::function<int(int,int)>,2>> _methodFunctions;
 

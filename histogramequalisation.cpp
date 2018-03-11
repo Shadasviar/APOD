@@ -47,6 +47,16 @@ HistogramEqualisation::HistogramEqualisation(QImage *img, QWidget *parent) :
                 return avg;
             },
         },
+        {
+            /* Min-max */
+            [this](int left, int right){return (right + left)/2;},
+            [this](int i, int j){
+                int x = qGray(_image->pixel(i,j));
+                if (qGray(_image->pixel(i,j)) <= newZ[qGray(_image->pixel(i,j))])
+                    return left[qGray(_image->pixel(i,j))];
+                return right[qGray(_image->pixel(i,j))];
+            },
+        }
     };
 }
 
@@ -64,6 +74,8 @@ void HistogramEqualisation::on_pushButton_clicked()
         method = Methods::Neighbours;
     else if (ui->rand_check->isChecked())
         method = Methods::Random;
+    else if (ui->minMax_check->isChecked())
+        method = Methods::MinMax;
 
     QImage* res = new QImage();
     *res = _image->convertToFormat(QImage::Format_Grayscale8);
