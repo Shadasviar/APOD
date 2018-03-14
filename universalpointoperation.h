@@ -50,9 +50,7 @@ private:
 
     struct QPointFLess {
         bool operator() (const QPointF& a, const QPointF& b){
-            if ((int)a.x() != (int)b.x())
-                return (int)a.x() < (int)b.x();
-            return (int)a.y() < (int)b.y();
+            return (int)a.x() < (int)b.x();
         }
     };
     std::set<QPointF, QPointFLess> _points;

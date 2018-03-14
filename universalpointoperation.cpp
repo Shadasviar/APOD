@@ -72,7 +72,7 @@ void UniversalPointOperation::refreshOperationTable()
             continue;
         }
 
-        for (int x(prePoint.x()); x < point.x(); ++x) {
+        for (int x(prePoint.x()); x <= point.x(); ++x) {
             _fFromX[x] = (int)(a(prePoint, point) * x + b(prePoint, point));
         }
         prePoint = point;
@@ -101,6 +101,9 @@ void UniversalPointOperation::chartMousePressedAt(QPointF x)
 
     int y_val = inRange(_chartView->chart()->mapToValue(x).y(),
                          0, maxLevels);
+
+    if(_points.find(QPointF(x_val, y_val)) != _points.end())
+        _points.erase(QPointF(x_val, y_val));
 
     _points.insert(QPointF(x_val, y_val));
     _lineSeries->clear();
