@@ -12,5 +12,11 @@
         <file>Resources/math_ops.png</file>
         <file>Resources/Histogrameq.png</file>
         <file>Resources/point_op.png</file>
+        <file>Resources/picture-01-512.png</file>
+        <file>Resources/add.png.png</file>
+        <file>Resources/and.png</file>
+        <file>Resources/diff.png</file>
+        <file>Resources/xor.png</file>
+        <file>Resources/sub.png</file>
     </qresource>
 </RCC>

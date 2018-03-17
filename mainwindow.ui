@@ -249,7 +249,7 @@
            <x>0</x>
            <y>0</y>
            <width>268</width>
-           <height>374</height>
+           <height>391</height>
           </rect>
          </property>
          <attribute name="label">
@@ -264,6 +264,32 @@
             <property name="icon">
              <iconset resource="images.qrc">
               <normaloff>:/Resources/point_op.png</normaloff>:/Resources/point_op.png</iconset>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+            <property name="toolButtonStyle">
+             <enum>Qt::ToolButtonTextBesideIcon</enum>
+            </property>
+            <property name="autoRaise">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QToolButton" name="binaryOpButton">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>Binary Operation</string>
+            </property>
+            <property name="icon">
+             <iconset resource="images.qrc">
+              <normaloff>:/Resources/math_ops.png</normaloff>:/Resources/math_ops.png</iconset>
             </property>
             <property name="checkable">
              <bool>true</bool>

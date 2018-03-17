@@ -22,8 +22,6 @@ public slots:
 
 private:
     QGridLayout _layout;
-
-    /*strings are typenames from TypeIdentifier*/
     QMap<std::type_index, QWidget*> _enabledTools;
 
 public:

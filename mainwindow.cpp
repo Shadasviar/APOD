@@ -6,6 +6,7 @@
 #include "histogramequalisation.h"
 #include "histogramstratching.h"
 #include "universalpointoperation.h"
+#include "binaryimageoperation.h"
 
 /*Use macro because forward declaration of ui brokes template using*/
 #define toolButtonToggled(T, checked) \
@@ -35,6 +36,7 @@ MainWindow::MainWindow(QWidget *parent) :
             ui->previewButton,
             ui->histStretch,
             ui->UPOButton,
+            ui->binaryOpButton,
     };
 }
 
@@ -67,8 +69,8 @@ void MainWindow::on_actionExit_triggered()
 
 void MainWindow::on_mainTabWidget_tabCloseRequested(int index)
 {
-    delete ui->mainTabWidget->widget(index);
     _toolsStateList.remove(ui->mainTabWidget->widget(index));
+    delete ui->mainTabWidget->widget(index);
 }
 
 
@@ -124,4 +126,9 @@ void MainWindow::on_UPOButton_toggled(bool checked)
 void MainWindow::on_equiliseButton_toggled(bool checked)
 {
     toolButtonToggled(HistogramEqualisation, checked);
+}
+
+void MainWindow::on_binaryOpButton_toggled(bool checked)
+{
+    toolButtonToggled(BinaryImageOperation, checked);
 }
