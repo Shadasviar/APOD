@@ -6,10 +6,16 @@ ToolsArea::ToolsArea(QWidget *parent) : QWidget(parent),
 
 }
 
+void ToolsArea::setTool(QWidget *tool)
+{
+    _activeTool.reset(tool);
+    _layout.addWidget(tool);
+}
+
 ToolsArea::~ToolsArea()
 {
-    for (auto& key : _enabledTools.keys()) {
-        delete _enabledTools[key];
+    for (auto& key : _enabledInfoTools.keys()) {
+        delete _enabledInfoTools[key];
     }
-    _enabledTools.clear();
+    _enabledInfoTools.clear();
 }

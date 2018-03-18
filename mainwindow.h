@@ -25,12 +25,13 @@ private slots:
     void on_actionOpen_triggered();
     void on_actionExit_triggered();
     void on_mainTabWidget_tabCloseRequested(int index);
-    void on_histButton_toggled(bool checked);
     void on_mainTabWidget_currentChanged(int index);
-    void on_histStretch_toggled(bool checked);
-    void on_UPOButton_toggled(bool checked);
-    void on_equiliseButton_toggled(bool checked);
-    void on_binaryOpButton_toggled(bool checked);
+
+    void on_actionHistogram_toggled(bool checked);
+    void on_actionHistogram_stratching_triggered();
+    void on_actionHistogram_equalization_triggered();
+    void on_actionSingle_Argument_Operation_triggered();
+    void on_actionMultiple_arguments_operation_triggered();
 
 private:
     Ui::MainWindow *ui;
@@ -41,11 +42,11 @@ private:
     QGraphicsScene scene;
 
     struct toolState {
-        QToolButton* tool;
+        QAction* tool;
         bool state;
     };
 
-    QList<QToolButton*> _toolsList;
+    QList<QAction*> _toolsList;
     QMap<QWidget*, QList<toolState>> _toolsStateList;
     QWidget* _preTabIndex = nullptr;
     void dumpToolsState(QWidget *index);

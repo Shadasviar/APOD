@@ -18,5 +18,6 @@
         <file>Resources/diff.png</file>
         <file>Resources/xor.png</file>
         <file>Resources/sub.png</file>
+        <file>Resources/Line-Chart-512.png</file>
     </qresource>
 </RCC>

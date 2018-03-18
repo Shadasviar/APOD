@@ -9,11 +9,14 @@
 #include "binaryimageoperation.h"
 
 /*Use macro because forward declaration of ui brokes template using*/
-#define toolButtonToggled(T, checked) \
+#define addInfoTool addToolsAreaItem
+#define setOperationTool setCurrentOperation
+
+#define toolButtonToggled(T, action, checked) \
     auto currentTab = qobject_cast<ImageWorkspace*>(ui->mainTabWidget->currentWidget());\
     if (checked) {\
         if (ui->mainTabWidget->currentWidget()){\
-            currentTab->addToolsAreaItem<T>();\
+            currentTab->action<T>();\
         }\
     }\
     else {\
@@ -30,12 +33,12 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     ui->mainTabWidget->removeTab(0);
 
-    _toolsList = QList<QToolButton*>{
-            ui->histButton,
-            ui->equiliseButton,
+    _toolsList = QList<QAction*>{
+            ui->actionHistogram,
+            /*ui->equiliseButton,
             ui->histStretch,
             ui->UPOButton,
-            ui->binaryOpButton,
+            ui->binaryOpButton,*/
     };
 }
 
@@ -72,12 +75,6 @@ void MainWindow::on_mainTabWidget_tabCloseRequested(int index)
     delete ui->mainTabWidget->widget(index);
 }
 
-
-void MainWindow::on_histButton_toggled(bool checked)
-{
-    toolButtonToggled(Histogram, checked);
-}
-
 void MainWindow::on_mainTabWidget_currentChanged(int index)
 {
     dumpToolsState(_preTabIndex);
@@ -107,22 +104,27 @@ void MainWindow::restoreToolsState(QWidget *index)
     _toolsStateList.remove(index);
 }
 
-void MainWindow::on_histStretch_toggled(bool checked)
+void MainWindow::on_actionHistogram_toggled(bool checked)
 {
-    toolButtonToggled(HistogramStratching, checked);
+    toolButtonToggled(Histogram, addInfoTool, checked);
 }
 
-void MainWindow::on_UPOButton_toggled(bool checked)
+void MainWindow::on_actionHistogram_stratching_triggered()
 {
-    toolButtonToggled(UniversalPointOperation,checked);
+    toolButtonToggled(HistogramStratching, setOperationTool, true);
 }
 
-void MainWindow::on_equiliseButton_toggled(bool checked)
+void MainWindow::on_actionHistogram_equalization_triggered()
 {
-    toolButtonToggled(HistogramEqualisation, checked);
+    toolButtonToggled(HistogramEqualisation, setOperationTool, true);
 }
 
-void MainWindow::on_binaryOpButton_toggled(bool checked)
+void MainWindow::on_actionSingle_Argument_Operation_triggered()
 {
-    toolButtonToggled(BinaryImageOperation, checked);
+    toolButtonToggled(UniversalPointOperation, setOperationTool, true);
+}
+
+void MainWindow::on_actionMultiple_arguments_operation_triggered()
+{
+    toolButtonToggled(BinaryImageOperation, setOperationTool, true);
 }

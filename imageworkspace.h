@@ -43,7 +43,14 @@ public:
     void addToolsAreaItem(){
         T* item = new T(&_image, this);
         doSpecifiedStuff<T>(item);
-        _tools.addTool(item);
+        _tools.addInfoTool(item);
+    }
+
+    template <typename T>
+    void setCurrentOperation(){
+        T* item = new T(&_image, this);
+        doSpecifiedStuff<T>(item);
+        _tools.setTool(item);
     }
 
     template <typename T>
