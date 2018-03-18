@@ -28,7 +28,6 @@ private slots:
     void on_histButton_toggled(bool checked);
     void on_mainTabWidget_currentChanged(int index);
     void on_histStretch_toggled(bool checked);
-    void on_previewButton_toggled(bool checked);
     void on_UPOButton_toggled(bool checked);
     void on_equiliseButton_toggled(bool checked);
     void on_binaryOpButton_toggled(bool checked);

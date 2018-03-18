@@ -33,7 +33,6 @@ MainWindow::MainWindow(QWidget *parent) :
     _toolsList = QList<QToolButton*>{
             ui->histButton,
             ui->equiliseButton,
-            ui->previewButton,
             ui->histStretch,
             ui->UPOButton,
             ui->binaryOpButton,
@@ -111,11 +110,6 @@ void MainWindow::restoreToolsState(QWidget *index)
 void MainWindow::on_histStretch_toggled(bool checked)
 {
     toolButtonToggled(HistogramStratching, checked);
-}
-
-void MainWindow::on_previewButton_toggled(bool checked)
-{
-    toolButtonToggled(Preview,checked);
 }
 
 void MainWindow::on_UPOButton_toggled(bool checked)

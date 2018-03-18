@@ -12,10 +12,6 @@
 #include "histogramequalisation.h"
 #include "itoolwidget.h"
 
-class Preview {
-
-};
-
 class ImageWorkspace : public QWidget
 {
     Q_OBJECT
@@ -32,6 +28,7 @@ protected:
     QFrame _imagesViews;
     QVBoxLayout _imagesLayout;
     QSplitter* _splitter;
+    QSplitter* _imageSplitter;
     std::unique_ptr<QGraphicsView>_imageView;
     std::unique_ptr<QGraphicsView> _preview;
 
@@ -66,19 +63,5 @@ public:
         connect(obj, &IToolWidget::setPreview, this, &ImageWorkspace::modifyPreview);
     }
 };
-
-template <>
-inline void ImageWorkspace::addToolsAreaItem<Preview>(){
-    _preview = std::make_unique<QGraphicsView>(_splitter);
-    _imagesLayout.addWidget(_preview.get());
-}
-
-template <>
-inline void ImageWorkspace::deleteToolsAreaItem<Preview>(){
-    _preview.reset();
-    delete _previewImage;
-    _previewImage = nullptr;
-    _imagesLayout.removeWidget(_preview.get());
-}
 
 #endif // IMAGEWORKSPACE_H

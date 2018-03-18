@@ -5,10 +5,12 @@ ImageWorkspace::ImageWorkspace(QWidget *parent) : QWidget(parent),
     _imagesViews(this),
     _imagesLayout(&_imagesViews),
     _splitter(new QSplitter(this)),
+    _imageSplitter(new QSplitter(Qt::Vertical ,this)),
     _imageView(std::make_unique<QGraphicsView>(_splitter)),
     _tools(this)
 {
-    _imagesLayout.addWidget(_imageView.get());
+    _imagesLayout.addWidget(_imageSplitter);
+    _imageSplitter->addWidget(_imageView.get());
     _layout.addWidget(_splitter);
     _splitter->addWidget(&_imagesViews);
     _splitter->addWidget(&_tools);
@@ -30,6 +32,10 @@ ImageWorkspace::~ImageWorkspace()
 
 void ImageWorkspace::modifyPreview(QImage *img)
 {
+    if (!_preview) {
+        _preview = std::make_unique<QGraphicsView>(_splitter);
+        _imageSplitter->addWidget(_preview.get());
+    }
     if (_preview) {
         delete _previewImage;
         _previewImage = img;
