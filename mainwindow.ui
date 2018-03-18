@@ -107,9 +107,25 @@
      <string>Info</string>
     </property>
    </widget>
+   <widget class="QMenu" name="menuSettings">
+    <property name="title">
+     <string>Settings</string>
+    </property>
+    <widget class="QMenu" name="menuMenu_bar">
+     <property name="title">
+      <string>Menu bar</string>
+     </property>
+     <addaction name="actionText_only"/>
+     <addaction name="actionIcons_only"/>
+     <addaction name="actionText_under_icons"/>
+     <addaction name="actionText_beside_icons"/>
+    </widget>
+    <addaction name="menuMenu_bar"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
    <addaction name="menuView"/>
+   <addaction name="menuSettings"/>
    <addaction name="menuInfo"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
@@ -222,6 +238,26 @@
    </property>
    <property name="toolTip">
     <string>Set of operations on one pixel from one or more images</string>
+   </property>
+  </action>
+  <action name="actionText_only">
+   <property name="text">
+    <string>Text only</string>
+   </property>
+  </action>
+  <action name="actionIcons_only">
+   <property name="text">
+    <string>Icons only</string>
+   </property>
+  </action>
+  <action name="actionText_under_icons">
+   <property name="text">
+    <string>Text under icons</string>
+   </property>
+  </action>
+  <action name="actionText_beside_icons">
+   <property name="text">
+    <string>Text beside icons</string>
    </property>
   </action>
  </widget>

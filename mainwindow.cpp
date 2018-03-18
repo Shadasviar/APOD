@@ -128,3 +128,23 @@ void MainWindow::on_actionMultiple_arguments_operation_triggered()
 {
     toolButtonToggled(BinaryImageOperation, setOperationTool, true);
 }
+
+void MainWindow::on_actionText_only_triggered()
+{
+    ui->mainToolBar->setToolButtonStyle(Qt::ToolButtonTextOnly);
+}
+
+void MainWindow::on_actionIcons_only_triggered()
+{
+    ui->mainToolBar->setToolButtonStyle(Qt::ToolButtonIconOnly);
+}
+
+void MainWindow::on_actionText_under_icons_triggered()
+{
+    ui->mainToolBar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+}
+
+void MainWindow::on_actionText_beside_icons_triggered()
+{
+    ui->mainToolBar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+}
