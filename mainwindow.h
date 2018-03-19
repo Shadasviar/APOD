@@ -34,11 +34,8 @@ private slots:
     void on_actionMultiple_arguments_operation_triggered();
 
     void on_actionText_only_triggered();
-
     void on_actionIcons_only_triggered();
-
     void on_actionText_under_icons_triggered();
-
     void on_actionText_beside_icons_triggered();
 
 private:

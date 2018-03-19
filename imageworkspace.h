@@ -41,7 +41,7 @@ protected:
 public:
     template <typename T>
     void addToolsAreaItem(){
-        T* item = new T(&_image, this);
+        T* item = new T(_previewImage ? _previewImage : &_image, this);
         doSpecifiedStuff<T>(item);
         _tools.addInfoTool(item);
     }
