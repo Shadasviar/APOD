@@ -26,37 +26,37 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += \
-        main.cpp \
-        mainwindow.cpp \
-    imageworkspace.cpp \
-    toolsarea.cpp \
-    histogramequalisation.cpp \
-    histogram.cpp \
-    histogramstratching.cpp \
-    universalpointoperation.cpp \
-    binaryimageoperation.cpp \
-    convolutionmatrix.cpp
+    cpp/main.cpp \
+    cpp/mainwindow.cpp \
+    cpp/imageworkspace.cpp \
+    cpp/toolsarea.cpp \
+    cpp/histogramequalisation.cpp \
+    cpp/histogram.cpp \
+    cpp/histogramstratching.cpp \
+    cpp/universalpointoperation.cpp \
+    cpp/binaryimageoperation.cpp \
+    cpp/convolutionmatrix.cpp
 
 HEADERS += \
-        mainwindow.h \
-    imageworkspace.h \
-    toolsarea.h \
-    histogramequalisation.h \
-    histogram.h \
-    histogramstratching.h \
-    itoolwidget.h \
-    universalpointoperation.h \
-    binaryimageoperation.h \
-    convolutionmatrix.h
+    include/mainwindow.h \
+    include/imageworkspace.h \
+    include/toolsarea.h \
+    include/histogramequalisation.h \
+    include/histogram.h \
+    include/histogramstratching.h \
+    include/itoolwidget.h \
+    include/universalpointoperation.h \
+    include/binaryimageoperation.h \
+    include/convolutionmatrix.h
 
 FORMS += \
-        mainwindow.ui \
-    histogramequalisation.ui \
-    histogram.ui \
-    histogramstratching.ui \
-    universalpointoperation.ui \
-    binaryimageoperation.ui \
-    convolutionmatrix.ui
+    UI/mainwindow.ui \
+    UI/histogramequalisation.ui \
+    UI/histogram.ui \
+    UI/histogramstratching.ui \
+    UI/universalpointoperation.ui \
+    UI/binaryimageoperation.ui \
+    UI/convolutionmatrix.ui
 
 RESOURCES += \
     images.qrc
