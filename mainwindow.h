@@ -38,6 +38,8 @@ private slots:
     void on_actionText_under_icons_triggered();
     void on_actionText_beside_icons_triggered();
 
+    void on_actionConvolution_matrix_triggered();
+
 private:
     Ui::MainWindow *ui;
     QFileInfo lastOpenedDir;

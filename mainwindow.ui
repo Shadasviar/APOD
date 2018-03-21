@@ -82,8 +82,9 @@
     </widget>
     <widget class="QMenu" name="menuType_Here">
      <property name="title">
-      <string>Type Here</string>
+      <string>Filtering</string>
      </property>
+     <addaction name="actionConvolution_matrix"/>
     </widget>
     <widget class="QMenu" name="menuUniversal_Point_Operation">
      <property name="title">
@@ -142,7 +143,7 @@
     <enum>TopToolBarArea</enum>
    </attribute>
    <attribute name="toolBarBreak">
-    <bool>true</bool>
+    <bool>false</bool>
    </attribute>
    <addaction name="actionOpen"/>
    <addaction name="separator"/>
@@ -153,6 +154,8 @@
    <addaction name="separator"/>
    <addaction name="actionSingle_Argument_Operation"/>
    <addaction name="actionMultiple_arguments_operation"/>
+   <addaction name="separator"/>
+   <addaction name="actionConvolution_matrix"/>
    <addaction name="separator"/>
    <addaction name="actionExit"/>
   </widget>
@@ -258,6 +261,19 @@
   <action name="actionText_beside_icons">
    <property name="text">
     <string>Text beside icons</string>
+   </property>
+  </action>
+  <action name="actionConvolution_matrix">
+   <property name="icon">
+    <iconset>
+     <normalon>:/Resources/matrix.png</normalon>
+    </iconset>
+   </property>
+   <property name="text">
+    <string>Convolution matrix</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+M</string>
    </property>
   </action>
  </widget>

@@ -34,7 +34,8 @@ SOURCES += \
     histogram.cpp \
     histogramstratching.cpp \
     universalpointoperation.cpp \
-    binaryimageoperation.cpp
+    binaryimageoperation.cpp \
+    convolutionmatrix.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -45,7 +46,8 @@ HEADERS += \
     histogramstratching.h \
     itoolwidget.h \
     universalpointoperation.h \
-    binaryimageoperation.h
+    binaryimageoperation.h \
+    convolutionmatrix.h
 
 FORMS += \
         mainwindow.ui \
@@ -53,7 +55,8 @@ FORMS += \
     histogram.ui \
     histogramstratching.ui \
     universalpointoperation.ui \
-    binaryimageoperation.ui
+    binaryimageoperation.ui \
+    convolutionmatrix.ui
 
 RESOURCES += \
     images.qrc

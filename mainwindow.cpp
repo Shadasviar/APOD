@@ -7,6 +7,7 @@
 #include "histogramstratching.h"
 #include "universalpointoperation.h"
 #include "binaryimageoperation.h"
+#include "convolutionmatrix.h"
 
 /*Use macro because forward declaration of ui brokes template using*/
 #define addInfoTool addToolsAreaItem
@@ -35,10 +36,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     _toolsList = QList<QAction*>{
             ui->actionHistogram,
-            /*ui->equiliseButton,
-            ui->histStretch,
-            ui->UPOButton,
-            ui->binaryOpButton,*/
     };
 }
 
@@ -147,4 +144,9 @@ void MainWindow::on_actionText_under_icons_triggered()
 void MainWindow::on_actionText_beside_icons_triggered()
 {
     ui->mainToolBar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+}
+
+void MainWindow::on_actionConvolution_matrix_triggered()
+{
+    toolButtonToggled(ConvolutionMatrix, setOperationTool, true);
 }

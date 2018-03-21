@@ -19,5 +19,6 @@
         <file>Resources/xor.png</file>
         <file>Resources/sub.png</file>
         <file>Resources/Line-Chart-512.png</file>
+        <file>Resources/matrix.png</file>
     </qresource>
 </RCC>
