@@ -6,15 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>529</width>
-    <height>309</height>
+    <width>550</width>
+    <height>502</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Frame</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="2" column="0" colspan="2">
+   <item row="2" column="0" colspan="3">
     <widget class="QFrame" name="matrixFrame">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
@@ -96,7 +96,7 @@
      </property>
     </spacer>
    </item>
-   <item row="0" column="2" rowspan="6">
+   <item row="0" column="3" rowspan="6">
     <widget class="QFrame" name="optionsFrame">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
@@ -114,11 +114,60 @@
       <enum>QFrame::Raised</enum>
      </property>
      <layout class="QGridLayout" name="gridLayout_3">
-      <item row="2" column="2">
+      <item row="3" column="2">
        <widget class="QPushButton" name="applyButton">
         <property name="text">
          <string>Apply</string>
         </property>
+       </widget>
+      </item>
+      <item row="1" column="1" colspan="2">
+       <widget class="QGroupBox" name="scaleBox">
+        <property name="title">
+         <string>Scale method</string>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout">
+         <item>
+          <widget class="QRadioButton" name="cutScaleCheck">
+           <property name="text">
+            <string>Cut</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QRadioButton" name="proportionalScaleCheck">
+           <property name="text">
+            <string>Proportional</string>
+           </property>
+           <property name="checked">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QRadioButton" name="triangleScaleCheck">
+           <property name="text">
+            <string>Triangle</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="verticalSpacer_4">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>40</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
        </widget>
       </item>
       <item row="0" column="1" colspan="2">
@@ -189,7 +238,7 @@
         </property>
        </spacer>
       </item>
-      <item row="2" column="1">
+      <item row="3" column="1">
        <spacer name="horizontalSpacer">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
@@ -202,7 +251,7 @@
         </property>
        </spacer>
       </item>
-      <item row="1" column="2">
+      <item row="2" column="2">
        <spacer name="verticalSpacer">
         <property name="orientation">
          <enum>Qt::Vertical</enum>
@@ -225,7 +274,7 @@
      </property>
     </widget>
    </item>
-   <item row="4" column="1">
+   <item row="4" column="2">
     <spacer name="horizontalSpacer_5">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -245,7 +294,7 @@
      </property>
     </widget>
    </item>
-   <item row="1" column="1">
+   <item row="1" column="2">
     <spacer name="horizontalSpacer_3">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -257,6 +306,13 @@
       </size>
      </property>
     </spacer>
+   </item>
+   <item row="4" column="1">
+    <widget class="QCheckBox" name="autoDivisorCheckBox">
+     <property name="text">
+      <string>Auto divisor</string>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>

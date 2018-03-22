@@ -1,5 +1,6 @@
 #include "convolutionmatrix.h"
 #include "ui_convolutionmatrix.h"
+#include "histogram.h"
 
 QMap<QString, std::pair<int, int>> ConvolutionMatrix::_allowedMatrixSizes = {
     {"3x3", {3,3}},
@@ -25,15 +26,15 @@ ConvolutionMatrix::_borderMethods = {
                     if (ii < 0 || ii >= img->width()) {
                         if (jj >= 0 && jj < img->height())
                             avg += 2*qGray(img->pixel(i, jj))
-                                *mask[i-ii][j-jj];
+                                *mask[(ii-i)+mask.size()/2][(jj-j)+mask[0].size()/2];
                     }
                     else if (jj < 0 || jj >= img->height()) {
                         avg += 2*qGray(img->pixel(ii,j))
-                            *mask[i-ii][j-jj];
+                            *mask[(ii-i)+mask.size()/2][(jj-j)+mask[0].size()/2];
                     }
                     else
                         avg += qGray(img->pixel(ii,jj))
-                            *mask[i-ii][j-jj];
+                            *mask[(ii-i)+mask.size()/2][(jj-j)+mask[0].size()/2];
                 }
             }
             return avg / divisor;
@@ -50,7 +51,7 @@ ConvolutionMatrix::_borderMethods = {
                  }
                  else {
                      avg += qGray(img->pixel(ii,jj))
-                         *mask[i-ii][j-jj];
+                         *mask[(ii-i)+mask.size()/2][(jj-j)+mask[0].size()/2];
                  }
              }
          }
@@ -65,6 +66,31 @@ ConvolutionMatrix::ConvolutionMatrix(QImage* img, QWidget *parent) :
 {
     ui->setupUi(this);
     emit on_maskSizeBox_currentTextChanged(ui->maskSizeBox->currentText());
+
+    for (int i(0); i < _image->width(); ++i){
+        for (int j(0); j < _image->height(); ++j) {
+            if (qGray(_image->pixel(i,j)) < _minPixel)
+                _minPixel = qGray(_image->pixel(i,j));
+            if (qGray(_image->pixel(i,j)) > _maxPixel)
+                _maxPixel = qGray(_image->pixel(i,j));
+        }
+    }
+
+    _scalemethods = {
+        {ConvolutionMatrix::Proportional, [this](int x){
+            return ((x-_minPixel)/(_maxPixel-_minPixel)) * (Histogram::maxLevels-1);
+        }},
+        {ConvolutionMatrix::Triangle, [](int x){
+            if (x < 0) return 0;
+            if (x > 0) return Histogram::maxLevels - 1;
+            return Histogram::maxLevels-1 / 2;
+        }},
+        {ConvolutionMatrix::Cut, [](int x){
+            if (x < 0) return 0;
+            if (x > Histogram::maxLevels-1) return Histogram::maxLevels - 1;
+            return x;
+        }},
+    };
 }
 
 ConvolutionMatrix::~ConvolutionMatrix()
@@ -74,7 +100,8 @@ ConvolutionMatrix::~ConvolutionMatrix()
 
 QImage *ConvolutionMatrix::applyMask(const QImage *img, std::vector<std::vector<int> > mask,
                                      borderFunction bound,
-                                     int kW, int kH, int divisor)
+                                     int kW, int kH, int divisor,
+                                     std::function<int(int)> scale)
 {
     QImage* res = new QImage();
     *res = img->convertToFormat(QImage::Format_Grayscale8);
@@ -96,6 +123,7 @@ QImage *ConvolutionMatrix::applyMask(const QImage *img, std::vector<std::vector<
 
             avg /= divisor;
 border_processed:
+            avg = scale(avg);
             res->setPixel(i,j, qRgb(avg, avg, avg));
 
         }
@@ -117,6 +145,8 @@ void ConvolutionMatrix::on_maskSizeBox_currentTextChanged(const QString &item)
             col.push_back(std::move(ptr));
             ui->matrixGrid->addWidget(col.back().get(), j, i);
             col.back()->setMinimum(-100);
+            connect(col.back().get(), QOverload<int>::of(&QSpinBox::valueChanged),
+                    this, &ConvolutionMatrix::on_spinBox_changed);
         }
         _matrix.push_back(std::move(col));
     }
@@ -133,6 +163,14 @@ void ConvolutionMatrix::on_applyButton_clicked()
     else if (ui->noChangeBox->isChecked())
         f = _borderMethods[ConvolutionMatrix::NoChange];
 
+    auto scale = _scalemethods[Proportional];
+    if (ui->proportionalScaleCheck->isChecked())
+        scale = _scalemethods[Proportional];
+    else if (ui->triangleScaleCheck->isChecked())
+        scale = _scalemethods[Triangle];
+    else if (ui->cutScaleCheck->isChecked())
+        scale = _scalemethods[Cut];
+
     for (auto& row : _matrix) {
         std::vector<int> vRow;
         for (auto& col : row) {
@@ -146,7 +184,31 @@ void ConvolutionMatrix::on_applyButton_clicked()
     auto divisor = ui->divisorSpinBox->value();
 
     QImage* res = applyMask(_image, mask, f,
-                            rows/2, cols/2, divisor);
+                            rows/2, cols/2, divisor, scale);
 
     emit setPreview(res);
+}
+
+void ConvolutionMatrix::on_autoDivisorCheckBox_stateChanged(int state)
+{
+    if (state == Qt::Checked) {
+        ui->divisorSpinBox->setEnabled(false);
+        int sum (0);
+        for (auto& row : _matrix) {
+            for (auto& col : row) {
+                sum += col->value();
+            }
+        }
+        ui->divisorSpinBox->setValue(sum > 0 ? sum : 1);
+    }
+    else {
+        ui->divisorSpinBox->setEnabled(true);
+    }
+}
+
+void ConvolutionMatrix::on_spinBox_changed(int i)
+{
+    if(ui->autoDivisorCheckBox->isChecked()) {
+        emit ui->autoDivisorCheckBox->stateChanged(Qt::Checked);
+    }
 }
