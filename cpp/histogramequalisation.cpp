@@ -51,7 +51,6 @@ HistogramEqualisation::HistogramEqualisation(QImage *img, QWidget *parent) :
             /* Min-max */
             [this](int left, int right){return (right + left)/2;},
             [this](int i, int j){
-                int x = qGray(_image->pixel(i,j));
                 if (qGray(_image->pixel(i,j)) <= newZ[qGray(_image->pixel(i,j))])
                     return left[qGray(_image->pixel(i,j))];
                 return right[qGray(_image->pixel(i,j))];

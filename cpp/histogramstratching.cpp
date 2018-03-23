@@ -18,7 +18,8 @@ HistogramStratching::~HistogramStratching()
 
 void HistogramStratching::on_applyButton_clicked()
 {
-    auto [low, up] = _histogram->getSelection();
+    auto low = std::get<0>(_histogram->getSelection());
+    auto up = std::get<1>(_histogram->getSelection());
 
     QImage *res = new QImage();
     *res = _image->convertToFormat(QImage::Format_Grayscale8);

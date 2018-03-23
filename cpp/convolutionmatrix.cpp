@@ -206,7 +206,7 @@ void ConvolutionMatrix::on_autoDivisorCheckBox_stateChanged(int state)
     }
 }
 
-void ConvolutionMatrix::on_spinBox_changed(int i)
+void ConvolutionMatrix::on_spinBox_changed(int)
 {
     if(ui->autoDivisorCheckBox->isChecked()) {
         emit ui->autoDivisorCheckBox->stateChanged(Qt::Checked);
