@@ -2,16 +2,9 @@
     <qresource prefix="/">
         <file>Resources/folder_2_open-512.png</file>
         <file>Resources/exit.png</file>
-        <file>Resources/tools.png</file>
         <file>Resources/Histogram-512.png</file>
-        <file>Resources/stretch.png</file>
-        <file>Resources/arrow-up-01-512.png</file>
-        <file>Resources/left_arrow.png</file>
-        <file>Resources/right_arrow.png</file>
-        <file>Resources/preview.png</file>
         <file>Resources/math_ops.png</file>
         <file>Resources/Histogrameq.png</file>
-        <file>Resources/point_op.png</file>
         <file>Resources/picture-01-512.png</file>
         <file>Resources/add.png.png</file>
         <file>Resources/and.png</file>
@@ -20,5 +13,10 @@
         <file>Resources/sub.png</file>
         <file>Resources/Line-Chart-512.png</file>
         <file>Resources/matrix.png</file>
+        <file>Resources/expand.png</file>
+        <file>Resources/05.gpl.png</file>
+        <file>Resources/c-plus-plus-logo.png</file>
+        <file>Resources/qt.png</file>
+        <file>Resources/github-logo.png</file>
     </qresource>
 </RCC>

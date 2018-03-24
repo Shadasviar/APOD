@@ -26,6 +26,7 @@
 #include "universalpointoperation.h"
 #include "binaryimageoperation.h"
 #include "convolutionmatrix.h"
+#include "aboutprogramwindow.h"
 
 /*Use macro because forward declaration of ui brokes template using*/
 #define addInfoTool addToolsAreaItem
@@ -167,4 +168,13 @@ void MainWindow::on_actionText_beside_icons_triggered()
 void MainWindow::on_actionConvolution_matrix_triggered()
 {
     toolButtonToggled(ConvolutionMatrix, setOperationTool, true);
+}
+
+void MainWindow::on_actionAbout_program_triggered()
+{
+    static AboutProgramWindow* info = nullptr;
+    if (info == nullptr) {
+        info = new AboutProgramWindow(this);
+    }
+    info->show();
 }

@@ -11,7 +11,10 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>HarbuzHIST18</string>
+  </property>
+  <property name="documentMode">
+   <bool>false</bool>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout">
@@ -107,6 +110,7 @@
     <property name="title">
      <string>Info</string>
     </property>
+    <addaction name="actionAbout_program"/>
    </widget>
    <widget class="QMenu" name="menuSettings">
     <property name="title">
@@ -175,7 +179,7 @@
   </action>
   <action name="actionExit">
    <property name="icon">
-    <iconset resource="images.qrc">
+    <iconset resource="../images.qrc">
      <normaloff>:/Resources/exit.png</normaloff>:/Resources/exit.png</iconset>
    </property>
    <property name="text">
@@ -187,7 +191,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="images.qrc">
+    <iconset resource="../images.qrc">
      <normaloff>:/Resources/Histogram-512.png</normaloff>:/Resources/Histogram-512.png</iconset>
    </property>
    <property name="text">
@@ -202,8 +206,8 @@
   </action>
   <action name="actionHistogram_stratching">
    <property name="icon">
-    <iconset resource="images.qrc">
-     <normaloff>:/Resources/stretch.png</normaloff>:/Resources/stretch.png</iconset>
+    <iconset resource="../images.qrc">
+     <normaloff>:/Resources/expand.png</normaloff>:/Resources/expand.png</iconset>
    </property>
    <property name="text">
     <string>Histogram stratching</string>
@@ -211,7 +215,7 @@
   </action>
   <action name="actionHistogram_equalization">
    <property name="icon">
-    <iconset resource="images.qrc">
+    <iconset resource="../images.qrc">
      <normaloff>:/Resources/Histogrameq.png</normaloff>:/Resources/Histogrameq.png</iconset>
    </property>
    <property name="text">
@@ -220,7 +224,7 @@
   </action>
   <action name="actionSingle_Argument_Operation">
    <property name="icon">
-    <iconset resource="images.qrc">
+    <iconset resource="../images.qrc">
      <normaloff>:/Resources/Line-Chart-512.png</normaloff>:/Resources/Line-Chart-512.png</iconset>
    </property>
    <property name="text">
@@ -276,10 +280,15 @@
     <string>Ctrl+M</string>
    </property>
   </action>
+  <action name="actionAbout_program">
+   <property name="text">
+    <string>About program</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>
-  <include location="images.qrc"/>
+  <include location="../images.qrc"/>
  </resources>
  <connections/>
 </ui>

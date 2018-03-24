@@ -58,6 +58,8 @@ private slots:
 
     void on_actionConvolution_matrix_triggered();
 
+    void on_actionAbout_program_triggered();
+
 private:
     Ui::MainWindow *ui;
     QFileInfo lastOpenedDir;
