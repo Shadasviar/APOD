@@ -44,21 +44,20 @@ private slots:
     void on_actionExit_triggered();
     void on_mainTabWidget_tabCloseRequested(int index);
     void on_mainTabWidget_currentChanged(int index);
-
     void on_actionHistogram_toggled(bool checked);
     void on_actionHistogram_stratching_triggered();
     void on_actionHistogram_equalization_triggered();
     void on_actionSingle_Argument_Operation_triggered();
     void on_actionMultiple_arguments_operation_triggered();
-
     void on_actionText_only_triggered();
     void on_actionIcons_only_triggered();
     void on_actionText_under_icons_triggered();
     void on_actionText_beside_icons_triggered();
-
     void on_actionConvolution_matrix_triggered();
-
     void on_actionAbout_program_triggered();
+    void on_actionHistogram_2D_triggered(bool checked);
+
+    void on_actionActive_widget_of_operation_on_image_triggered(bool checked);
 
 private:
     Ui::MainWindow *ui;

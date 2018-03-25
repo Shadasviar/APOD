@@ -33,6 +33,7 @@ public:
 
     explicit ToolsArea(QWidget *parent = nullptr);
     void setTool(QWidget* tool);
+    void deleteTool();
     virtual ~ToolsArea();
 
 signals:

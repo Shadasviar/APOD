@@ -43,6 +43,11 @@ ImageWorkspace::ImageWorkspace(QImage &&image, QWidget *parent): ImageWorkspace(
     _imageView->setScene(&_scene);
 }
 
+void ImageWorkspace::deleteActiveTool()
+{
+    _tools.deleteTool();
+}
+
 ImageWorkspace::~ImageWorkspace()
 {
     _scene.clear();

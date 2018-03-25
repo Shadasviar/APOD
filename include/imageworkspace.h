@@ -29,6 +29,7 @@
 #include "histogramstratching.h"
 #include "histogramequalisation.h"
 #include "itoolwidget.h"
+#include "histogram2d.h"
 
 class ImageWorkspace : public QWidget
 {
@@ -36,6 +37,7 @@ class ImageWorkspace : public QWidget
 public:
     explicit ImageWorkspace(QWidget *parent = nullptr);
     ImageWorkspace(QImage&& image, QWidget* parent = nullptr);
+    void deleteActiveTool();
     virtual ~ImageWorkspace();   
 
 protected slots:
@@ -88,5 +90,20 @@ public:
         connect(obj, &IToolWidget::setPreview, this, &ImageWorkspace::modifyPreview);
     }
 };
+
+template <>
+void inline ImageWorkspace::addToolsAreaItem<Histogram2D>(){
+    if (!_previewImage) {
+        QMessageBox messageBox;
+        messageBox.critical(0,"Error","You must have two images for this operation"
+                                      " (image and preview of it)."
+                                      " Do some action on your image and try again.");
+        messageBox.setFixedSize(500,200);
+        return;
+    }
+    auto* item = new Histogram2D(&_image, _previewImage, this);
+    doSpecifiedStuff(item);
+    _tools.addInfoTool(item);
+}
 
 #endif // IMAGEWORKSPACE_H

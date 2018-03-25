@@ -37,7 +37,8 @@ SOURCES += \
     cpp/universalpointoperation.cpp \
     cpp/binaryimageoperation.cpp \
     cpp/convolutionmatrix.cpp \
-    cpp/aboutprogramwindow.cpp
+    cpp/aboutprogramwindow.cpp \
+    cpp/histogram2d.cpp
 
 HEADERS += \
     include/mainwindow.h \
@@ -50,7 +51,8 @@ HEADERS += \
     include/universalpointoperation.h \
     include/binaryimageoperation.h \
     include/convolutionmatrix.h \
-    include/aboutprogramwindow.h
+    include/aboutprogramwindow.h \
+    include/histogram2d.h
 
 FORMS += \
     UI/mainwindow.ui \
@@ -60,7 +62,8 @@ FORMS += \
     UI/universalpointoperation.ui \
     UI/binaryimageoperation.ui \
     UI/convolutionmatrix.ui \
-    UI/aboutprogramwindow.ui
+    UI/aboutprogramwindow.ui \
+    UI/histogram2d.ui
 
 RESOURCES += \
     images.qrc

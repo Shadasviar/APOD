@@ -18,5 +18,7 @@
         <file>Resources/c-plus-plus-logo.png</file>
         <file>Resources/qt.png</file>
         <file>Resources/github-logo.png</file>
+        <file>Resources/3d.png</file>
+        <file>Resources/creative-process.png</file>
     </qresource>
 </RCC>

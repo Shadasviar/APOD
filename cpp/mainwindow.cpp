@@ -27,16 +27,19 @@
 #include "binaryimageoperation.h"
 #include "convolutionmatrix.h"
 #include "aboutprogramwindow.h"
+#include "histogram2d.h"
 
 /*Use macro because forward declaration of ui brokes template using*/
-#define addInfoTool addToolsAreaItem
-#define setOperationTool setCurrentOperation
+#define addInfoTool(T) currentTab->addToolsAreaItem<T>();
+
+#define setOperationTool(T) currentTab->setCurrentOperation<T>();\
+    ui->actionActive_widget_of_operation_on_image->setChecked(true);
 
 #define toolButtonToggled(T, action, checked) \
     auto currentTab = qobject_cast<ImageWorkspace*>(ui->mainTabWidget->currentWidget());\
     if (checked) {\
         if (ui->mainTabWidget->currentWidget()){\
-            currentTab->action<T>();\
+            action(T);\
         }\
     }\
     else {\
@@ -177,4 +180,20 @@ void MainWindow::on_actionAbout_program_triggered()
         info = new AboutProgramWindow(this);
     }
     info->show();
+}
+
+void MainWindow::on_actionHistogram_2D_triggered(bool checked)
+{
+    toolButtonToggled(Histogram2D, addInfoTool, checked);
+}
+
+void MainWindow::on_actionActive_widget_of_operation_on_image_triggered(bool checked)
+{
+    if (!checked){
+        auto currentTab = qobject_cast<ImageWorkspace*>(ui->mainTabWidget->currentWidget());
+        currentTab->deleteActiveTool();
+    }
+    else {
+        ui->actionActive_widget_of_operation_on_image->setChecked(false);
+    }
 }
