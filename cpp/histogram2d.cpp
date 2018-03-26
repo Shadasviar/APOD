@@ -19,12 +19,45 @@
 
 #include "histogram2d.h"
 #include "ui_histogram2d.h"
+#include <Q3DBars>
+#include <QtDataVisualization>
 
 Histogram2D::Histogram2D(QImage *img1, QImage *img2, QWidget *parent) :
     QFrame(parent),
-    ui(new Ui::Histogram2D)
+    ui(new Ui::Histogram2D),
+    _img1(img1),
+    _img2(std::make_unique<QImage>())
 {
     ui->setupUi(this);
+    *_img2 = img2->scaled(_img1->size());
+
+    for (int i(0); i < _img1->width(); ++i) {
+        for (int j(0); j < _img1->height(); ++j) {
+            ++_histTable[qGray(_img1->pixel(i,j))]
+                    [qGray(_img2->pixel(i,j))];
+        }
+    }
+
+    auto *bars = new QtDataVisualization::Q3DBars();
+    auto *series = new QtDataVisualization::QBar3DSeries;
+    bars->addSeries(series);
+
+    auto *container = QWidget::createWindowContainer(bars);
+
+    auto *data = new QtDataVisualization::QBarDataArray;
+    QtDataVisualization::QBarDataRow *row;
+
+    data->reserve(_histTable.size());
+    for (int i(0); i < _histTable.size(); ++i) {
+        row = new QtDataVisualization::QBarDataRow(_histTable[i].size());
+        for (int j(0); j < _histTable[i].size(); ++j) {
+            (*row)[j].setValue(_histTable[i][j]);
+        }
+        data->append(row);
+    }
+    series->dataProxy()->resetArray(data);
+
+    ui->histlayout->addWidget(container);
 }
 
 Histogram2D::~Histogram2D()
