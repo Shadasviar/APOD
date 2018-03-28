@@ -47,10 +47,28 @@ Histogram2D::Histogram2D(QImage *img1, QImage *img2, QWidget *parent) :
     auto *data = new QtDataVisualization::QBarDataArray;
     QtDataVisualization::QBarDataRow *row;
 
+    auto* firstImgAxis = new QtDataVisualization::QCategory3DAxis;
+    firstImgAxis->setTitle("First image");
+    firstImgAxis->setTitleVisible(true);
+    firstImgAxis->setLabelAutoRotation(30.0f);
+    firstImgAxis->setLabels(QStringList("First 0"));
+
+    auto* secImgAxis = new QtDataVisualization::QCategory3DAxis;
+    secImgAxis->setTitle("Second image");
+    secImgAxis->setTitleVisible(true);
+    secImgAxis->setLabelAutoRotation(30.0f);
+    secImgAxis->setLabels(QStringList("Second 0"));
+
+    bars->setRowAxis(firstImgAxis);
+    bars->setColumnAxis(secImgAxis);
+
+    bars->setShadowQuality(QtDataVisualization::QAbstract3DGraph::ShadowQualitySoftMedium);
+    bars->activeTheme()->setBackgroundEnabled(false);
+
     data->reserve(_histTable.size());
-    for (int i(0); i < _histTable.size(); ++i) {
+    for (size_t i(0); i < _histTable.size(); ++i) {
         row = new QtDataVisualization::QBarDataRow(_histTable[i].size());
-        for (int j(0); j < _histTable[i].size(); ++j) {
+        for (size_t j(0); j < _histTable[i].size(); ++j) {
             (*row)[j].setValue(_histTable[i][j]);
         }
         data->append(row);
