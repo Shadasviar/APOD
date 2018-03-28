@@ -41,7 +41,7 @@ private:
     Ui::Histogram2D *ui;
     QImage* _img1 = nullptr;
     std::unique_ptr<QImage> _img2;
-    std::array<std::array<int, maxLevel>, maxLevel> _histTable {{0}};
+    std::array<std::array<int, maxLevel>, maxLevel> _histTable;
 };
 
 #endif // HISTOGRAM2D_H

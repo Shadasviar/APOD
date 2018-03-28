@@ -62,7 +62,7 @@ public:
     std::array<double, maxLevels> histogram();
 
 protected:
-    std::array<double, maxLevels> _hist = {0};
+    std::array<double, maxLevels> _hist {{0}};
     std::unique_ptr<QBarSet> _histSet;
     QImage* _image;
     std::unique_ptr<HistView> _chartView;

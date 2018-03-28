@@ -72,7 +72,7 @@ private:
         }
     };
     std::set<QPointF, QPointFLess> _points;
-    std::array<int, maxLevels> _fFromX = {0};
+    std::array<int, maxLevels> _fFromX {{0}};
 
     void refreshOperationTable();
     int inRange(int x, int l, int r);
