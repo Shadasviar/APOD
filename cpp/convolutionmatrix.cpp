@@ -39,8 +39,8 @@ ConvolutionMatrix::_borderMethods = {
     {ConvolutionMatrix::Multiply, [](const QImage* img, int i, int j, int divisor,
         std::vector<std::vector<int> > mask) {
             int avg(0);
-            for (int ii(i-mask.size()/2); ii < (int)(i+mask.size()/2); ++ii) {
-                for (int jj(j-mask[0].size()/2); jj < (int)(j+mask[0].size()/2); ++jj) {
+            for (int ii(i-mask.size()/2); ii <= (int)(i+mask.size()/2); ++ii) {
+                for (int jj(j-mask[0].size()/2); jj <= (int)(j+mask[0].size()/2); ++jj) {
                     if (ii < 0 || ii >= img->width()) {
                         if (jj >= 0 && jj < img->height())
                             avg += 2*qGray(img->pixel(i, jj))
@@ -61,8 +61,8 @@ ConvolutionMatrix::_borderMethods = {
     {ConvolutionMatrix::ExistingOnly, [](const QImage* img, int i, int j, int divisor,
         std::vector<std::vector<int> > mask) {
          int avg(0);
-         for (int ii(i-mask.size()/2); ii < (int)(i+mask.size()/2); ++ii) {
-             for (int jj(j-mask[0].size()/2); jj < (int)(j+mask[0].size()/2); ++jj) {
+         for (int ii(i-mask.size()/2); ii <= (int)(i+mask.size()/2); ++ii) {
+             for (int jj(j-mask[0].size()/2); jj <= (int)(j+mask[0].size()/2); ++jj) {
                  if (ii < 0 || ii >= img->width() || jj < 0 || jj >= img->height()) {
                      --divisor;
                      if (divisor <= 0) divisor = 1;
