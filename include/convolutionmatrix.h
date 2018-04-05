@@ -31,13 +31,15 @@
 namespace Ui {
 class ConvolutionMatrix;
 }
+using cr_int = const int&;
 
 class ConvolutionMatrix : public IToolWidget
 {
     Q_OBJECT
 
-using borderFunction = std::function<int(const QImage*, int, int, int,
-    std::vector<std::vector<int> >)>;
+using borderFunction = std::function<int(const QImage*&, cr_int, cr_int, cr_int,
+    std::vector<std::vector<int> >,
+    std::function<int(int, cr_int, cr_int, cr_int, cr_int, cr_int, void*)>)>;
 
 public:
     explicit ConvolutionMatrix(QImage *img, QWidget *parent = 0);
@@ -47,11 +49,16 @@ public:
                               borderFunction bound,
                               int kW, int kH, int divisor, std::function<int(int)> scale);
 
+    static QImage* medianFilter (const QImage* img, std::vector<std::vector<int> > mask,
+                                 borderFunction bound,
+                                 int kW, int kH, std::function<int(int)> scale);
+
 private slots:
     void on_maskSizeBox_currentTextChanged(const QString &item);
     void on_applyButton_clicked();
     void on_autoDivisorCheckBox_stateChanged(int state);
     void on_spinBox_changed(int i);
+    void on_filterTypeSpinBox_currentIndexChanged(const QString &index);
 
 private:
     Ui::ConvolutionMatrix *ui;
