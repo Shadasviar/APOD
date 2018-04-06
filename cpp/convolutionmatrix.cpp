@@ -168,9 +168,10 @@ QImage *ConvolutionMatrix::medianFilter(const QImage *img, std::vector<std::vect
         for (int j(0); j < res->height(); ++j) {
 
             int med = 0;
-            std::multiset<int> median;
 
             if (i-kW < 0 || i+kW >= img->width() || j-kH < 0 || j+kH>= img->height()) {
+                std::multiset<int> median;
+
                 med = bound(img, i, j, 1, mask,
                             [&median](int, cr_int px, cr_int, cr_int, cr_int, cr_int, void*) {
                     median.insert(px);
@@ -178,18 +179,20 @@ QImage *ConvolutionMatrix::medianFilter(const QImage *img, std::vector<std::vect
                     std::advance(it, median.size() / 2);
                     return *it;
                 });
+                median.clear();
             }
             else {
+                std::vector<int> median(mask.size() * mask[0].size());
+
+                int idx(0);
                 for (int ii(-kW); ii <= kW; ++ii) {
                     for (int jj(-kH); jj <= kH; ++jj) {
-                        median.insert(qGray((img->pixel(ii+i, jj+j))));
+                        median[idx++] = qGray((img->pixel(ii+i, jj+j)));
                     }
                 }
-                auto it = median.begin();
-                std::advance(it, median.size() / 2);
-                med = *it;
+                std::nth_element(median.begin(), median.begin() + median.size()/2, median.end());
+                med = median[median.size()/2];
             }
-            median.clear();
 
             med = scale(med);
             res->setPixel(i,j, qRgb(med, med, med));
