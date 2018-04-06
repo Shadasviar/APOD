@@ -29,30 +29,48 @@ QMap<QString, std::pair<int, int>> ConvolutionMatrix::_allowedMatrixSizes = {
     {"7x7", {7,7}},
 };
 
+QMap<QString, std::vector<std::vector<int>>> ConvolutionMatrix::_maskPresets = {
+    {"Laplassian",      {{0,-1,0},  {-1,4,-1},  {0,-1,0}}},
+    {"Laplassian 2",    {{-1,-1,-1},{-1,8,-1},  {-1,-1,-1}}},
+    {"Laplassian 3",    {{0,-2,0},  {-2,4,-2},  {0,-2,0}}},
+    {"Sobel 1",         {{-1,0,1},  {-2,0,2},   {-1,0,1}}},
+    {"Sobel 2",         {{-1,-2,-1},{0,0,0},    {1,2,1}}},
+    {"Prewitt N",       {{1,1,1},   {1,-2,1},   {-1,-1,-1}}},
+    {"Prewitt NE",      {{1,1,1},   {-1,-2,1},  {-1,-1,1}}},
+    {"Prewitt E",       {{-1,1,1},  {-1,-2,1},  {-1,1,1}}},
+    {"Prewitt SE",      {{-1,-1,1}, {-1,-2,1},  {1,1,1}}},
+    {"Prewitt S",       {{-1,-1,-1},{1,-2,1},   {1,1,1}}},
+    {"Prewitt SW",      {{1,-1,-1}, {1,-2,-1},  {1,1,1}}},
+    {"Prewitt W",       {{1,1,-1},  {1,-2,-1},  {1,1,-1}}},
+    {"Prewitt NW",      {{1,1,1},   {1,-2,-1},  {1,-1,-1}}},
+    {"Logic horizontal",{{0,0,0},   {1,0,1},    {0,0,0}}},
+    {"Logic vertical",  {{0,1,0},   {0,0,0},    {0,1,0}}},
+};
+
 QMap<ConvolutionMatrix::BorderMethods, ConvolutionMatrix::borderFunction>
 ConvolutionMatrix::_borderMethods = {
 
     {ConvolutionMatrix::NoChange, [](const QImage*& img, cr_int i, cr_int j, cr_int,
         std::vector<std::vector<int> >,
-        std::function<int(int, cr_int, cr_int, cr_int, cr_int, cr_int, void*)>) {
+        std::function<int(int, cr_int, cr_int, cr_int, cr_int, cr_int, std::vector<std::vector<int> >&)>) {
             return qGray(img->pixel(i,j));
      }},
 
     {ConvolutionMatrix::Multiply, [](const QImage*& img, cr_int i, cr_int j, cr_int divisor,
         std::vector<std::vector<int> > mask,
-        std::function<int(int, cr_int, cr_int, cr_int, cr_int, cr_int, void*)> f) {
+        std::function<int(int, cr_int, cr_int, cr_int, cr_int, cr_int, std::vector<std::vector<int> >&)> f) {
             int acc(0);
             for (int ii(i-mask.size()/2); ii <= (int)(i+mask.size()/2); ++ii) {
                 for (int jj(j-mask[0].size()/2); jj <= (int)(j+mask[0].size()/2); ++jj) {
                     if (ii < 0 || ii >= img->width()) {
                         if (jj >= 0 && jj < img->height())
-                            acc = f(acc, qGray(img->pixel(i, jj)),i, j, ii, jj, (void*)&mask);
+                            acc = f(acc, qGray(img->pixel(i, jj)),i, j, ii, jj, mask);
                     }
                     else if (jj < 0 || jj >= img->height()) {
-                        acc = f(acc, qGray(img->pixel(ii, j)),i, j, ii, jj, (void*)&mask);
+                        acc = f(acc, qGray(img->pixel(ii, j)),i, j, ii, jj, mask);
                     }
                     else
-                        acc = f(acc, qGray(img->pixel(ii, jj)),i, j, ii, jj, (void*)&mask);
+                        acc = f(acc, qGray(img->pixel(ii, jj)),i, j, ii, jj, mask);
                 }
             }
             return acc / divisor;
@@ -60,7 +78,7 @@ ConvolutionMatrix::_borderMethods = {
 
     {ConvolutionMatrix::ExistingOnly, [](const QImage*& img, cr_int i, cr_int j, cr_int c_divisor,
         std::vector<std::vector<int> > mask,
-        std::function<int(int, cr_int, cr_int, cr_int, cr_int, cr_int, void*)> f) {
+        std::function<int(int, cr_int, cr_int, cr_int, cr_int, cr_int, std::vector<std::vector<int> >&)> f) {
          int acc(0);
          int divisor(c_divisor);
          for (int ii(i-mask.size()/2); ii <= (int)(i+mask.size()/2); ++ii) {
@@ -70,7 +88,7 @@ ConvolutionMatrix::_borderMethods = {
                      if (divisor <= 0) divisor = 1;
                  }
                  else {
-                     acc = f(acc, qGray(img->pixel(ii, jj)),i, j, ii, jj, (void*)&mask);
+                     acc = f(acc, qGray(img->pixel(ii, jj)),i, j, ii, jj, mask);
                  }
              }
          }
@@ -133,9 +151,9 @@ QImage *ConvolutionMatrix::applyMask(const QImage *img, std::vector<std::vector<
 
             if (i-kW < 0 || i+kW >= img->width() || j-kH < 0 || j+kH>= img->height()) {
                 avg = bound(img, i, j, divisor, mask,
-                            [](int acc, cr_int px, cr_int i, cr_int j, cr_int ii, cr_int jj, void* m) {
-                    auto* mask = (std::vector<std::vector<int> >*)m;
-                    return acc + px *(*mask)[(ii-i)+mask->size()/2][(jj-j)+(*mask)[0].size()/2];
+                            [](int acc, cr_int px, cr_int i, cr_int j, cr_int ii, cr_int jj,
+                            std::vector<std::vector<int> >& mask) {
+                    return acc + px * mask[(ii-i) + mask.size()/2][(jj-j) + mask[0].size()/2];
                 });
             }
             else {
@@ -173,7 +191,8 @@ QImage *ConvolutionMatrix::medianFilter(const QImage *img, std::vector<std::vect
                 std::multiset<int> median;
 
                 med = bound(img, i, j, 1, mask,
-                            [&median](int, cr_int px, cr_int, cr_int, cr_int, cr_int, void*) {
+                            [&median](int, cr_int px, cr_int, cr_int, cr_int, cr_int,
+                            std::vector<std::vector<int> >&) {
                     median.insert(px);
                     auto it = median.begin();
                     std::advance(it, median.size() / 2);
@@ -203,6 +222,51 @@ QImage *ConvolutionMatrix::medianFilter(const QImage *img, std::vector<std::vect
     return res;
 }
 
+QImage *ConvolutionMatrix::logicFilter(const QImage *img, std::vector<std::vector<int> > mask,
+                                       ConvolutionMatrix::borderFunction bound,
+                                       int kW, int kH,
+                                       std::function<int (int)> scale)
+{
+    QImage* res = new QImage();
+    *res = img->convertToFormat(QImage::Format_Grayscale8);
+
+    for(int i(0); i < res->width(); ++i) {
+        for (int j(0); j < res->height(); ++j) {
+
+            int px(qGray((img->pixel(i, j))));
+            std::vector<int> rpx;
+
+            if (i-kW < 0 || i+kW >= img->width() || j-kH < 0 || j+kH>= img->height()) {
+                px = bound(img, i, j, 1, mask,
+                           [&img](int res, cr_int px, cr_int i, cr_int j, cr_int ii, cr_int jj,
+                           std::vector<std::vector<int> >& mask) {
+                    if (mask[(ii-i) + mask.size()/2][(jj-j) + mask[0].size()/2])
+                        res = px == res ? px : qGray(img->pixel(i,j));
+                    return res;
+                });
+            }
+            else {
+                for (int ii(-kW); ii <= kW; ++ii) {
+                    for (int jj(-kH); jj <= kH; ++jj) {
+                        if (mask[ii+kW][jj+kH]) rpx.push_back(qGray((img->pixel(ii+i, jj+j))));
+                    }
+                }
+
+                bool eq(true);
+                for (int& x : rpx) eq &= x == rpx[0];
+
+                px = eq ? rpx[0] : px;
+            }
+
+            px = scale(px);
+            res->setPixel(i,j, qRgb(px, px, px));
+
+        }
+    }
+
+    return res;
+}
+
 void ConvolutionMatrix::on_maskSizeBox_currentTextChanged(const QString &item)
 {
     auto rows = std::get<0>(_allowedMatrixSizes[item]);
@@ -216,11 +280,13 @@ void ConvolutionMatrix::on_maskSizeBox_currentTextChanged(const QString &item)
             col.push_back(std::move(ptr));
             ui->matrixGrid->addWidget(col.back().get(), j, i);
             col.back()->setMinimum(-100);
+            col.back()->setEnabled(_matrixEnabled);
             connect(col.back().get(), QOverload<int>::of(&QSpinBox::valueChanged),
                     this, &ConvolutionMatrix::on_spinBox_changed);
         }
         _matrix.push_back(std::move(col));
     }
+
 }
 
 void ConvolutionMatrix::on_applyButton_clicked()
@@ -255,12 +321,16 @@ void ConvolutionMatrix::on_applyButton_clicked()
     auto divisor = ui->divisorSpinBox->value();
 
     QImage* res;
-    if (ui->filterTypeSpinBox->currentText() == "Convolution mask") {
-        res = applyMask(_image, mask, f,
-                                rows/2, cols/2, divisor, scale);
-    } else if (ui->filterTypeSpinBox->currentText() == "Median") {
+
+    if (ui->filterTypeSpinBox->currentText() == "Median") {
         res = medianFilter(_image, mask, f,
                                 rows/2, cols/2, scale);
+    } else if (ui->filterTypeSpinBox->currentText().contains("Logic")) {
+        res = logicFilter(_image, mask, f,
+                                rows/2, cols/2, scale);
+    } else {
+        res = applyMask(_image, mask, f,
+                                rows/2, cols/2, divisor, scale);
     }
 
     emit setPreview(res);
@@ -292,5 +362,34 @@ void ConvolutionMatrix::on_spinBox_changed(int)
 
 void ConvolutionMatrix::on_filterTypeSpinBox_currentIndexChanged(const QString &index)
 {
-    if (index == "");
+    ui->maskSizeBox->setEnabled(true);
+    if (index == "Median") {
+        _matrixEnabled = false;
+        ui->divisorSpinBox->setEnabled(false);
+        ui->autoDivisorCheckBox->setEnabled(false);
+    } else if (index == "Convolution mask") {
+        _matrixEnabled = true;
+        ui->divisorSpinBox->setEnabled(true);
+        ui->autoDivisorCheckBox->setEnabled(true);
+    } else {
+        _matrixEnabled = true;
+        ui->divisorSpinBox->setEnabled(true);
+        ui->autoDivisorCheckBox->setEnabled(true);
+        ui->maskSizeBox->setEnabled(false);
+        setMaskFromMatrix(_maskPresets[index]);
+        return;
+    }
+    emit on_maskSizeBox_currentTextChanged(ui->maskSizeBox->currentText());
+}
+
+void ConvolutionMatrix::setMaskFromMatrix(const std::vector<std::vector<int> > mask)
+{
+    ui->maskSizeBox->setCurrentText(QString("%1x%2").arg(mask.size()).arg(mask[0].size()));
+    emit on_maskSizeBox_currentTextChanged(ui->maskSizeBox->currentText());
+
+    for (uint8_t i(0); i < mask.size(); ++i) {
+        for (uint8_t j(0); j < mask[i].size(); ++j) {
+            _matrix[i][j]->setValue(mask[j][i]);
+        }
+    }
 }

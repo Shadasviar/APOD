@@ -278,7 +278,10 @@
     </iconset>
    </property>
    <property name="text">
-    <string>Convolution matrix</string>
+    <string>Filters </string>
+   </property>
+   <property name="toolTip">
+    <string>Convolution matrix based filters</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+M</string>

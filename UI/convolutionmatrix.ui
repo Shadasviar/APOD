@@ -270,6 +270,81 @@
           <string>Median</string>
          </property>
         </item>
+        <item>
+         <property name="text">
+          <string>Logic horizontal</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Logic vertical</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Laplassian</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Laplassian 2</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Laplassian 3</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Sobel 1</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Sobel 2</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Prewitt N</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Prewitt NE</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Prewitt E</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Prewitt SE</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Prewitt S</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Prewitt SW</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Prewitt W</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Prewitt NW</string>
+         </property>
+        </item>
        </widget>
       </item>
       <item row="8" column="1">
@@ -322,13 +397,6 @@
         </property>
        </widget>
       </item>
-      <item row="8" column="2">
-       <widget class="QCheckBox" name="autoDivisorCheckBox">
-        <property name="text">
-         <string>Auto divisor</string>
-        </property>
-       </widget>
-      </item>
       <item row="9" column="1">
        <widget class="QSpinBox" name="divisorSpinBox">
         <property name="minimum">
@@ -348,6 +416,13 @@
          </size>
         </property>
        </spacer>
+      </item>
+      <item row="9" column="2">
+       <widget class="QCheckBox" name="autoDivisorCheckBox">
+        <property name="text">
+         <string>Auto divisor</string>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>

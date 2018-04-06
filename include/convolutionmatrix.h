@@ -39,7 +39,7 @@ class ConvolutionMatrix : public IToolWidget
 
 using borderFunction = std::function<int(const QImage*&, cr_int, cr_int, cr_int,
     std::vector<std::vector<int> >,
-    std::function<int(int, cr_int, cr_int, cr_int, cr_int, cr_int, void*)>)>;
+    std::function<int(int, cr_int, cr_int, cr_int, cr_int, cr_int, std::vector<std::vector<int> >&)>)>;
 
 public:
     explicit ConvolutionMatrix(QImage *img, QWidget *parent = 0);
@@ -50,6 +50,10 @@ public:
                               int kW, int kH, int divisor, std::function<int(int)> scale);
 
     static QImage* medianFilter (const QImage* img, std::vector<std::vector<int> > mask,
+                                 borderFunction bound,
+                                 int kW, int kH, std::function<int(int)> scale);
+
+    static QImage* logicFilter (const QImage* img, std::vector<std::vector<int> > mask,
                                  borderFunction bound,
                                  int kW, int kH, std::function<int(int)> scale);
 
@@ -70,8 +74,13 @@ private:
     static QMap<QString, std::pair<int, int>> _allowedMatrixSizes;
     static QMap<BorderMethods, borderFunction> _borderMethods;
     QMap<ScaleMethods, std::function<int(int)>> _scalemethods;
+    static QMap<QString, std::vector<std::vector<int>>> _maskPresets;
+
+    void setMaskFromMatrix(const std::vector<std::vector<int>> mask);
+
     int _minPixel = 256;
     int _maxPixel = 0;
+    bool _matrixEnabled = true;
 };
 
 #endif // CONVOLUTIONMATRIX_H

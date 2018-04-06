@@ -58,6 +58,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     _toolsList = QList<QAction*>{
             ui->actionHistogram,
+            ui->actionHistogram_2D,
+            ui->actionActive_widget_of_operation_on_image
     };
 }
 
