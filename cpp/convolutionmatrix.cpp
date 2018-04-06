@@ -143,8 +143,8 @@ QImage *ConvolutionMatrix::applyMask(const QImage *img, std::vector<std::vector<
     QImage* res = new QImage();
     *res = img->convertToFormat(QImage::Format_Grayscale8);
 
-
     for(int i(0); i < res->width(); ++i) {
+        emit setProgressBar((100./res->width())*i);
         for (int j(0); j < res->height(); ++j) {
 
             int avg = 0;
@@ -171,6 +171,7 @@ QImage *ConvolutionMatrix::applyMask(const QImage *img, std::vector<std::vector<
         }
     }
 
+    emit hideProgressBar();
     return res;
 }
 
@@ -183,6 +184,7 @@ QImage *ConvolutionMatrix::medianFilter(const QImage *img, std::vector<std::vect
     *res = img->convertToFormat(QImage::Format_Grayscale8);
 
     for(int i(0); i < res->width(); ++i) {
+        emit setProgressBar((100./res->width())*i);
         for (int j(0); j < res->height(); ++j) {
 
             int med = 0;
@@ -219,6 +221,7 @@ QImage *ConvolutionMatrix::medianFilter(const QImage *img, std::vector<std::vect
         }
     }
 
+    emit hideProgressBar();
     return res;
 }
 
@@ -231,6 +234,7 @@ QImage *ConvolutionMatrix::logicFilter(const QImage *img, std::vector<std::vecto
     *res = img->convertToFormat(QImage::Format_Grayscale8);
 
     for(int i(0); i < res->width(); ++i) {
+        emit setProgressBar((100./res->width())*i);
         for (int j(0); j < res->height(); ++j) {
 
             int px(qGray((img->pixel(i, j))));
@@ -264,6 +268,7 @@ QImage *ConvolutionMatrix::logicFilter(const QImage *img, std::vector<std::vecto
         }
     }
 
+    emit hideProgressBar();
     return res;
 }
 

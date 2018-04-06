@@ -43,6 +43,11 @@ public:
 protected slots:
     void modifyPreview(QImage* img);
 
+signals:
+    void emitProgressBar(int progress);
+    void hideProgressBar();
+    void showStatusMsg(QString);
+
 protected:
     QVBoxLayout _layout;
     QFrame _imagesViews;
@@ -57,6 +62,7 @@ protected:
     QImage* _previewImage = nullptr;
     QGraphicsScene _scene;
     QGraphicsScene _previewScene;
+    QWidget* _parent;
 
 public:
     template <typename T>
@@ -88,6 +94,9 @@ public:
     }
     void doSpecifiedStuff(IToolWidget* obj) {
         connect(obj, &IToolWidget::setPreview, this, &ImageWorkspace::modifyPreview);
+        connect(obj, &IToolWidget::setProgressBar, this, &ImageWorkspace::emitProgressBar);
+        connect(obj, &IToolWidget::hideProgressBar, this, &ImageWorkspace::hideProgressBar);
+        connect(obj, &IToolWidget::showStatusMsg, this, &ImageWorkspace::showStatusMsg);
     }
 };
 

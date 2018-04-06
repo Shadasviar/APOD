@@ -28,6 +28,8 @@ HistogramEqualisation::HistogramEqualisation(QImage *img, QWidget *parent) :
     ui->setupUi(this);
     ui->histLayout->addWidget(_histogram.get());
 
+    connect(_histogram.get(), &IToolWidget::showStatusMsg, this, &HistogramEqualisation::showStatusMsg);
+
     _methodFunctions = {
         {
             /* Average */

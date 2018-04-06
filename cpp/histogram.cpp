@@ -21,7 +21,7 @@
 #include <utility>
 
 Histogram::Histogram(QImage *img, QWidget *parent):
-    QFrame(parent),
+    IToolWidget(parent),
     _histSet(std::make_unique<QBarSet>("Histogram")),
     _image(img),
     _chartView(std::make_unique<HistView>(this)),
@@ -61,11 +61,9 @@ Histogram::Histogram(QImage *img, QWidget *parent):
 void Histogram::chartMouseMovedTo(QPointF x)
 {
     int x_val = _chartView->chart()->mapToValue(x).x();
-    ui->x_value_label->setText(QString("%1").arg(x_val));
-    ui->y_value_label->setText(QString("%1").arg(
-                                   x_val >= 0 && x_val < maxLevels
-                                                     ?(int)_hist[x_val]
-                                                      : 0));
+    emit showStatusMsg(QString("X: %1\t Y: %2").arg(x_val).arg(x_val >= 0 && x_val < maxLevels
+                                                             ?(int)_hist[x_val]
+                                                              : 0));
 }
 
 void Histogram::chartMousePressedAt(QPointF x)

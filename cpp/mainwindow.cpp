@@ -61,6 +61,10 @@ MainWindow::MainWindow(QWidget *parent) :
             ui->actionHistogram_2D,
             ui->actionActive_widget_of_operation_on_image
     };
+
+    ui->statusBar->addWidget(_statusText, 0);
+    ui->statusBar->addWidget(_progressBar, 1);
+    _progressBar->setVisible(false);
 }
 
 MainWindow::~MainWindow()
@@ -78,6 +82,9 @@ void MainWindow::on_actionOpen_triggered()
     lastOpenedDir = QFileInfo(filename);
     QImage img(filename);
     auto *tab = new ImageWorkspace(std::move(img), this);
+    connect(tab, &ImageWorkspace::emitProgressBar, this, &MainWindow::setProgressBar);
+    connect(tab, &ImageWorkspace::hideProgressBar, this, &MainWindow::hideProgressBar);
+    connect(tab, &ImageWorkspace::showStatusMsg, this, &MainWindow::showStatusMsg);
 
     _preTabIndex = ui->mainTabWidget->currentWidget();
     ui->mainTabWidget->addTab(tab, filename);
@@ -198,4 +205,20 @@ void MainWindow::on_actionActive_widget_of_operation_on_image_triggered(bool che
     else {
         ui->actionActive_widget_of_operation_on_image->setChecked(false);
     }
+}
+
+void MainWindow::setProgressBar(int progress)
+{
+    _progressBar->setVisible(true);
+    _progressBar->setValue(progress);
+}
+
+void MainWindow::hideProgressBar()
+{
+    _progressBar->setVisible(false);
+}
+
+void MainWindow::showStatusMsg(QString text)
+{
+    _statusText->setText(text);
 }

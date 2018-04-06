@@ -45,15 +45,15 @@ public:
     explicit ConvolutionMatrix(QImage *img, QWidget *parent = 0);
     ~ConvolutionMatrix();
 
-    static QImage* applyMask (const QImage* img, std::vector<std::vector<int>> mask,
+    QImage* applyMask (const QImage* img, std::vector<std::vector<int>> mask,
                               borderFunction bound,
                               int kW, int kH, int divisor, std::function<int(int)> scale);
 
-    static QImage* medianFilter (const QImage* img, std::vector<std::vector<int> > mask,
+    QImage* medianFilter (const QImage* img, std::vector<std::vector<int> > mask,
                                  borderFunction bound,
                                  int kW, int kH, std::function<int(int)> scale);
 
-    static QImage* logicFilter (const QImage* img, std::vector<std::vector<int> > mask,
+    QImage* logicFilter (const QImage* img, std::vector<std::vector<int> > mask,
                                  borderFunction bound,
                                  int kW, int kH, std::function<int(int)> scale);
 

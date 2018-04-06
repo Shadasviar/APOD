@@ -57,6 +57,8 @@ QImage *BinaryImageOperation::reduceImages(
                 .convertToFormat(QImage::Format_Grayscale8);
         uint8_t px(0);
         for (int i(0); i < accumulator->width(); ++i) {
+            emit setProgressBar((100./accumulator->width())*i);
+
             for (int j(0); j < accumulator->height(); ++j) {
                 px = op(qGray(accumulator->pixel(i,j)),
                         qGray(buf.pixel(i,j)));
@@ -64,6 +66,7 @@ QImage *BinaryImageOperation::reduceImages(
             }
         }
     }
+    emit hideProgressBar();
     return accumulator;
 }
 

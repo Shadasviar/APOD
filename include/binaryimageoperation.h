@@ -41,7 +41,7 @@ class BinaryImageOperation : public IToolWidget
 public:
     explicit BinaryImageOperation(QImage *img, QWidget *parent = 0);
     ~BinaryImageOperation();
-    static QImage* reduceImages(const std::list<std::unique_ptr<QImage>>& images,
+    QImage* reduceImages(const std::list<std::unique_ptr<QImage>>& images,
                                 std::function<uint8_t(const uint8_t, const uint8_t)> op,
                                 QImage *startImg);
 

@@ -31,6 +31,9 @@ public:
 
 signals:
     void setPreview(QImage*);
+    void setProgressBar(int progress);
+    void hideProgressBar();
+    void showStatusMsg(QString text);
 };
 
 #endif // ITOOLWIDGET_H

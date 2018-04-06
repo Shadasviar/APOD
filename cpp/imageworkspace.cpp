@@ -25,7 +25,8 @@ ImageWorkspace::ImageWorkspace(QWidget *parent) : QWidget(parent),
     _splitter(new QSplitter(this)),
     _imageSplitter(new QSplitter(Qt::Vertical ,this)),
     _imageView(std::make_unique<QGraphicsView>(_splitter)),
-    _tools(this)
+    _tools(this),
+    _parent(parent)
 {
     _imagesLayout.addWidget(_imageSplitter);
     _imageSplitter->addWidget(_imageView.get());

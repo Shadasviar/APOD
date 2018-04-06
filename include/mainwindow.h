@@ -56,8 +56,10 @@ private slots:
     void on_actionConvolution_matrix_triggered();
     void on_actionAbout_program_triggered();
     void on_actionHistogram_2D_triggered(bool checked);
-
     void on_actionActive_widget_of_operation_on_image_triggered(bool checked);
+    void setProgressBar(int progress);
+    void hideProgressBar();
+    void showStatusMsg(QString text);
 
 private:
     Ui::MainWindow *ui;
@@ -78,6 +80,8 @@ private:
     void dumpToolsState(QWidget *index);
     void restoreToolsState(QWidget* index);
 
+    QProgressBar* _progressBar = new QProgressBar;
+    QLabel* _statusText = new QLabel;
 
 };
 

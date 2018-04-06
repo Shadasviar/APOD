@@ -24,6 +24,7 @@
 #include <QBarSeries>
 #include <memory>
 #include <array>
+#include "itoolwidget.h"
 
 namespace Ui {
 class Histogram;
@@ -48,7 +49,7 @@ private:
 };
 /*****************************************************************/
 
-class Histogram : public QFrame
+class Histogram : public IToolWidget
 {
     Q_OBJECT
 
