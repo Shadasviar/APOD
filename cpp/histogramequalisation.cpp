@@ -117,6 +117,7 @@ void HistogramEqualisation::on_pushButton_clicked()
         newZ[z] = _methodFunctions[method][0](left[z], right[z]);
     }
     for (int i(0); i < _image->width(); ++i) {
+        emit setProgressBar((100./_image->width())*i);
         for (int j(0); j < _image->height(); ++j) {
             int px = 0;
             if (left[qGray(_image->pixel(i,j))] == right[qGray(_image->pixel(i,j))])
@@ -127,10 +128,12 @@ void HistogramEqualisation::on_pushButton_clicked()
         }
     }
 
+    emit hideProgressBar();
     emit setPreview(res);
 
     _image = res;
     Histogram* newHist = new Histogram(res, this);
     _histogram.reset(newHist);
     ui->histLayout->addWidget(_histogram.get());
+    connect(_histogram.get(), &IToolWidget::showStatusMsg, this, &HistogramEqualisation::showStatusMsg);
 }

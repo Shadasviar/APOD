@@ -45,6 +45,7 @@ void HistogramStratching::on_applyButton_clicked()
 
     int px(0);
     for (int i(0); i < res->width(); ++i) {
+        emit setProgressBar((100./_image->width())*i);
         for (int j(0); j < res->height(); ++j) {
             px = qGray(res->pixel(i,j));
             if (px > low && px <= up) {
@@ -56,10 +57,12 @@ void HistogramStratching::on_applyButton_clicked()
         }
     }
 
+    emit hideProgressBar();
     emit setPreview(res);
 
     _image = res;
     Histogram *newHist = new Histogram(res, this);
     _histogram.reset(newHist);
     ui->histLayout->addWidget(_histogram.get());
+    connect(_histogram.get(), &IToolWidget::showStatusMsg, this, &IToolWidget::showStatusMsg);
 }

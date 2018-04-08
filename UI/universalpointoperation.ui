@@ -66,32 +66,6 @@
      </layout>
     </widget>
    </item>
-   <item>
-    <widget class="QFrame" name="toolsFrame">
-     <property name="frameShape">
-      <enum>QFrame::NoFrame</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
-     <layout class="QHBoxLayout" name="horizontalLayout">
-      <item>
-       <widget class="QLabel" name="x_label">
-        <property name="text">
-         <string>X:</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="y_label">
-        <property name="text">
-         <string>Y:</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
   </layout>
  </widget>
  <resources/>

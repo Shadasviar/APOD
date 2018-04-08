@@ -57,18 +57,22 @@ UniversalPointOperation::~UniversalPointOperation()
     delete ui;
 }
 
-QImage *UniversalPointOperation::applyUPO(const QImage *img, std::array<int, UniversalPointOperation::maxLevels> op)
+QImage *UniversalPointOperation::applyUPO(const QImage *img,
+                                          std::array<int, UniversalPointOperation::maxLevels> op)
 {
     QImage* res = new QImage();
     *res = img->convertToFormat(QImage::Format_Grayscale8);
 
     int px = 0;
     for (int i(0); i < res->width(); ++i) {
+        emit setProgressBar((100./res->width())*i);
         for (int j(0); j < res->height(); ++j) {
             px = op[qGray(img->pixel(i,j))];
             res->setPixel(i, j, qRgb(px,px,px));
         }
     }
+
+    emit hideProgressBar();
 
     return res;
 }
@@ -106,10 +110,12 @@ int UniversalPointOperation::inRange(int x, int l, int r)
 
 void UniversalPointOperation::chartMouseMovedTo(QPointF x)
 {
-    int x_val = inRange(_chartView->chart()->mapToValue(x).x(),
-                        0, maxLevels);
-    ui->x_label->setText(QString("X: %1").arg(x_val));
-    ui->y_label->setText(QString("f(X): %1").arg(_fFromX[x_val]));
+    int x_val = inRange(_chartView->chart()->mapToValue(x).x(), 0, maxLevels);
+    int y_val = inRange(_chartView->chart()->mapToValue(x).y(), 0, maxLevels);
+    emit showStatusMsg(QString("X: %1 \tY: %2 \tF(X) = %3")
+                       .arg(x_val)
+                       .arg(y_val)
+                       .arg(_fFromX[x_val]));
 }
 
 void UniversalPointOperation::chartMousePressedAt(QPointF x)

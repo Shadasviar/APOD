@@ -58,7 +58,7 @@ public:
     explicit UniversalPointOperation(QImage* img, QWidget *parent = 0);
     ~UniversalPointOperation();
 
-    static QImage* applyUPO(const QImage* img, std::array<int, maxLevels> op);
+    QImage* applyUPO(const QImage* img, std::array<int, maxLevels> op);
 
 private:
     Ui::UniversalPointOperation *ui;
