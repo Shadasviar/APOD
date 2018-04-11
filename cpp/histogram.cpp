@@ -48,6 +48,7 @@ Histogram::Histogram(QImage *img, QWidget *parent):
 
     auto* chart = new QChart();
     chart->legend()->hide();
+    chart->setTitle("Histogram");
     chart->addSeries(barseries);
     chart->setContentsMargins(-11,-11,-11,-11);
 

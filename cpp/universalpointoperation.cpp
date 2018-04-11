@@ -42,6 +42,7 @@ UniversalPointOperation::UniversalPointOperation(QImage *img, QWidget *parent) :
 
     QChart* chart = new QChart();
     chart->legend()->hide();
+    chart->setTitle("Gray level curve");
     chart->addSeries(_lineSeries.get());
     chart->createDefaultAxes();
     chart->setContentsMargins(-11,-11,-11,-11);

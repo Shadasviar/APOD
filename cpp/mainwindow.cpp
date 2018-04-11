@@ -62,7 +62,7 @@ MainWindow::MainWindow(QWidget *parent) :
             ui->actionActive_widget_of_operation_on_image
     };
 
-    ui->statusBar->addWidget(_statusText, 0);
+    ui->statusBar->addPermanentWidget(_statusText, 0);
     ui->statusBar->addWidget(_progressBar, 1);
     _progressBar->setVisible(false);
 }
