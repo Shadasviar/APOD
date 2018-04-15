@@ -77,7 +77,8 @@ void MainWindow::on_actionOpen_triggered()
     QString filename = QFileDialog::getOpenFileName(
                 this,
                 "Open file",
-                lastOpenedDir.absolutePath()
+                lastOpenedDir.absolutePath(),
+                "ALL(*);;JPEG(*.jpg, *.jpeg);;PNG(*.png);;BMP(*.bmp)"
                 );
     lastOpenedDir = QFileInfo(filename);
     QImage img(filename);
@@ -221,4 +222,32 @@ void MainWindow::hideProgressBar()
 void MainWindow::showStatusMsg(QString text)
 {
     _statusText->setText(text);
+}
+
+void MainWindow::on_actionSave_triggered()
+{
+    QImage* image(nullptr);
+    auto* currentWidget = qobject_cast<ImageWorkspace*>(ui->mainTabWidget->currentWidget());
+
+    if (currentWidget)
+        image = currentWidget->getPreviewImage();
+    if (!image) {
+        QMessageBox messageBox;
+        messageBox.critical(0,"Error","There is no edited image to save");
+        messageBox.setFixedSize(500,200);
+        return;
+    }
+
+    QString savePath = QFileDialog::getSaveFileName(
+                this,
+                "Save file",
+                lastOpenedDir.absolutePath(),
+                "ALL(*);;JPEG(*.jpg, *.jpeg);;PNG(*.png);;BMP(*.bmp)"
+                );
+
+    lastOpenedDir = QFileInfo(savePath);
+    if (!savePath.contains("."))
+        savePath += ".jpg";
+    if (savePath != "")
+        image->save(savePath);
 }

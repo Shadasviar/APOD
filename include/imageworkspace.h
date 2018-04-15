@@ -39,6 +39,7 @@ public:
     ImageWorkspace(QImage&& image, QWidget* parent = nullptr);
     void deleteActiveTool();
     virtual ~ImageWorkspace();   
+    QImage* getPreviewImage(){return _previewImage;}
 
 protected slots:
     void modifyPreview(QImage* img);

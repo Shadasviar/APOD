@@ -61,6 +61,8 @@ private slots:
     void hideProgressBar();
     void showStatusMsg(QString text);
 
+    void on_actionSave_triggered();
+
 private:
     Ui::MainWindow *ui;
     QFileInfo lastOpenedDir;
