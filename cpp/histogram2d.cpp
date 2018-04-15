@@ -40,6 +40,8 @@ Histogram2D::Histogram2D(QImage *img1, QImage *img2, QWidget *parent) :
         }
     }
 
+    /* Set 3D plot properties */
+
     auto *bars = new QtDataVisualization::Q3DBars();
     auto *series = new QtDataVisualization::QBar3DSeries;
     bars->addSeries(series);
@@ -78,6 +80,22 @@ Histogram2D::Histogram2D(QImage *img1, QImage *img2, QWidget *parent) :
     series->dataProxy()->resetArray(data);
 
     ui->histlayout->addWidget(container);
+
+    /* Set 2D table view */
+
+    ui->tableWidget->setRowCount(maxLevel);
+    ui->tableWidget->setColumnCount(maxLevel);
+    QStringList hLabels, vLabels;
+    for (size_t i(0); i < _histTable.size(); ++i) {
+        hLabels << QString::number(i);
+        for (size_t j(0); j < _histTable[i].size(); ++j) {
+            vLabels << QString::number(j);
+            ui->tableWidget->setItem(i, j, new QTableWidgetItem(QString::number(_histTable[i][j])));
+            ui->tableWidget->setColumnWidth(i, 55);
+        }
+    }
+    ui->tableWidget->setHorizontalHeaderLabels(hLabels);
+    ui->tableWidget->setVerticalHeaderLabels(vLabels);
 }
 
 Histogram2D::~Histogram2D()
