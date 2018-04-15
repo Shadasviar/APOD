@@ -242,7 +242,7 @@ void MainWindow::on_actionSave_triggered()
                 this,
                 "Save file",
                 lastOpenedDir.absolutePath(),
-                "ALL(*);;JPEG(*.jpg, *.jpeg);;PNG(*.png);;BMP(*.bmp)"
+                "JPEG(*.jpg);;PNG(*.png);;BMP(*.bmp);;ALL(*)"
                 );
 
     lastOpenedDir = QFileInfo(savePath);
