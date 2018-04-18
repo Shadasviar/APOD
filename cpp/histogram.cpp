@@ -34,7 +34,7 @@ Histogram::Histogram(QImage *img, QWidget *parent):
 
     for(int i(0); i < _image->width(); ++i){
         for (int j(0); j < _image->height(); ++j) {
-            ++_hist[qGray(_image->pixel(i,j))];
+            ++_hist[Settings::grayCurrLvl(_image->pixel(i,j))];
         }
     }
 
@@ -91,7 +91,7 @@ std::pair<int, int> Histogram::getSelection()
     return std::make_pair(_lowBound, _upBound);
 }
 
-std::array<double, Histogram::maxLevels> Histogram::histogram()
+std::vector<double> Histogram::histogram()
 {
     auto res = _hist;
     return res;

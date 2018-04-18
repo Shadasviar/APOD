@@ -103,6 +103,7 @@ ConvolutionMatrix::ConvolutionMatrix(QImage* img, QWidget *parent) :
 {
     ui->setupUi(this);
     emit on_maskSizeBox_currentTextChanged(ui->maskSizeBox->currentText());
+    _minPixel = Settings::maxLevels;
 
     for (int i(0); i < _image->width(); ++i){
         for (int j(0); j < _image->height(); ++j) {
@@ -115,16 +116,17 @@ ConvolutionMatrix::ConvolutionMatrix(QImage* img, QWidget *parent) :
 
     _scalemethods = {
         {ConvolutionMatrix::Proportional, [this](int x){
-            return ((x-_minPixel)/(_maxPixel-_minPixel)) * (Histogram::maxLevels-1);
+            return ((x-_minPixel)/(_maxPixel-_minPixel)) * (Settings::maxLevels-1);
         }},
         {ConvolutionMatrix::Triangle, [](int x){
             if (x < 0) return 0;
-            if (x > 0) return Histogram::maxLevels - 1;
-            return Histogram::maxLevels-1 / 2;
+            if (x > 0) return Settings::maxLevels - 1;
+            return Settings::maxLevels-1 / 2;
         }},
         {ConvolutionMatrix::Cut, [](int x){
             if (x < 0) return 0;
-            if (x > Histogram::maxLevels-1) return Histogram::maxLevels - 1;
+            if (x > Settings::maxLevels-1)
+                return Settings::maxLevels - 1;
             return x;
         }},
     };

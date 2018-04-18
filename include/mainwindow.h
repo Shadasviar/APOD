@@ -60,8 +60,8 @@ private slots:
     void setProgressBar(int progress);
     void hideProgressBar();
     void showStatusMsg(QString text);
-
     void on_actionSave_triggered();
+    void on_actionSettings_triggered();
 
 private:
     Ui::MainWindow *ui;

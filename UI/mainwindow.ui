@@ -129,6 +129,7 @@
      <addaction name="actionText_beside_icons"/>
     </widget>
     <addaction name="menuMenu_bar"/>
+    <addaction name="actionSettings"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
@@ -154,6 +155,7 @@
    </attribute>
    <addaction name="actionSave"/>
    <addaction name="actionOpen"/>
+   <addaction name="actionSettings"/>
    <addaction name="separator"/>
    <addaction name="actionHistogram"/>
    <addaction name="actionHistogram_2D"/>
@@ -328,6 +330,18 @@
    </property>
    <property name="toolTip">
     <string>Save image as</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="actionSettings">
+   <property name="icon">
+    <iconset resource="../images.qrc">
+     <normaloff>:/Resources/settings.png</normaloff>:/Resources/settings.png</iconset>
+   </property>
+   <property name="text">
+    <string>Settings</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+S</string>

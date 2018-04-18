@@ -28,6 +28,7 @@
 #include "convolutionmatrix.h"
 #include "aboutprogramwindow.h"
 #include "histogram2d.h"
+#include "settings.h"
 
 /*Use macro because forward declaration of ui brokes template using*/
 #define addInfoTool(T) currentTab->addToolsAreaItem<T>();
@@ -250,4 +251,9 @@ void MainWindow::on_actionSave_triggered()
         savePath += ".jpg";
     if (savePath != "")
         image->save(savePath);
+}
+
+void MainWindow::on_actionSettings_triggered()
+{
+    toolButtonToggled(Settings, setOperationTool, true);
 }

@@ -27,6 +27,7 @@
 #include <QMap>
 #include <functional>
 #include <array>
+#include "settings.h"
 
 namespace Ui {
 class ConvolutionMatrix;

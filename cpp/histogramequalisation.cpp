@@ -104,9 +104,9 @@ void HistogramEqualisation::on_pushButton_clicked()
     int hint = 0;
 
     int havg = std::accumulate(hist.begin(), hist.end(), 0);
-    havg /= Histogram::maxLevels;
+    havg /= Settings::maxLevels;
 
-    for(int z(0); z < Histogram::maxLevels; ++z) {
+    for(int z(0); z < Settings::maxLevels; ++z) {
         left[z] = r;
         hint += hist[z];
         while (hint > havg) {

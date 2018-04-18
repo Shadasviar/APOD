@@ -25,6 +25,7 @@
 #include <functional>
 #include <vector>
 #include "itoolwidget.h"
+#include "settings.h"
 
 namespace Ui {
 class HistogramEqualisation;
@@ -50,9 +51,9 @@ private:
 
     std::vector<std::array<std::function<int(int,int)>,2>> _methodFunctions;
 
-    int left[Histogram::maxLevels] {0};
-    int right[Histogram::maxLevels] {0};
-    int newZ[Histogram::maxLevels] {0};
+    std::vector<int> left = std::vector<int>(Settings::maxLevels,0);
+    std::vector<int> right = std::vector<int>(Settings::maxLevels,0);
+    std::vector<int> newZ = std::vector<int>(Settings::maxLevels,0);
 };
 
 #endif // HISTOGRAMEQUALISATION_H

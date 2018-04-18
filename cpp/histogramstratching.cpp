@@ -18,6 +18,7 @@
  */
 #include "histogramstratching.h"
 #include "ui_histogramstratching.h"
+#include "settings.h"
 
 HistogramStratching::HistogramStratching(QImage *img, QWidget *parent) :
     IToolWidget(parent),
@@ -49,7 +50,7 @@ void HistogramStratching::on_applyButton_clicked()
         for (int j(0); j < res->height(); ++j) {
             px = qGray(res->pixel(i,j));
             if (px > low && px <= up) {
-                px = (px-low)*(Histogram::maxLevels / (up-low));
+                px = (px-low)*(Settings::maxLevels / (up-low));
             } else {
                 px = 0;
             }

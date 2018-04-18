@@ -17,6 +17,7 @@
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "imageworkspace.h"
+#include "settings.h"
 
 ImageWorkspace::ImageWorkspace(QWidget *parent) : QWidget(parent),
     _layout(this),
@@ -37,7 +38,15 @@ ImageWorkspace::ImageWorkspace(QWidget *parent) : QWidget(parent),
 
 ImageWorkspace::ImageWorkspace(QImage &&image, QWidget *parent): ImageWorkspace(parent)
 {
-    _image = QImage(image);
+    _image = QImage(image).convertToFormat(QImage::Format_Grayscale8);
+    for (int i(0); i < _image.width(); ++i)
+        for (int j(0); j < _image.height(); ++j) {
+            int px = Settings::to256gray(
+                        Settings::grayCurrLvl(_image.pixel(i, j))
+                        );
+            _image.setPixel(i, j, qRgb(px, px, px));
+        }
+
     _scene.clear();
     _scene.addPixmap(QPixmap::fromImage(_image));
     _scene.setSceneRect(_image.rect());

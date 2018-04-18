@@ -23,8 +23,9 @@
 #include <QtCharts>
 #include <QBarSeries>
 #include <memory>
-#include <array>
+#include <vector>
 #include "itoolwidget.h"
+#include "settings.h"
 
 namespace Ui {
 class Histogram;
@@ -57,13 +58,13 @@ public:
     explicit Histogram(QImage* img, QWidget *parent = 0);
     ~Histogram();
 
-    static constexpr int maxLevels=256;
+    int maxLevels=Settings::maxLevels;
 
     std::pair<int,int> getSelection();
-    std::array<double, maxLevels> histogram();
+    std::vector<double> histogram();
 
 protected:
-    std::array<double, maxLevels> _hist {{0}};
+    std::vector<double> _hist = std::vector<double>(maxLevels, 0);
     std::unique_ptr<QBarSet> _histSet;
     QImage* _image;
     std::unique_ptr<HistView> _chartView;

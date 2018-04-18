@@ -39,7 +39,8 @@ SOURCES += \
     cpp/binaryimageoperation.cpp \
     cpp/convolutionmatrix.cpp \
     cpp/aboutprogramwindow.cpp \
-    cpp/histogram2d.cpp
+    cpp/histogram2d.cpp \
+    cpp/settings.cpp
 
 HEADERS += \
     include/mainwindow.h \
@@ -53,7 +54,8 @@ HEADERS += \
     include/binaryimageoperation.h \
     include/convolutionmatrix.h \
     include/aboutprogramwindow.h \
-    include/histogram2d.h
+    include/histogram2d.h \
+    include/settings.h
 
 FORMS += \
     UI/mainwindow.ui \
@@ -64,7 +66,8 @@ FORMS += \
     UI/binaryimageoperation.ui \
     UI/convolutionmatrix.ui \
     UI/aboutprogramwindow.ui \
-    UI/histogram2d.ui
+    UI/histogram2d.ui \
+    UI/settings.ui
 
 RESOURCES += \
     images.qrc
