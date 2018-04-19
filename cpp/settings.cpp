@@ -33,12 +33,12 @@ Settings::Settings(QWidget *parent) :
 
 int Settings::grayCurrLvl(QRgb rgb)
 {
-    return qGray(rgb)/(256/maxLevels);
+    return qGray(rgb)/(255/(maxLevels-1));
 }
 
 int Settings::to256gray(int x)
 {
-    return x*(256/maxLevels);
+    return (x*(255/(maxLevels-1)))%256;
 }
 
 

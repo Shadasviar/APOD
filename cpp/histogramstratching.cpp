@@ -48,9 +48,9 @@ void HistogramStratching::on_applyButton_clicked()
     for (int i(0); i < res->width(); ++i) {
         emit setProgressBar((100./_image->width())*i);
         for (int j(0); j < res->height(); ++j) {
-            px = qGray(res->pixel(i,j));
+            px = Settings::grayCurrLvl(res->pixel(i,j));
             if (px > low && px <= up) {
-                px = (px-low)*(Settings::maxLevels / (up-low));
+                px = Settings::to256gray((px-low)*(Settings::maxLevels / (up-low)));
             } else {
                 px = 0;
             }

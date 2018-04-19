@@ -79,7 +79,7 @@ private:
 
     void setMaskFromMatrix(const std::vector<std::vector<int>> mask);
 
-    int _minPixel = 256;
+    int _minPixel = Settings::maxLevels;
     int _maxPixel = 0;
     bool _matrixEnabled = true;
 };

@@ -34,14 +34,14 @@ HistogramEqualisation::HistogramEqualisation(QImage *img, QWidget *parent) :
         {
             /* Average */
             [this](int left, int right){return (left+right)/2;},
-            [this](int i, int j){return newZ[qGray(_image->pixel(i,j))];},
+            [this](int i, int j){return newZ[Settings::grayCurrLvl(_image->pixel(i,j))];},
         },
         {
             /* Random */
             [this](int left, int right){return right - left;},
             [this](int i, int j){
-                int randP = rand() % newZ[qGray(_image->pixel(i,j))];
-                return randP + left[qGray(_image->pixel(i,j))];
+                int randP = rand() % newZ[Settings::grayCurrLvl(_image->pixel(i,j))];
+                return randP + left[Settings::grayCurrLvl(_image->pixel(i,j))];
             },
         },
         {
@@ -55,15 +55,15 @@ HistogramEqualisation::HistogramEqualisation(QImage *img, QWidget *parent) :
                 for (int ii = (i-1)<0?0:(i-1) ; ii <= maxi; ++ii){
                     for (int jj = (j-1)<0?0:(j-1); jj <= maxj; ++jj) {
                         if (ii == i && jj == j) continue;
-                        avg += qGray(_image->pixel(i,j));
+                        avg += Settings::grayCurrLvl(_image->pixel(i,j));
                         ++cnt;
                     }
                 }
                 avg /= cnt;
-                if (avg > right[qGray(_image->pixel(i,j))])
-                    return right[qGray(_image->pixel(i,j))];
-                if (avg < left[qGray(_image->pixel(i,j))])
-                    return left[qGray(_image->pixel(i,j))];
+                if (avg > right[Settings::grayCurrLvl(_image->pixel(i,j))])
+                    return right[Settings::grayCurrLvl(_image->pixel(i,j))];
+                if (avg < left[Settings::grayCurrLvl(_image->pixel(i,j))])
+                    return left[Settings::grayCurrLvl(_image->pixel(i,j))];
                 return avg;
             },
         },
@@ -71,9 +71,9 @@ HistogramEqualisation::HistogramEqualisation(QImage *img, QWidget *parent) :
             /* Min-max */
             [this](int left, int right){return (right + left)/2;},
             [this](int i, int j){
-                if (qGray(_image->pixel(i,j)) <= newZ[qGray(_image->pixel(i,j))])
-                    return left[qGray(_image->pixel(i,j))];
-                return right[qGray(_image->pixel(i,j))];
+                if (Settings::grayCurrLvl(_image->pixel(i,j)) <= newZ[Settings::grayCurrLvl(_image->pixel(i,j))])
+                    return left[Settings::grayCurrLvl(_image->pixel(i,j))];
+                return right[Settings::grayCurrLvl(_image->pixel(i,j))];
             },
         }
     };
@@ -120,10 +120,10 @@ void HistogramEqualisation::on_pushButton_clicked()
         emit setProgressBar((100./_image->width())*i);
         for (int j(0); j < _image->height(); ++j) {
             int px = 0;
-            if (left[qGray(_image->pixel(i,j))] == right[qGray(_image->pixel(i,j))])
-                px = right[qGray(_image->pixel(i,j))];
+            if (left[Settings::grayCurrLvl(_image->pixel(i,j))] == right[Settings::grayCurrLvl(_image->pixel(i,j))])
+                px = Settings::to256gray(right[Settings::grayCurrLvl(_image->pixel(i,j))]);
             else
-                px = _methodFunctions[method][1](i,j);
+                px = Settings::to256gray(_methodFunctions[method][1](i,j));
             res->setPixel(i,j, qRgb(px,px,px));
         }
     }

@@ -53,7 +53,7 @@ ConvolutionMatrix::_borderMethods = {
     {ConvolutionMatrix::NoChange, [](const QImage*& img, cr_int i, cr_int j, cr_int,
         std::vector<std::vector<int> >,
         std::function<int(int, cr_int, cr_int, cr_int, cr_int, cr_int, std::vector<std::vector<int> >&)>) {
-            return qGray(img->pixel(i,j));
+            return Settings::grayCurrLvl(img->pixel(i,j));
      }},
 
     {ConvolutionMatrix::Multiply, [](const QImage*& img, cr_int i, cr_int j, cr_int divisor,
@@ -64,13 +64,13 @@ ConvolutionMatrix::_borderMethods = {
                 for (int jj(j-mask[0].size()/2); jj <= (int)(j+mask[0].size()/2); ++jj) {
                     if (ii < 0 || ii >= img->width()) {
                         if (jj >= 0 && jj < img->height())
-                            acc = f(acc, qGray(img->pixel(i, jj)),i, j, ii, jj, mask);
+                            acc = f(acc, Settings::grayCurrLvl(img->pixel(i, jj)),i, j, ii, jj, mask);
                     }
                     else if (jj < 0 || jj >= img->height()) {
-                        acc = f(acc, qGray(img->pixel(ii, j)),i, j, ii, jj, mask);
+                        acc = f(acc, Settings::grayCurrLvl(img->pixel(ii, j)),i, j, ii, jj, mask);
                     }
                     else
-                        acc = f(acc, qGray(img->pixel(ii, jj)),i, j, ii, jj, mask);
+                        acc = f(acc, Settings::grayCurrLvl(img->pixel(ii, jj)),i, j, ii, jj, mask);
                 }
             }
             return acc / divisor;
@@ -88,7 +88,7 @@ ConvolutionMatrix::_borderMethods = {
                      if (divisor <= 0) divisor = 1;
                  }
                  else {
-                     acc = f(acc, qGray(img->pixel(ii, jj)),i, j, ii, jj, mask);
+                     acc = f(acc, Settings::grayCurrLvl(img->pixel(ii, jj)),i, j, ii, jj, mask);
                  }
              }
          }
@@ -107,10 +107,10 @@ ConvolutionMatrix::ConvolutionMatrix(QImage* img, QWidget *parent) :
 
     for (int i(0); i < _image->width(); ++i){
         for (int j(0); j < _image->height(); ++j) {
-            if (qGray(_image->pixel(i,j)) < _minPixel)
-                _minPixel = qGray(_image->pixel(i,j));
-            if (qGray(_image->pixel(i,j)) > _maxPixel)
-                _maxPixel = qGray(_image->pixel(i,j));
+            if (Settings::grayCurrLvl(_image->pixel(i,j)) < _minPixel)
+                _minPixel = Settings::grayCurrLvl(_image->pixel(i,j));
+            if (Settings::grayCurrLvl(_image->pixel(i,j)) > _maxPixel)
+                _maxPixel = Settings::grayCurrLvl(_image->pixel(i,j));
         }
     }
 
@@ -161,13 +161,13 @@ QImage *ConvolutionMatrix::applyMask(const QImage *img, std::vector<std::vector<
             else {
                 for (int ii(-kW); ii <= kW; ++ii) {
                     for (int jj(-kH); jj <= kH; ++jj) {
-                        avg += qGray((img->pixel(ii+i, jj+j)))*mask.at(ii+kW).at(jj+kH);
+                        avg += Settings::grayCurrLvl((img->pixel(ii+i, jj+j)))*mask.at(ii+kW).at(jj+kH);
                     }
                 }
                 avg /= divisor;
             }
 
-            avg = scale(avg);
+            avg = Settings::to256gray(scale(avg));
             res->setPixel(i,j, qRgb(avg, avg, avg));
 
         }
@@ -210,14 +210,14 @@ QImage *ConvolutionMatrix::medianFilter(const QImage *img, std::vector<std::vect
                 int idx(0);
                 for (int ii(-kW); ii <= kW; ++ii) {
                     for (int jj(-kH); jj <= kH; ++jj) {
-                        median[idx++] = qGray((img->pixel(ii+i, jj+j)));
+                        median[idx++] = Settings::grayCurrLvl((img->pixel(ii+i, jj+j)));
                     }
                 }
                 std::nth_element(median.begin(), median.begin() + median.size()/2, median.end());
                 med = median[median.size()/2];
             }
 
-            med = scale(med);
+            med = Settings::to256gray(scale(med));
             res->setPixel(i,j, qRgb(med, med, med));
 
         }
@@ -239,7 +239,7 @@ QImage *ConvolutionMatrix::logicFilter(const QImage *img, std::vector<std::vecto
         emit setProgressBar((100./res->width())*i);
         for (int j(0); j < res->height(); ++j) {
 
-            int px(qGray((img->pixel(i, j))));
+            int px(Settings::grayCurrLvl((img->pixel(i, j))));
             std::vector<int> rpx;
 
             if (i-kW < 0 || i+kW >= img->width() || j-kH < 0 || j+kH>= img->height()) {
@@ -247,14 +247,14 @@ QImage *ConvolutionMatrix::logicFilter(const QImage *img, std::vector<std::vecto
                            [&img](int res, cr_int px, cr_int i, cr_int j, cr_int ii, cr_int jj,
                            std::vector<std::vector<int> >& mask) {
                     if (mask[(ii-i) + mask.size()/2][(jj-j) + mask[0].size()/2])
-                        res = px == res ? px : qGray(img->pixel(i,j));
+                        res = px == res ? px : Settings::grayCurrLvl(img->pixel(i,j));
                     return res;
                 });
             }
             else {
                 for (int ii(-kW); ii <= kW; ++ii) {
                     for (int jj(-kH); jj <= kH; ++jj) {
-                        if (mask[ii+kW][jj+kH]) rpx.push_back(qGray((img->pixel(ii+i, jj+j))));
+                        if (mask[ii+kW][jj+kH]) rpx.push_back(Settings::grayCurrLvl((img->pixel(ii+i, jj+j))));
                     }
                 }
 
@@ -264,7 +264,7 @@ QImage *ConvolutionMatrix::logicFilter(const QImage *img, std::vector<std::vecto
                 px = eq ? rpx[0] : px;
             }
 
-            px = scale(px);
+            px = Settings::to256gray(scale(px));
             res->setPixel(i,j, qRgb(px, px, px));
 
         }

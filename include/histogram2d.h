@@ -23,6 +23,7 @@
 #include <QFrame>
 #include <array>
 #include <memory>
+#include "settings.h"
 
 namespace Ui {
 class Histogram2D;
@@ -35,13 +36,14 @@ class Histogram2D : public QFrame
 public:
     explicit Histogram2D(QImage* img1, QImage* img2, QWidget *parent = 0);
     ~Histogram2D();
-    static constexpr int maxLevel = 256;
+    int maxLevel = Settings::maxLevels;
 
 private:
     Ui::Histogram2D *ui;
     QImage* _img1 = nullptr;
     std::unique_ptr<QImage> _img2;
-    std::array<std::array<int, maxLevel>, maxLevel> _histTable;
+    std::vector<std::vector<int>> _histTable =
+            std::vector<std::vector<int>>(maxLevel, std::vector<int>(maxLevel, 0));
 };
 
 #endif // HISTOGRAM2D_H

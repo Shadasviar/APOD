@@ -19,6 +19,7 @@
 
 #include "binaryimageoperation.h"
 #include "ui_binaryimageoperation.h"
+#include "settings.h"
 #include <QFileDialog>
 #include <cmath>
 
@@ -60,8 +61,8 @@ QImage *BinaryImageOperation::reduceImages(
             emit setProgressBar((100./accumulator->width())*i);
 
             for (int j(0); j < accumulator->height(); ++j) {
-                px = op(qGray(accumulator->pixel(i,j)),
-                        qGray(buf.pixel(i,j)));
+                px = Settings::to256gray(op(Settings::grayCurrLvl(accumulator->pixel(i,j)),
+                        Settings::grayCurrLvl(buf.pixel(i,j))));
                 accumulator->setPixel(i,j, qRgb(px,px,px));
             }
         }

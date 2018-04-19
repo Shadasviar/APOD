@@ -18,6 +18,7 @@
  */
 #include "universalpointoperation.h"
 #include "ui_universalpointoperation.h"
+#include "settings.h"
 
 UniversalPointOperation::UniversalPointOperation(QImage *img, QWidget *parent) :
     IToolWidget(parent),
@@ -35,7 +36,7 @@ UniversalPointOperation::UniversalPointOperation(QImage *img, QWidget *parent) :
         _fFromX[i] = i;
 
     _points.insert({0,0});
-    _points.insert({maxLevels-1, maxLevels-1});
+    _points.insert(QPointF(maxLevels-1, maxLevels-1));
 
     for (auto& point: _points)
         _lineSeries->append(point);
@@ -59,7 +60,7 @@ UniversalPointOperation::~UniversalPointOperation()
 }
 
 QImage *UniversalPointOperation::applyUPO(const QImage *img,
-                                          std::array<int, UniversalPointOperation::maxLevels> op)
+                                          std::vector<int> op)
 {
     QImage* res = new QImage();
     *res = img->convertToFormat(QImage::Format_Grayscale8);
@@ -68,7 +69,7 @@ QImage *UniversalPointOperation::applyUPO(const QImage *img,
     for (int i(0); i < res->width(); ++i) {
         emit setProgressBar((100./res->width())*i);
         for (int j(0); j < res->height(); ++j) {
-            px = op[qGray(img->pixel(i,j))];
+            px = Settings::to256gray(op[Settings::grayCurrLvl(img->pixel(i,j))]);
             res->setPixel(i, j, qRgb(px,px,px));
         }
     }

@@ -25,7 +25,8 @@
 #include <QLineSeries>
 #include <memory>
 #include <set>
-#include <array>
+#include <vector>
+#include "settings.h"
 
 namespace Ui {
 class UniversalPointOperation;
@@ -53,12 +54,12 @@ class UniversalPointOperation : public IToolWidget
     Q_OBJECT
 
 public:
-    static constexpr int maxLevels = 256;
+    int maxLevels = Settings::maxLevels;
 
     explicit UniversalPointOperation(QImage* img, QWidget *parent = 0);
     ~UniversalPointOperation();
 
-    QImage* applyUPO(const QImage* img, std::array<int, maxLevels> op);
+    QImage* applyUPO(const QImage* img, std::vector<int> op);
 
 private:
     Ui::UniversalPointOperation *ui;
@@ -72,7 +73,7 @@ private:
         }
     };
     std::set<QPointF, QPointFLess> _points;
-    std::array<int, maxLevels> _fFromX {{0}};
+    std::vector<int> _fFromX = std::vector<int>(maxLevels, 0);
 
     void refreshOperationTable();
     int inRange(int x, int l, int r);

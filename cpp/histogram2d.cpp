@@ -31,12 +31,10 @@ Histogram2D::Histogram2D(QImage *img1, QImage *img2, QWidget *parent) :
     ui->setupUi(this);
     *_img2 = img2->scaled(_img1->size());
 
-    for(auto & row : _histTable) row.fill(0);
-
     for (int i(0); i < _img1->width(); ++i) {
         for (int j(0); j < _img1->height(); ++j) {
-            ++_histTable[qGray(_img1->pixel(i,j))]
-                    [qGray(_img2->pixel(i,j))];
+            ++_histTable[Settings::grayCurrLvl(_img1->pixel(i,j))]
+                    [Settings::grayCurrLvl(_img2->pixel(i,j))];
         }
     }
 
