@@ -23,5 +23,6 @@
         <file>Resources/save-icon-silhouette.png</file>
         <file>Resources/settings.png</file>
         <file>Resources/compare.png</file>
+        <file>Resources/edit-tools.png</file>
     </qresource>
 </RCC>

@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>HarbuzHIST18</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="../images.qrc">
+    <normaloff>:/Resources/edit-tools.png</normaloff>:/Resources/edit-tools.png</iconset>
+  </property>
   <property name="documentMode">
    <bool>false</bool>
   </property>
