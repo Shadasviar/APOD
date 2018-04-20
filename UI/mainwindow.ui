@@ -107,6 +107,7 @@
     </property>
     <addaction name="actionHistogram"/>
     <addaction name="actionHistogram_2D"/>
+    <addaction name="actionCompare"/>
     <addaction name="actionActive_widget_of_operation_on_image"/>
    </widget>
    <widget class="QMenu" name="menuInfo">
@@ -159,6 +160,7 @@
    <addaction name="separator"/>
    <addaction name="actionHistogram"/>
    <addaction name="actionHistogram_2D"/>
+   <addaction name="actionCompare"/>
    <addaction name="actionActive_widget_of_operation_on_image"/>
    <addaction name="separator"/>
    <addaction name="actionHistogram_stratching"/>
@@ -192,6 +194,9 @@
    </property>
    <property name="text">
     <string>Exit</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+E</string>
    </property>
   </action>
   <action name="actionHistogram">
@@ -343,8 +348,15 @@
    <property name="text">
     <string>Settings</string>
    </property>
-   <property name="shortcut">
-    <string>Ctrl+S</string>
+  </action>
+  <action name="actionCompare">
+   <property name="icon">
+    <iconset>
+     <normalon>:/Resources/compare.png</normalon>
+    </iconset>
+   </property>
+   <property name="text">
+    <string>Compare</string>
    </property>
   </action>
  </widget>

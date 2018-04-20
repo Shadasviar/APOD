@@ -30,6 +30,7 @@
 #include "histogramequalisation.h"
 #include "itoolwidget.h"
 #include "histogram2d.h"
+#include "scalableimageview.h"
 
 class ImageWorkspace : public QWidget
 {
@@ -39,7 +40,7 @@ public:
     ImageWorkspace(QImage&& image, QWidget* parent = nullptr);
     void deleteActiveTool();
     virtual ~ImageWorkspace();   
-    QImage* getPreviewImage(){return _previewImage;}
+    QImage* getPreviewImage(){return _preview.getImage();}
 
 protected slots:
     void modifyPreview(QImage* img);
@@ -55,27 +56,23 @@ protected:
     QVBoxLayout _imagesLayout;
     QSplitter* _splitter;
     QSplitter* _imageSplitter;
-    std::unique_ptr<QGraphicsView>_imageView;
-    std::unique_ptr<QGraphicsView> _preview;
 
     ToolsArea _tools;
-    QImage _image;
-    QImage* _previewImage = nullptr;
-    QGraphicsScene _scene;
-    QGraphicsScene _previewScene;
+    ScalableImageView _image;
+    ScalableImageView _preview;
     QWidget* _parent;
 
 public:
     template <typename T>
     void addToolsAreaItem(){
-        T* item = new T(_previewImage ? _previewImage : &_image, this);
+        T* item = new T(_preview.getImage() ? _preview.getImage() : _image.getImage(), this);
         doSpecifiedStuff<T>(item);
         _tools.addInfoTool(item);
     }
 
     template <typename T>
     void setCurrentOperation(){
-        T* item = new T(&_image, this);
+        T* item = new T(_image.getImage(), this);
         doSpecifiedStuff<T>(item);
         _tools.setTool(item);
     }
@@ -103,7 +100,7 @@ public:
 
 template <>
 void inline ImageWorkspace::addToolsAreaItem<Histogram2D>(){
-    if (!_previewImage) {
+    if (!_preview.getImage()) {
         QMessageBox messageBox;
         messageBox.critical(0,"Error","You must have two images for this operation"
                                       " (image and preview of it)."
@@ -111,7 +108,7 @@ void inline ImageWorkspace::addToolsAreaItem<Histogram2D>(){
         messageBox.setFixedSize(500,200);
         return;
     }
-    auto* item = new Histogram2D(&_image, _previewImage, this);
+    auto* item = new Histogram2D(_image.getImage(), _preview.getImage(), this);
     doSpecifiedStuff(item);
     _tools.addInfoTool(item);
 }

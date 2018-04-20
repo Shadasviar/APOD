@@ -25,12 +25,11 @@ ImageWorkspace::ImageWorkspace(QWidget *parent) : QWidget(parent),
     _imagesLayout(&_imagesViews),
     _splitter(new QSplitter(this)),
     _imageSplitter(new QSplitter(Qt::Vertical ,this)),
-    _imageView(std::make_unique<QGraphicsView>(_splitter)),
     _tools(this),
     _parent(parent)
 {
     _imagesLayout.addWidget(_imageSplitter);
-    _imageSplitter->addWidget(_imageView.get());
+    _imageSplitter->addWidget(&_image);
     _layout.addWidget(_splitter);
     _splitter->addWidget(&_imagesViews);
     _splitter->addWidget(&_tools);
@@ -38,19 +37,16 @@ ImageWorkspace::ImageWorkspace(QWidget *parent) : QWidget(parent),
 
 ImageWorkspace::ImageWorkspace(QImage &&image, QWidget *parent): ImageWorkspace(parent)
 {
-    _image = QImage(image).convertToFormat(QImage::Format_Grayscale8);
-    for (int i(0); i < _image.width(); ++i)
-        for (int j(0); j < _image.height(); ++j) {
+    auto* img = new QImage();
+    *img = QImage(image).convertToFormat(QImage::Format_Grayscale8);
+    for (int i(0); i < img->width(); ++i)
+        for (int j(0); j < img->height(); ++j) {
             int px = Settings::to256gray(
-                        Settings::grayCurrLvl(_image.pixel(i, j))
+                        Settings::grayCurrLvl(img->pixel(i, j))
                         );
-            _image.setPixel(i, j, qRgb(px, px, px));
+            img->setPixel(i, j, qRgb(px, px, px));
         }
-
-    _scene.clear();
-    _scene.addPixmap(QPixmap::fromImage(_image));
-    _scene.setSceneRect(_image.rect());
-    _imageView->setScene(&_scene);
+    _image = ScalableImageView(img, this);
 }
 
 void ImageWorkspace::deleteActiveTool()
@@ -60,21 +56,12 @@ void ImageWorkspace::deleteActiveTool()
 
 ImageWorkspace::~ImageWorkspace()
 {
-    _scene.clear();
 }
 
 void ImageWorkspace::modifyPreview(QImage *img)
 {
-    if (!_preview) {
-        _preview = std::make_unique<QGraphicsView>(_splitter);
-        _imageSplitter->addWidget(_preview.get());
+    if(!_preview.getImage()) {
+        _imageSplitter->addWidget(&_preview);
     }
-    if (_preview) {
-        delete _previewImage;
-        _previewImage = img;
-        _previewScene.clear();
-        _previewScene.addPixmap(QPixmap::fromImage(*img));
-        _previewScene.setSceneRect(img->rect());
-        _preview->setScene(&_previewScene);
-    }
+    _preview = ScalableImageView(img, this);
 }

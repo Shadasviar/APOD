@@ -40,7 +40,9 @@ SOURCES += \
     cpp/convolutionmatrix.cpp \
     cpp/aboutprogramwindow.cpp \
     cpp/histogram2d.cpp \
-    cpp/settings.cpp
+    cpp/settings.cpp \
+    cpp/compare.cpp \
+    cpp/scalableimageview.cpp
 
 HEADERS += \
     include/mainwindow.h \
@@ -55,7 +57,9 @@ HEADERS += \
     include/convolutionmatrix.h \
     include/aboutprogramwindow.h \
     include/histogram2d.h \
-    include/settings.h
+    include/settings.h \
+    include/compare.h \
+    include/scalableimageview.h
 
 FORMS += \
     UI/mainwindow.ui \
@@ -67,7 +71,9 @@ FORMS += \
     UI/convolutionmatrix.ui \
     UI/aboutprogramwindow.ui \
     UI/histogram2d.ui \
-    UI/settings.ui
+    UI/settings.ui \
+    UI/compare.ui \
+    UI/scalableimageview.ui
 
 RESOURCES += \
     images.qrc

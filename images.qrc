@@ -22,5 +22,6 @@
         <file>Resources/creative-process.png</file>
         <file>Resources/save-icon-silhouette.png</file>
         <file>Resources/settings.png</file>
+        <file>Resources/compare.png</file>
     </qresource>
 </RCC>
