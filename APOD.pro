@@ -30,7 +30,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     cpp/main.cpp \
     cpp/mainwindow.cpp \
-    cpp/imageworkspace.cpp \
     cpp/toolsarea.cpp \
     cpp/histogramequalisation.cpp \
     cpp/histogram.cpp \
@@ -42,11 +41,11 @@ SOURCES += \
     cpp/histogram2d.cpp \
     cpp/settings.cpp \
     cpp/compare.cpp \
-    cpp/scalableimageview.cpp
+    cpp/scalableimageview.cpp \
+    cpp/imageworkspaceview.cpp
 
 HEADERS += \
     include/mainwindow.h \
-    include/imageworkspace.h \
     include/toolsarea.h \
     include/histogramequalisation.h \
     include/histogram.h \
@@ -59,7 +58,8 @@ HEADERS += \
     include/histogram2d.h \
     include/settings.h \
     include/compare.h \
-    include/scalableimageview.h
+    include/scalableimageview.h \
+    include/imageworkspaceview.h
 
 FORMS += \
     UI/mainwindow.ui \
@@ -73,7 +73,8 @@ FORMS += \
     UI/histogram2d.ui \
     UI/settings.ui \
     UI/compare.ui \
-    UI/scalableimageview.ui
+    UI/scalableimageview.ui \
+    UI/imageworkspaceview.ui
 
 RESOURCES += \
     images.qrc

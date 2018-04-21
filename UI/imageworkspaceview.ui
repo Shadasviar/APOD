@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>UniversalPointOperation</class>
- <widget class="QFrame" name="UniversalPointOperation">
+ <class>ImageWorkspaceView</class>
+ <widget class="QFrame" name="ImageWorkspaceView">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -10,25 +10,10 @@
     <height>300</height>
    </rect>
   </property>
-  <property name="sizePolicy">
-   <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
-    <horstretch>0</horstretch>
-    <verstretch>0</verstretch>
-   </sizepolicy>
-  </property>
-  <property name="minimumSize">
-   <size>
-    <width>0</width>
-    <height>300</height>
-   </size>
-  </property>
   <property name="windowTitle">
    <string>Frame</string>
   </property>
-  <property name="frameShape">
-   <enum>QFrame::NoFrame</enum>
-  </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
+  <layout class="QHBoxLayout" name="horizontalLayout">
    <property name="spacing">
     <number>0</number>
    </property>
@@ -45,14 +30,14 @@
     <number>0</number>
    </property>
    <item>
-    <widget class="QFrame" name="plotFrame">
+    <widget class="QFrame" name="imagesFrame">
      <property name="frameShape">
       <enum>QFrame::NoFrame</enum>
      </property>
      <property name="frameShadow">
       <enum>QFrame::Raised</enum>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout_3">
+     <layout class="QVBoxLayout" name="verticalLayout">
       <property name="spacing">
        <number>0</number>
       </property>
@@ -69,13 +54,32 @@
        <number>0</number>
       </property>
       <item>
-       <layout class="QVBoxLayout" name="plotLayout">
-        <property name="spacing">
-         <number>0</number>
-        </property>
-       </layout>
+       <widget class="QWidget" name="image" native="true"/>
+      </item>
+      <item>
+       <widget class="QWidget" name="preview" native="true"/>
       </item>
      </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QScrollArea" name="scrollArea">
+     <property name="frameShape">
+      <enum>QFrame::NoFrame</enum>
+     </property>
+     <property name="widgetResizable">
+      <bool>true</bool>
+     </property>
+     <widget class="QWidget" name="tools">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>400</width>
+        <height>300</height>
+       </rect>
+      </property>
+     </widget>
     </widget>
    </item>
   </layout>

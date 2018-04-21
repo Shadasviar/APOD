@@ -23,9 +23,11 @@
 #include <QImage>
 #include <QGraphicsScene>
 #include <functional>
-#include "imageworkspace.h"
-
-#include "histogram.h"
+#include <QFileInfo>
+#include <QWidget>
+#include <QAction>
+#include <QProgressBar>
+#include <QLabel>
 
 namespace Ui {
 class MainWindow;
@@ -62,7 +64,6 @@ private slots:
     void showStatusMsg(QString text);
     void on_actionSave_triggered();
     void on_actionSettings_triggered();
-
     void on_actionCompare_triggered(bool checked);
 
 private:

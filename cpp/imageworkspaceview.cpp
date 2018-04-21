@@ -1,41 +1,43 @@
 /*
- * This file is part of HarbuzHIST18. 
- * imageworkspace.cpp
- * Copyright (C) Uladzislau Harbuz 2018 
- * 
+ * This file is part of HarbuzHIST18.
+ * imageworkspaceview.cpp
+ * Copyright (C) Uladzislau Harbuz 2018
+ *
  * HarbuzHIST18 is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
  * Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * HarbuzHIST18 is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "imageworkspace.h"
-#include "settings.h"
 
-ImageWorkspace::ImageWorkspace(QWidget *parent) : QWidget(parent),
-    _layout(this),
-    _imagesViews(this),
-    _imagesLayout(&_imagesViews),
-    _splitter(new QSplitter(this)),
-    _imageSplitter(new QSplitter(Qt::Vertical ,this)),
+#include "imageworkspaceview.h"
+#include "ui_imageworkspaceview.h"
+
+ImageWorkspaceView::ImageWorkspaceView(QWidget *parent) :
+    IToolWidget(parent),
+    ui(new Ui::ImageWorkspaceView),
     _tools(this),
-    _parent(parent)
+    _splitter(new QSplitter(this)),
+    _imageSplitter(new QSplitter(Qt::Vertical ,this))
 {
-    _imagesLayout.addWidget(_imageSplitter);
+    ui->setupUi(this);
+    ui->verticalLayout->addWidget(_imageSplitter);
     _imageSplitter->addWidget(&_image);
-    _layout.addWidget(_splitter);
-    _splitter->addWidget(&_imagesViews);
-    _splitter->addWidget(&_tools);
+    ui->horizontalLayout->addWidget(_splitter);
+    _splitter->addWidget(ui->imagesFrame);
+    _splitter->addWidget(ui->scrollArea);
+    ui->scrollArea->setWidget(&_tools);
 }
 
-ImageWorkspace::ImageWorkspace(QImage &&image, QWidget *parent): ImageWorkspace(parent)
+ImageWorkspaceView::ImageWorkspaceView(QImage &&image, QWidget *parent):
+    ImageWorkspaceView(parent)
 {
     auto* img = new QImage();
     *img = QImage(image).convertToFormat(QImage::Format_Grayscale8);
@@ -49,16 +51,17 @@ ImageWorkspace::ImageWorkspace(QImage &&image, QWidget *parent): ImageWorkspace(
     _image = ScalableImageView(img, this);
 }
 
-void ImageWorkspace::deleteActiveTool()
+ImageWorkspaceView::~ImageWorkspaceView()
+{
+    delete ui;
+}
+
+void ImageWorkspaceView::deleteActiveTool()
 {
     _tools.deleteTool();
 }
 
-ImageWorkspace::~ImageWorkspace()
-{
-}
-
-void ImageWorkspace::modifyPreview(QImage *img)
+void ImageWorkspaceView::modifyPreview(QImage *img)
 {
     if(!_preview.getImage()) {
         _imageSplitter->addWidget(&_preview);

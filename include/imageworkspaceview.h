@@ -1,71 +1,64 @@
 /*
- * This file is part of HarbuzHIST18. 
- * imageworkspace.h
- * Copyright (C) Uladzislau Harbuz 2018 
- * 
+ * This file is part of HarbuzHIST18.
+ * imageworkspaceview.h
+ * Copyright (C) Uladzislau Harbuz 2018
+ *
  * HarbuzHIST18 is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
  * Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * HarbuzHIST18 is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along
  * with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef IMAGEWORKSPACE_H
-#define IMAGEWORKSPACE_H
 
-#include <QWidget>
-#include <QGraphicsView>
-#include <QSplitter>
-#include <QVBoxLayout>
-#include <memory>
-#include <QMap>
-#include "toolsarea.h"
-#include "histogramstratching.h"
-#include "histogramequalisation.h"
-#include "itoolwidget.h"
-#include "histogram2d.h"
+#ifndef IMAGEWORKSPACEVIEW_H
+#define IMAGEWORKSPACEVIEW_H
+
+#include <QFrame>
 #include "scalableimageview.h"
+#include "toolsarea.h"
+#include "itoolwidget.h"
 #include "compare.h"
+#include "histogram2d.h"
 
 #define TWO_IMAGE_REQUIRED_ERROR_STR "You must have two images for\
     this operation (image and preview of it). \
     Do some action on your image and try again."
 
-class ImageWorkspace : public QWidget
+namespace Ui {
+class ImageWorkspaceView;
+}
+
+class ImageWorkspaceView : public IToolWidget
 {
     Q_OBJECT
+
 public:
-    explicit ImageWorkspace(QWidget *parent = nullptr);
-    ImageWorkspace(QImage&& image, QWidget* parent = nullptr);
+    explicit ImageWorkspaceView(QWidget *parent = 0);
+    ImageWorkspaceView(QImage&& image, QWidget* parent = nullptr);
+    ~ImageWorkspaceView();
+
     void deleteActiveTool();
-    virtual ~ImageWorkspace();   
     QImage* getPreviewImage(){return _preview.getImage();}
 
-protected slots:
-    void modifyPreview(QImage* img);
-
-signals:
-    void emitProgressBar(int progress);
-    void hideProgressBar();
-    void showStatusMsg(QString);
-
-protected:
-    QVBoxLayout _layout;
-    QFrame _imagesViews;
-    QVBoxLayout _imagesLayout;
-    QSplitter* _splitter;
-    QSplitter* _imageSplitter;
+private:
+    Ui::ImageWorkspaceView *ui;
 
     ToolsArea _tools;
     ScalableImageView _image;
     ScalableImageView _preview;
-    QWidget* _parent;
+
+    QSplitter* _splitter;
+    QSplitter* _imageSplitter;
+
+protected slots:
+    void modifyPreview(QImage* img);
 
 public:
     template <typename T>
@@ -96,15 +89,15 @@ public:
         // Do generic only
     }
     void doSpecifiedStuff(IToolWidget* obj) {
-        connect(obj, &IToolWidget::setPreview, this, &ImageWorkspace::modifyPreview);
-        connect(obj, &IToolWidget::setProgressBar, this, &ImageWorkspace::emitProgressBar);
-        connect(obj, &IToolWidget::hideProgressBar, this, &ImageWorkspace::hideProgressBar);
-        connect(obj, &IToolWidget::showStatusMsg, this, &ImageWorkspace::showStatusMsg);
+        connect(obj, &IToolWidget::setPreview, this, &ImageWorkspaceView::modifyPreview);
+        connect(obj, &IToolWidget::setProgressBar, this, &ImageWorkspaceView::setProgressBar);
+        connect(obj, &IToolWidget::hideProgressBar, this, &ImageWorkspaceView::hideProgressBar);
+        connect(obj, &IToolWidget::showStatusMsg, this, &ImageWorkspaceView::showStatusMsg);
     }
 };
 
 template <>
-void inline ImageWorkspace::addToolsAreaItem<Histogram2D>(){
+void inline ImageWorkspaceView::addToolsAreaItem<Histogram2D>(){
     if (!_preview.getImage()) {
         QMessageBox messageBox;
         messageBox.critical(0,"Error", TWO_IMAGE_REQUIRED_ERROR_STR);
@@ -117,7 +110,7 @@ void inline ImageWorkspace::addToolsAreaItem<Histogram2D>(){
 }
 
 template<>
-void inline ImageWorkspace::addToolsAreaItem<Compare>() {
+void inline ImageWorkspaceView::addToolsAreaItem<Compare>() {
     if (!_preview.getImage()) {
         QMessageBox messageBox;
         messageBox.critical(0,"Error", TWO_IMAGE_REQUIRED_ERROR_STR);
@@ -129,4 +122,4 @@ void inline ImageWorkspace::addToolsAreaItem<Compare>() {
     _tools.addInfoTool(item);
 }
 
-#endif // IMAGEWORKSPACE_H
+#endif // IMAGEWORKSPACEVIEW_H

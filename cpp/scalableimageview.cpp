@@ -45,4 +45,5 @@ void ScalableImageView::on_horizontalSlider_valueChanged(int value)
     _scene.addPixmap(QPixmap::fromImage(img));
     _scene.setSceneRect(img.rect());
     ui->graphicsView->setScene(&_scene);
+    ui->labelMax->setText(QString("+ (%1%)").arg(value));
 }

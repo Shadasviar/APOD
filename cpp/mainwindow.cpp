@@ -20,7 +20,7 @@
 #include "ui_mainwindow.h"
 #include <QFileDialog>
 #include <memory>
-#include "imageworkspace.h"
+#include "imageworkspaceview.h"
 #include "histogramequalisation.h"
 #include "histogramstratching.h"
 #include "universalpointoperation.h"
@@ -38,7 +38,7 @@
     ui->actionActive_widget_of_operation_on_image->setChecked(true);
 
 #define toolButtonToggled(T, action, checked) \
-    auto currentTab = qobject_cast<ImageWorkspace*>(ui->mainTabWidget->currentWidget());\
+    auto currentTab = qobject_cast<ImageWorkspaceView*>(ui->mainTabWidget->currentWidget());\
     if (checked) {\
         if (ui->mainTabWidget->currentWidget()){\
             action(T);\
@@ -85,10 +85,10 @@ void MainWindow::on_actionOpen_triggered()
                 );
     lastOpenedDir = QFileInfo(filename);
     QImage img(filename);
-    auto *tab = new ImageWorkspace(std::move(img), this);
-    connect(tab, &ImageWorkspace::emitProgressBar, this, &MainWindow::setProgressBar);
-    connect(tab, &ImageWorkspace::hideProgressBar, this, &MainWindow::hideProgressBar);
-    connect(tab, &ImageWorkspace::showStatusMsg, this, &MainWindow::showStatusMsg);
+    auto *tab = new ImageWorkspaceView(std::move(img), this);
+    connect(tab, &ImageWorkspaceView::setProgressBar, this, &MainWindow::setProgressBar);
+    connect(tab, &ImageWorkspaceView::hideProgressBar, this, &MainWindow::hideProgressBar);
+    connect(tab, &ImageWorkspaceView::showStatusMsg, this, &MainWindow::showStatusMsg);
 
     _preTabIndex = ui->mainTabWidget->currentWidget();
     ui->mainTabWidget->addTab(tab, filename);
@@ -203,7 +203,7 @@ void MainWindow::on_actionHistogram_2D_triggered(bool checked)
 void MainWindow::on_actionActive_widget_of_operation_on_image_triggered(bool checked)
 {
     if (!checked){
-        auto currentTab = qobject_cast<ImageWorkspace*>(ui->mainTabWidget->currentWidget());
+        auto currentTab = qobject_cast<ImageWorkspaceView*>(ui->mainTabWidget->currentWidget());
         currentTab->deleteActiveTool();
     }
     else {
@@ -230,7 +230,7 @@ void MainWindow::showStatusMsg(QString text)
 void MainWindow::on_actionSave_triggered()
 {
     QImage* image(nullptr);
-    auto* currentWidget = qobject_cast<ImageWorkspace*>(ui->mainTabWidget->currentWidget());
+    auto* currentWidget = qobject_cast<ImageWorkspaceView*>(ui->mainTabWidget->currentWidget());
 
     if (currentWidget)
         image = currentWidget->getPreviewImage();
