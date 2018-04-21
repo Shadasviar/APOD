@@ -23,7 +23,7 @@
 #include <QFileDialog>
 #include <cmath>
 
-QMap<QString, std::function<uint8_t(const uint8_t, const uint8_t)>> BinaryImageOperation::_operations = {
+QMap<QString, std::function<uint8_t(const uint8_t, const uint8_t)>> BinaryImageOperation::operations = {
     {"Add", [](uint8_t a, uint8_t b) {return (a + b)/2;}},
     {"Sub", [](uint8_t a, uint8_t b) {return a - b;}},
     {"Difference", [](uint8_t a, uint8_t b) {return abs(a - b);}},
@@ -99,7 +99,7 @@ void BinaryImageOperation::on_addImageButton_clicked()
 void BinaryImageOperation::on_applyButton_clicked()
 {
     QString op = ui->comboBox->currentText();
-    if (_operations.count(op) > 0) {
-        emit setPreview(reduceImages(_images, _operations[op], _image));
+    if (operations.count(op) > 0) {
+        emit setPreview(reduceImages(_images, operations[op], _image));
     }
 }

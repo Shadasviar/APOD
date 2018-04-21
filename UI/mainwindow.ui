@@ -354,6 +354,9 @@
    </property>
   </action>
   <action name="actionCompare">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="icon">
     <iconset>
      <normalon>:/Resources/compare.png</normalon>

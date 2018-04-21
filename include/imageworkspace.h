@@ -31,6 +31,11 @@
 #include "itoolwidget.h"
 #include "histogram2d.h"
 #include "scalableimageview.h"
+#include "compare.h"
+
+#define TWO_IMAGE_REQUIRED_ERROR_STR "You must have two images for\
+    this operation (image and preview of it). \
+    Do some action on your image and try again."
 
 class ImageWorkspace : public QWidget
 {
@@ -102,14 +107,25 @@ template <>
 void inline ImageWorkspace::addToolsAreaItem<Histogram2D>(){
     if (!_preview.getImage()) {
         QMessageBox messageBox;
-        messageBox.critical(0,"Error","You must have two images for this operation"
-                                      " (image and preview of it)."
-                                      " Do some action on your image and try again.");
+        messageBox.critical(0,"Error", TWO_IMAGE_REQUIRED_ERROR_STR);
         messageBox.setFixedSize(500,200);
         return;
     }
     auto* item = new Histogram2D(_image.getImage(), _preview.getImage(), this);
     doSpecifiedStuff(item);
+    _tools.addInfoTool(item);
+}
+
+template<>
+void inline ImageWorkspace::addToolsAreaItem<Compare>() {
+    if (!_preview.getImage()) {
+        QMessageBox messageBox;
+        messageBox.critical(0,"Error", TWO_IMAGE_REQUIRED_ERROR_STR);
+        messageBox.setFixedSize(500,200);
+        return;
+    }
+    Compare* item = new Compare(_image.getImage(), _preview.getImage(), this);
+    doSpecifiedStuff<Compare>(item);
     _tools.addInfoTool(item);
 }
 

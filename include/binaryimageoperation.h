@@ -45,6 +45,8 @@ public:
                                 std::function<uint8_t(const uint8_t, const uint8_t)> op,
                                 QImage *startImg);
 
+    static QMap<QString, std::function<uint8_t(const uint8_t, const uint8_t)>> operations;
+
 private slots:
 
     void on_addImageButton_clicked();
@@ -57,9 +59,6 @@ private:
     std::list<std::unique_ptr<QImage>> _images;
     QFileInfo _lastOpenedDir;
     QImage* _image;
-
-    static QMap<QString, std::function<uint8_t(const uint8_t, const uint8_t)>> _operations;
-
     void addImage();
 };
 

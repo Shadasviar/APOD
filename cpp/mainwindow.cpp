@@ -29,6 +29,7 @@
 #include "aboutprogramwindow.h"
 #include "histogram2d.h"
 #include "settings.h"
+#include "compare.h"
 
 /*Use macro because forward declaration of ui brokes template using*/
 #define addInfoTool(T) currentTab->addToolsAreaItem<T>();
@@ -60,7 +61,8 @@ MainWindow::MainWindow(QWidget *parent) :
     _toolsList = QList<QAction*>{
             ui->actionHistogram,
             ui->actionHistogram_2D,
-            ui->actionActive_widget_of_operation_on_image
+            ui->actionActive_widget_of_operation_on_image,
+            ui->actionCompare,
     };
 
     ui->statusBar->addPermanentWidget(_statusText, 0);
@@ -256,4 +258,9 @@ void MainWindow::on_actionSave_triggered()
 void MainWindow::on_actionSettings_triggered()
 {
     toolButtonToggled(Settings, setOperationTool, true);
+}
+
+void MainWindow::on_actionCompare_triggered(bool checked)
+{
+    toolButtonToggled(Compare, addInfoTool, checked);
 }
