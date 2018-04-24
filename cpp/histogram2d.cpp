@@ -42,6 +42,8 @@ Histogram2D::Histogram2D(QImage *img1, QImage *img2, QWidget *parent) :
 
     auto *bars = new QtDataVisualization::Q3DBars();
     auto *series = new QtDataVisualization::QBar3DSeries;
+    series->setItemLabelFormat(
+                QStringLiteral("@valueLabel pixels goes from @rowIdx to @colIdx"));
     bars->addSeries(series);
 
     auto *container = QWidget::createWindowContainer(bars);
@@ -50,22 +52,30 @@ Histogram2D::Histogram2D(QImage *img1, QImage *img2, QWidget *parent) :
     QtDataVisualization::QBarDataRow *row;
 
     auto* firstImgAxis = new QtDataVisualization::QCategory3DAxis;
-    firstImgAxis->setTitle("First image");
+    firstImgAxis->setTitle("Original");
     firstImgAxis->setTitleVisible(true);
     firstImgAxis->setLabelAutoRotation(30.0f);
-    firstImgAxis->setLabels(QStringList("First 0"));
+    firstImgAxis->setLabels(QStringList("Original 0"));
 
     auto* secImgAxis = new QtDataVisualization::QCategory3DAxis;
-    secImgAxis->setTitle("Second image");
+    secImgAxis->setTitle("Processed");
     secImgAxis->setTitleVisible(true);
     secImgAxis->setLabelAutoRotation(30.0f);
-    secImgAxis->setLabels(QStringList("Second 0"));
+    secImgAxis->setLabels(QStringList("Processed 0"));
+
+    auto* valAxis = new QtDataVisualization::QValue3DAxis;
+    valAxis->setTitle("Moved pixels");
+    valAxis->setTitleVisible(true);
+    valAxis->setLabelAutoRotation(30.0f);
+    valAxis->setLabelFormat(QString("%d"));
 
     bars->setRowAxis(firstImgAxis);
     bars->setColumnAxis(secImgAxis);
+    bars->setValueAxis(valAxis);
 
     bars->setShadowQuality(QtDataVisualization::QAbstract3DGraph::ShadowQualitySoftMedium);
-    bars->activeTheme()->setBackgroundEnabled(false);
+    bars->activeTheme()->setBackgroundEnabled(true);
+    bars->setReflection(true);
 
     data->reserve(_histTable.size());
     for (size_t i(0); i < _histTable.size(); ++i) {

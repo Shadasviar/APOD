@@ -51,6 +51,7 @@ Histogram::Histogram(QImage *img, QWidget *parent):
     chart->setTitle("Histogram");
     chart->addSeries(barseries);
     chart->setContentsMargins(-11,-11,-11,-11);
+    chart->setAnimationOptions(QChart::AnimationOptions(QChart::AllAnimations));
 
     _chartView->setChart(chart);
     _chartView->setRenderHint(QPainter::Antialiasing);

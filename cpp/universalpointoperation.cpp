@@ -47,6 +47,7 @@ UniversalPointOperation::UniversalPointOperation(QImage *img, QWidget *parent) :
     chart->addSeries(_lineSeries.get());
     chart->createDefaultAxes();
     chart->setContentsMargins(-11,-11,-11,-11);
+    chart->setAnimationOptions(QChart::AnimationOptions(QChart::SeriesAnimations));
 
     _chartView->setChart(chart);
     _chartView->setRenderHint(QPainter::Antialiasing);
