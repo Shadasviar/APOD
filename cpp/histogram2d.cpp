@@ -21,6 +21,7 @@
 #include "ui_histogram2d.h"
 #include <Q3DBars>
 #include <QtDataVisualization>
+#include <QtDataVisualization/q3dtheme.h>
 
 Histogram2D::Histogram2D(QImage *img1, QImage *img2, QWidget *parent) :
     QFrame(parent),
@@ -76,6 +77,10 @@ Histogram2D::Histogram2D(QImage *img1, QImage *img2, QWidget *parent) :
     bars->setShadowQuality(QtDataVisualization::QAbstract3DGraph::ShadowQualitySoftMedium);
     bars->activeTheme()->setBackgroundEnabled(true);
     bars->setReflection(true);
+
+    bars->activeTheme()->setType(QtDataVisualization::Q3DTheme::ThemeUserDefined);
+    bars->activeTheme()->setBaseColors(QList<QColor>{QColor("steelblue")});
+    bars->activeTheme()->setSingleHighlightColor(QColor(100,250,250));
 
     data->reserve(_histTable.size());
     for (size_t i(0); i < _histTable.size(); ++i) {
