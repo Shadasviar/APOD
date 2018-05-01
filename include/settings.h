@@ -1,6 +1,6 @@
 /*
  * This file is part of HarbuzHIST18.
- * settings.cpp
+ * settings.h
  * Copyright (C) Uladzislau Harbuz 2018
  *
  * HarbuzHIST18 is free software: you can redistribute it and/or modify it
