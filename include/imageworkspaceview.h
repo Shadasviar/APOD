@@ -80,7 +80,7 @@ public:
     template <typename T>
     void setCurrentOperation(){
         T* item = new T(_image.getImage(), this);
-        doSpecifiedStuff<T>(item, &_image);
+        doSpecifiedStuff<T>(item, &_preview);
         _tools.setTool(item);
     }
 

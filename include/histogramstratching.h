@@ -38,6 +38,10 @@ public:
 
 private slots:
     void on_applyButton_clicked();
+    void sourceChanged(QImage* img);
+
+signals:
+    void sigSourceChanged(QImage*);
 
 private:
     Ui::HistogramStratching *ui;

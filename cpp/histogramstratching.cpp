@@ -23,12 +23,13 @@
 HistogramStratching::HistogramStratching(QImage *img, QWidget *parent) :
     IToolWidget(parent),
     ui(new Ui::HistogramStratching),
-    _histogram(std::make_unique<Histogram>(img, this)),
+    _histogram(std::make_unique<Histogram>(img, this, "Stratched image")),
     _image(img)
 {
     ui->setupUi(this);
     ui->histLayout->addWidget(_histogram.get());
     connect(_histogram.get(), &IToolWidget::showStatusMsg, this, &IToolWidget::showStatusMsg);
+    connect(this, &HistogramStratching::sigSourceChanged, _histogram.get(), &IToolWidget::sourceChanged);
 }
 
 HistogramStratching::~HistogramStratching()
@@ -60,10 +61,10 @@ void HistogramStratching::on_applyButton_clicked()
 
     emit hideProgressBar();
     emit setPreview(res);
-
     _image = res;
-    Histogram *newHist = new Histogram(res, this);
-    _histogram.reset(newHist);
-    ui->histLayout->addWidget(_histogram.get());
-    connect(_histogram.get(), &IToolWidget::showStatusMsg, this, &IToolWidget::showStatusMsg);
+}
+
+void HistogramStratching::sourceChanged(QImage *img)
+{
+    emit sigSourceChanged(img);
 }

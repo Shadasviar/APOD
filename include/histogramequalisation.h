@@ -41,6 +41,10 @@ public:
 
 private slots:
     void on_pushButton_clicked();
+    void sourceChanged(QImage* img);
+
+signals:
+    void sigSourseChanged(QImage*);
 
 private:
     Ui::HistogramEqualisation *ui;

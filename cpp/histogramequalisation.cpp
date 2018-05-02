@@ -22,13 +22,14 @@
 HistogramEqualisation::HistogramEqualisation(QImage *img, QWidget *parent) :
     IToolWidget(parent),
     ui(new Ui::HistogramEqualisation),
-    _histogram(std::make_unique<Histogram>(img, this)),
+    _histogram(std::make_unique<Histogram>(img, this, "Equalized image")),
     _image(img)
 {
     ui->setupUi(this);
     ui->histLayout->addWidget(_histogram.get());
 
     connect(_histogram.get(), &IToolWidget::showStatusMsg, this, &HistogramEqualisation::showStatusMsg);
+    connect(this, &HistogramEqualisation::sigSourseChanged, _histogram.get(), &IToolWidget::sourceChanged);
 
     _methodFunctions = {
         {
@@ -130,10 +131,10 @@ void HistogramEqualisation::on_pushButton_clicked()
 
     emit hideProgressBar();
     emit setPreview(res);
-
     _image = res;
-    Histogram* newHist = new Histogram(res, this);
-    _histogram.reset(newHist);
-    ui->histLayout->addWidget(_histogram.get());
-    connect(_histogram.get(), &IToolWidget::showStatusMsg, this, &HistogramEqualisation::showStatusMsg);
+}
+
+void HistogramEqualisation::sourceChanged(QImage *img)
+{
+    emit sigSourseChanged(img);
 }
