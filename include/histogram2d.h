@@ -25,6 +25,7 @@
 #include <memory>
 #include "settings.h"
 #include "itoolwidget.h"
+#include <QtDataVisualization>
 
 namespace Ui {
 class Histogram2D;
@@ -48,6 +49,8 @@ private:
     std::unique_ptr<QImage> _img2;
     std::vector<std::vector<int>> _histTable =
             std::vector<std::vector<int>>(maxLevel, std::vector<int>(maxLevel, 0));
+    QtDataVisualization::QBar3DSeries *_series;
+    void update();
 };
 
 #endif // HISTOGRAM2D_H

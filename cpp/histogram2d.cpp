@@ -20,37 +20,27 @@
 #include "histogram2d.h"
 #include "ui_histogram2d.h"
 #include <Q3DBars>
-#include <QtDataVisualization>
 #include <QtDataVisualization/q3dtheme.h>
 
 Histogram2D::Histogram2D(QImage *img1, QImage *img2, QWidget *parent) :
     IToolWidget(parent),
     ui(new Ui::Histogram2D),
     _img1(img1),
-    _img2(std::make_unique<QImage>())
+    _img2(std::make_unique<QImage>()),
+    _series(new QtDataVisualization::QBar3DSeries)
 {
     ui->setupUi(this);
     *_img2 = img2->scaled(_img1->size());
 
-    for (int i(0); i < _img1->width(); ++i) {
-        for (int j(0); j < _img1->height(); ++j) {
-            ++_histTable[Settings::grayCurrLvl(_img1->pixel(i,j))]
-                    [Settings::grayCurrLvl(_img2->pixel(i,j))];
-        }
-    }
-
     /* Set 3D plot properties */
 
     auto *bars = new QtDataVisualization::Q3DBars();
-    auto *series = new QtDataVisualization::QBar3DSeries;
-    series->setItemLabelFormat(
+    _series->setItemLabelFormat(
                 QStringLiteral("@valueLabel pixels goes from @rowIdx to @colIdx"));
-    bars->addSeries(series);
+    bars->addSeries(_series);
 
     auto *container = QWidget::createWindowContainer(bars);
 
-    auto *data = new QtDataVisualization::QBarDataArray;
-    QtDataVisualization::QBarDataRow *row;
 
     auto* firstImgAxis = new QtDataVisualization::QCategory3DAxis;
     firstImgAxis->setTitle("Original");
@@ -82,7 +72,43 @@ Histogram2D::Histogram2D(QImage *img1, QImage *img2, QWidget *parent) :
     bars->activeTheme()->setBaseColors(QList<QColor>{QColor("steelblue")});
     bars->activeTheme()->setSingleHighlightColor(QColor(100,250,250));
 
+    ui->histlayout->addWidget(container);
+
+    update();
+}
+
+Histogram2D::~Histogram2D()
+{
+    delete ui;
+}
+
+void Histogram2D::sourceChanged(QImage *img)
+{
+    if(_img1 == img) {
+        *_img2 = img->scaled(_img1->size());
+    } else {
+        _img1 = img;
+    }
+
+    update();
+}
+
+void Histogram2D::update()
+{
+    maxLevel = Settings::maxLevels;
+
+    _histTable = std::vector<std::vector<int>>(maxLevel, std::vector<int>(maxLevel, 0));
+    for (int i(0); i < _img1->width(); ++i) {
+        for (int j(0); j < _img1->height(); ++j) {
+            ++_histTable[Settings::grayCurrLvl(_img1->pixel(i,j))]
+                    [Settings::grayCurrLvl(_img2->pixel(i,j))];
+        }
+    }
+
+    auto *data = new QtDataVisualization::QBarDataArray;
     data->reserve(_histTable.size());
+    QtDataVisualization::QBarDataRow *row;
+
     for (size_t i(0); i < _histTable.size(); ++i) {
         row = new QtDataVisualization::QBarDataRow(_histTable[i].size());
         for (size_t j(0); j < _histTable[i].size(); ++j) {
@@ -90,12 +116,9 @@ Histogram2D::Histogram2D(QImage *img1, QImage *img2, QWidget *parent) :
         }
         data->append(row);
     }
-    series->dataProxy()->resetArray(data);
+    _series->dataProxy()->resetArray(data);
 
-    ui->histlayout->addWidget(container);
-
-    /* Set 2D table view */
-
+    /* 2D table update */
     ui->tableWidget->setRowCount(maxLevel);
     ui->tableWidget->setColumnCount(maxLevel);
     QStringList hLabels, vLabels;
@@ -109,14 +132,5 @@ Histogram2D::Histogram2D(QImage *img1, QImage *img2, QWidget *parent) :
     }
     ui->tableWidget->setHorizontalHeaderLabels(hLabels);
     ui->tableWidget->setVerticalHeaderLabels(vLabels);
-}
-
-Histogram2D::~Histogram2D()
-{
-    delete ui;
-}
-
-void Histogram2D::sourceChanged(QImage *img)
-{
 
 }
