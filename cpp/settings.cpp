@@ -22,9 +22,10 @@
 
 int Settings::maxLevels = 256;
 
-Settings::Settings(QWidget *parent) :
+Settings::Settings(QImage *img, QWidget *parent):
     IToolWidget(parent),
-    ui(new Ui::Settings)
+    ui(new Ui::Settings),
+    _image(img)
 {
     ui->setupUi(this);
     ui->horizontalSlider->setValue(maxLevels);
@@ -51,4 +52,16 @@ void Settings::on_horizontalSlider_valueChanged(int value)
 {
     maxLevels = value;
     ui->label_current_level->setText(QString::number(value));
+
+    auto* img = new QImage();
+    *img = _image->convertToFormat(QImage::Format_Grayscale8);
+    for (int i(0); i < img->width(); ++i)
+        for (int j(0); j < img->height(); ++j) {
+            int px = to256gray(
+                        grayCurrLvl(img->pixel(i, j))
+                        );
+            img->setPixel(i, j, qRgb(px, px, px));
+        }
+
+    emit setPreview(img);
 }

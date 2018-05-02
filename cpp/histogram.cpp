@@ -56,6 +56,7 @@ void Histogram::chartMousePressedAt(QPointF x)
 void Histogram::sourceChanged(QImage *img)
 {
     _image = img;
+    maxLevels = Settings::maxLevels;
     init();
 }
 

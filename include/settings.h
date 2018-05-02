@@ -32,8 +32,7 @@ class Settings : public IToolWidget
     Q_OBJECT
 
 public:
-    explicit Settings(QWidget *parent = 0);
-    Settings(QImage*, QWidget *parent= 0):Settings(parent){}
+    explicit Settings(QImage *img, QWidget *parent= 0);
 
     static int grayCurrLvl(QRgb rgb);
     static int to256gray(int x);
@@ -46,6 +45,7 @@ private slots:
 
 private:
     Ui::Settings *ui;
+    QImage* _image;
 };
 
 #endif // SETTINGS_H
