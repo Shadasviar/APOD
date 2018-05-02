@@ -24,12 +24,13 @@
 #include <array>
 #include <memory>
 #include "settings.h"
+#include "itoolwidget.h"
 
 namespace Ui {
 class Histogram2D;
 }
 
-class Histogram2D : public QFrame
+class Histogram2D : public IToolWidget
 {
     Q_OBJECT
 
@@ -37,6 +38,9 @@ public:
     explicit Histogram2D(QImage* img1, QImage* img2, QWidget *parent = 0);
     ~Histogram2D();
     int maxLevel = Settings::maxLevels;
+
+protected slots:
+    void sourceChanged(QImage* img);
 
 private:
     Ui::Histogram2D *ui;

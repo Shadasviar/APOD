@@ -24,7 +24,7 @@
 #include <QtDataVisualization/q3dtheme.h>
 
 Histogram2D::Histogram2D(QImage *img1, QImage *img2, QWidget *parent) :
-    QFrame(parent),
+    IToolWidget(parent),
     ui(new Ui::Histogram2D),
     _img1(img1),
     _img2(std::make_unique<QImage>())
@@ -114,4 +114,9 @@ Histogram2D::Histogram2D(QImage *img1, QImage *img2, QWidget *parent) :
 Histogram2D::~Histogram2D()
 {
     delete ui;
+}
+
+void Histogram2D::sourceChanged(QImage *img)
+{
+
 }

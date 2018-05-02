@@ -38,12 +38,19 @@ public:
     explicit Compare(QImage* img1, QImage* img2, QWidget *parent = 0);
     ~Compare();
 
+protected slots:
+    void sourceChanged(QImage* img);
+
+signals:
+    void sigSuorceChanged(QImage*);
+
 private:
     Ui::Compare *ui;
     QImage* _image1, *_image2;
     ScalableImageView _imageView;
     std::unique_ptr<Histogram> _hist;
     QSplitter* _splitter;
+    void update();
 };
 
 #endif // COMPARE_H

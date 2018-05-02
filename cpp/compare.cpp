@@ -37,7 +37,7 @@ Compare::Compare(QImage *img1, QImage *img2, QWidget *parent) :
 
     QImage* diffImg = diffop.reduceImages(images,
                                       BinaryImageOperation::operations["Difference"], _image1);
-    Histogram* hist = new Histogram(diffImg);
+    Histogram* hist = new Histogram(diffImg, this, "Original and processed difference");
     ui->horizontalLayout->addWidget(_splitter);
     _hist.reset(hist);
     _imageView = ScalableImageView(diffImg);
@@ -46,9 +46,31 @@ Compare::Compare(QImage *img1, QImage *img2, QWidget *parent) :
     _splitter->addWidget(ui->imageFrame);
     _splitter->addWidget(ui->histFrame);
     connect(_hist.get(), &Histogram::showStatusMsg, this, &Compare::showStatusMsg);
+    connect(&_imageView, &ScalableImageView::imageChanged, _hist.get(), &IToolWidget::sourceChanged);
 }
 
 Compare::~Compare()
 {
     delete ui;
+}
+
+void Compare::sourceChanged(QImage *img)
+{
+    if (_image2 == img) {
+        _image1 = img;
+    } else {
+        _image2 = img;
+    }
+    update();
+}
+
+void Compare::update()
+{
+    BinaryImageOperation diffop(_image1, this);
+
+    std::list<std::unique_ptr<QImage>> images;
+    images.push_back(std::make_unique<QImage>(_image2->copy()));
+    QImage* diffImg = diffop.reduceImages(images,
+                                      BinaryImageOperation::operations["Difference"], _image1);
+    _imageView = ScalableImageView(diffImg);
 }
