@@ -60,18 +60,27 @@ private:
 protected slots:
     void modifyPreview(QImage* img);
 
+signals:
+    void signalPreviewChange(QImage*);
+
 public:
     template <typename T>
     void addToolsAreaItem(){
-        T* item = new T(_preview.getImage() ? _preview.getImage() : _image.getImage(), this);
-        doSpecifiedStuff<T>(item);
+        T* item;
+        if(_preview.getImage()) {
+            item = new T(_preview.getImage(), this, "Processed image");
+            doSpecifiedStuff<T>(item, &_preview);
+        } else {
+            item = new T(_image.getImage(), this, "Original image");
+            doSpecifiedStuff<T>(item, &_image);
+        }
         _tools.addInfoTool(item);
     }
 
     template <typename T>
     void setCurrentOperation(){
         T* item = new T(_image.getImage(), this);
-        doSpecifiedStuff<T>(item);
+        doSpecifiedStuff<T>(item, &_image);
         _tools.setTool(item);
     }
 
@@ -80,19 +89,20 @@ public:
         _tools.deleteTool<T>();
     }
 
-    template<typename T> void doSpecifiedStuff(T* x){
+    template<typename T> void doSpecifiedStuff(T* x, ScalableImageView* sigSrc){
         // Do common for generic and specialization
         if (std::is_base_of<IToolWidget, T>()) {
-            doSpecifiedStuff((IToolWidget*)x);
+            doSpecifiedStuff((IToolWidget*)x, sigSrc);
             return;
         }
         // Do generic only
     }
-    void doSpecifiedStuff(IToolWidget* obj) {
-        connect(obj, &IToolWidget::setPreview, this, &ImageWorkspaceView::modifyPreview);
-        connect(obj, &IToolWidget::setProgressBar, this, &ImageWorkspaceView::setProgressBar);
-        connect(obj, &IToolWidget::hideProgressBar, this, &ImageWorkspaceView::hideProgressBar);
-        connect(obj, &IToolWidget::showStatusMsg, this, &ImageWorkspaceView::showStatusMsg);
+    void doSpecifiedStuff(IToolWidget* obj, ScalableImageView* sigSrc) {
+        connect(obj, &IToolWidget::setPreview, this, &ImageWorkspaceView::modifyPreview, Qt::UniqueConnection);
+        connect(obj, &IToolWidget::setProgressBar, this, &ImageWorkspaceView::setProgressBar, Qt::UniqueConnection);
+        connect(obj, &IToolWidget::hideProgressBar, this, &ImageWorkspaceView::hideProgressBar, Qt::UniqueConnection);
+        connect(obj, &IToolWidget::showStatusMsg, this, &ImageWorkspaceView::showStatusMsg, Qt::UniqueConnection);
+        connect(sigSrc, &ScalableImageView::imageChanged, obj, &IToolWidget::sourceChanged, Qt::UniqueConnection);
     }
 };
 
@@ -105,7 +115,8 @@ void inline ImageWorkspaceView::addToolsAreaItem<Histogram2D>(){
         return;
     }
     auto* item = new Histogram2D(_image.getImage(), _preview.getImage(), this);
-    doSpecifiedStuff(item);
+    doSpecifiedStuff(item, &_image);
+    doSpecifiedStuff(item, &_preview);
     _tools.addInfoTool(item);
 }
 
@@ -118,7 +129,8 @@ void inline ImageWorkspaceView::addToolsAreaItem<Compare>() {
         return;
     }
     Compare* item = new Compare(_image.getImage(), _preview.getImage(), this);
-    doSpecifiedStuff<Compare>(item);
+    doSpecifiedStuff<Compare>(item, &_image);
+    doSpecifiedStuff<Compare>(item, &_preview);
     _tools.addInfoTool(item);
 }
 

@@ -43,6 +43,9 @@ public:
 private slots:
     void on_horizontalSlider_valueChanged(int value);
 
+signals:
+    void imageChanged(QImage*);
+
 private:
     Ui::ScalableImageView *ui;
     QImage* _image = nullptr;

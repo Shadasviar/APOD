@@ -67,4 +67,5 @@ void ImageWorkspaceView::modifyPreview(QImage *img)
         _imageSplitter->addWidget(&_preview);
     }
     _preview = ScalableImageView(img, this);
+    emit signalPreviewChange(img);
 }

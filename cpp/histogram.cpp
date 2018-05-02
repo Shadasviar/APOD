@@ -20,44 +20,15 @@
 #include "ui_histogram.h"
 #include <utility>
 
-Histogram::Histogram(QImage *img, QWidget *parent):
+Histogram::Histogram(QImage *img, QWidget *parent, QString title):
     IToolWidget(parent),
-    _histSet(std::make_unique<QBarSet>("Histogram")),
     _image(img),
     _chartView(std::make_unique<HistView>(this)),
-    ui(new Ui::Histogram)
+    ui(new Ui::Histogram),
+    _title(title + " histogram")
 {
     ui->setupUi(this);
-
-    connect(_chartView.get(), &HistView::mouseMovedTo, this, &Histogram::chartMouseMovedTo);
-    connect(_chartView.get(), &HistView::mousePressedAt, this, &Histogram::chartMousePressedAt);
-
-    for(int i(0); i < _image->width(); ++i){
-        for (int j(0); j < _image->height(); ++j) {
-            ++_hist[Settings::grayCurrLvl(_image->pixel(i,j))];
-        }
-    }
-
-    for (auto& lvl: _hist) {
-        *_histSet << lvl;
-    }
-
-    auto* barseries = new QBarSeries();
-    barseries->append(_histSet.get());
-    barseries->setBarWidth(1);
-
-    auto* chart = new QChart();
-    chart->legend()->hide();
-    chart->setTitle("Histogram");
-    chart->addSeries(barseries);
-    chart->setContentsMargins(-11,-11,-11,-11);
-    chart->setAnimationOptions(QChart::AnimationOptions(QChart::AllAnimations));
-
-    _chartView->setChart(chart);
-    _chartView->setRenderHint(QPainter::Antialiasing);
-
-    ui->histLayout->addWidget(_chartView.get());
-    _chartView->setMouseTracking(true);
+    init();
 }
 
 void Histogram::chartMouseMovedTo(QPointF x)
@@ -80,6 +51,49 @@ void Histogram::chartMousePressedAt(QPointF x)
         std::swap(_lowBound, _upBound);
     if (_lowBound < 0) _lowBound = 0;
     if (_upBound > maxLevels) _upBound = maxLevels - 1;
+}
+
+void Histogram::sourceChanged(QImage *img)
+{
+    _image = img;
+    init();
+}
+
+void Histogram::init()
+{
+    connect(_chartView.get(), &HistView::mouseMovedTo, this, &Histogram::chartMouseMovedTo);
+    connect(_chartView.get(), &HistView::mousePressedAt, this, &Histogram::chartMousePressedAt);
+
+    _hist.clear();
+    _hist.resize(maxLevels);
+    for(int i(0); i < _image->width(); ++i){
+        for (int j(0); j < _image->height(); ++j) {
+            ++_hist[Settings::grayCurrLvl(_image->pixel(i,j))];
+        }
+    }
+
+    auto* _histSet = new QBarSet("Grayscale");
+
+    for (auto& lvl: _hist) {
+        *_histSet << lvl;
+    }
+
+    auto* barseries = new QBarSeries();
+    barseries->append(_histSet);
+    barseries->setBarWidth(1);
+
+    auto* chart = new QChart();
+    chart->legend()->hide();
+    chart->setTitle(_title);
+    chart->addSeries(barseries);
+    chart->setContentsMargins(-11,-11,-11,-11);
+    chart->setAnimationOptions(QChart::AnimationOptions(QChart::AllAnimations));
+
+    _chartView->setChart(chart);
+    _chartView->setRenderHint(QPainter::Antialiasing);
+
+    ui->histLayout->addWidget(_chartView.get());
+    _chartView->setMouseTracking(true);
 }
 
 Histogram::~Histogram()

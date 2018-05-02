@@ -55,7 +55,7 @@ class Histogram : public IToolWidget
     Q_OBJECT
 
 public:
-    explicit Histogram(QImage* img, QWidget *parent = 0);
+    explicit Histogram(QImage* img, QWidget *parent = 0, QString title = "");
     ~Histogram();
 
     int maxLevels=Settings::maxLevels;
@@ -65,7 +65,6 @@ public:
 
 protected:
     std::vector<double> _hist = std::vector<double>(maxLevels, 0);
-    std::unique_ptr<QBarSet> _histSet;
     QImage* _image;
     std::unique_ptr<HistView> _chartView;
 
@@ -75,10 +74,13 @@ protected:
 protected slots:
     void chartMouseMovedTo(QPointF x);
     void chartMousePressedAt(QPointF x);
+    void sourceChanged(QImage* img);
 
 private:
     Ui::Histogram *ui;
     bool _lastSetLower = false;
+    QString _title = "";
+    void init();
 };
 
 #endif // HISTOGRAM_H

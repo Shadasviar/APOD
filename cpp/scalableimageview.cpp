@@ -45,6 +45,7 @@ ScalableImageView &ScalableImageView::operator=(ScalableImageView &&rhs)
     _scene.setSceneRect(_image->rect());
     ui->graphicsView->setScene(&_scene);
     emit on_horizontalSlider_valueChanged(ui->horizontalSlider->value());
+    emit imageChanged(_image);
 
     return *this;
 }
