@@ -139,32 +139,59 @@ bool Histogram2D::eventFilter(QObject *watched, QEvent *event)
         /* source rows */
         if (ui->tableWidget->selectedRanges().size() <= 0) return false;
         auto selected = ui->tableWidget->selectedRanges()[0];
+        int bottom = selected.bottomRow();
+        int top = selected.topRow();
         auto* dropEvent = (QDropEvent*)event;
         /* destination row */
+
         if (!ui->tableWidget->itemAt(dropEvent->pos()))
             return false;
         auto dropped = ui->tableWidget->itemAt(dropEvent->pos())->row();
 
-        QImage* res = new QImage();
-        *res = _img1->convertToFormat(QImage::Format_Grayscale8);
-
-        for (int i(0); i < _img1->width(); ++i) {
-            emit setProgressBar((100./res->width())*i);
-            for (int j(0); j < _img1->height(); ++j) {
-                auto px = Settings::grayCurrLvl(_img2->pixel(i,j));
-                if (px <= selected.bottomRow()
-                        && px >= selected.topRow()) {
-                    auto dpx = Settings::to256gray(dropped);
-                    res->setPixel(i,j, qRgb(dpx, dpx, dpx));
-                } else {
-                    res->setPixel(i, j, _img2->pixel(i,j));
-                }
-            }
+        if(ui->safeModeBox->isChecked()) {
+            if (!(bottom >= dropped && top <= maxLevel/2) &&
+                !(top <= dropped && bottom >= maxLevel/2))
+                return false;
+        }
+        if (ui->autoBox->isChecked()) {
+            bottom = maxLevel - 1;
+            top = maxLevel / 2;
+            dropped = maxLevel - 1;
         }
 
-        emit hideProgressBar();
-        emit setPreview(res);
+        expandHist(bottom, top, dropped);
     }
     return false;
 }
 
+void Histogram2D::expandHist(int bottom, int top, int dropped)
+{
+    QImage* res = new QImage();
+    *res = _img1->convertToFormat(QImage::Format_Grayscale8);
+
+    for (int i(0); i < _img1->width(); ++i) {
+        emit setProgressBar((100./res->width())*i);
+        for (int j(0); j < _img1->height(); ++j) {
+            auto px = Settings::grayCurrLvl(_img2->pixel(i,j));
+            if (px <= bottom
+                    && px >= top) {
+                auto dpx = Settings::to256gray(dropped);
+                res->setPixel(i,j, qRgb(dpx, dpx, dpx));
+            } else {
+                res->setPixel(i, j, _img2->pixel(i,j));
+            }
+        }
+    }
+
+    emit hideProgressBar();
+    emit setPreview(res);
+}
+
+
+void Histogram2D::on_autoBox_toggled(bool checked)
+{
+    if (checked) {
+        expandHist(maxLevel-1, maxLevel/2, maxLevel-1);
+        expandHist(maxLevel/2, 0, 0);
+    }
+}

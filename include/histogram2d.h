@@ -43,6 +43,9 @@ public:
 protected slots:
     void sourceChanged(QImage* img);
 
+private slots:
+    void on_autoBox_toggled(bool checked);
+
 private:
     Ui::Histogram2D *ui;
     QImage* _img1 = nullptr;
@@ -52,6 +55,7 @@ private:
     QtDataVisualization::QBar3DSeries *_series;
     void update();
     bool eventFilter(QObject *watched, QEvent *event);
+    void expandHist(int bottom, int top, int dropped);
 };
 
 #endif // HISTOGRAM2D_H
