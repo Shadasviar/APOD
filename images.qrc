@@ -24,5 +24,6 @@
         <file>Resources/settings.png</file>
         <file>Resources/compare.png</file>
         <file>Resources/edit-tools.png</file>
+        <file>Resources/information.png</file>
     </qresource>
 </RCC>

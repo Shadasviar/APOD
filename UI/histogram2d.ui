@@ -71,7 +71,7 @@
    <item row="0" column="1">
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <property name="elideMode">
       <enum>Qt::ElideNone</enum>
@@ -188,35 +188,18 @@
             <property name="title">
              <string>Rows moving mode</string>
             </property>
-            <layout class="QVBoxLayout" name="verticalLayout_2">
-             <item>
-              <widget class="QRadioButton" name="freeMoveBox">
+            <layout class="QGridLayout" name="gridLayout_2">
+             <item row="5" column="0">
+              <widget class="QLabel" name="label_2">
                <property name="text">
-                <string>&amp;Free move</string>
+                <string/>
                </property>
-               <property name="checked">
-                <bool>true</bool>
+               <property name="pixmap">
+                <pixmap resource="../images.qrc">:/Resources/information.png</pixmap>
                </property>
               </widget>
              </item>
-             <item>
-              <widget class="QRadioButton" name="safeModeBox">
-               <property name="text">
-                <string>Safe &amp;move</string>
-               </property>
-               <property name="checked">
-                <bool>false</bool>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QRadioButton" name="autoBox">
-               <property name="text">
-                <string>Automat&amp;ic</string>
-               </property>
-              </widget>
-             </item>
-             <item>
+             <item row="6" column="0" colspan="2">
               <spacer name="verticalSpacer">
                <property name="orientation">
                 <enum>Qt::Vertical</enum>
@@ -228,6 +211,56 @@
                 </size>
                </property>
               </spacer>
+             </item>
+             <item row="5" column="1">
+              <widget class="QLabel" name="label">
+               <property name="text">
+                <string>Drag&amp;drop rows in the table</string>
+               </property>
+               <property name="textFormat">
+                <enum>Qt::AutoText</enum>
+               </property>
+               <property name="scaledContents">
+                <bool>false</bool>
+               </property>
+               <property name="wordWrap">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0" colspan="2">
+              <widget class="QRadioButton" name="safeModeBox">
+               <property name="text">
+                <string>Safe &amp;move</string>
+               </property>
+               <property name="checked">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="0" colspan="2">
+              <widget class="QRadioButton" name="freeMoveBox">
+               <property name="text">
+                <string>&amp;Free move</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0" colspan="2">
+              <widget class="QRadioButton" name="autoBox">
+               <property name="text">
+                <string>Automat&amp;ic</string>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="0" colspan="2">
+              <widget class="Line" name="line">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+              </widget>
              </item>
             </layout>
            </widget>
@@ -246,6 +279,8 @@
    </property>
   </action>
  </widget>
- <resources/>
+ <resources>
+  <include location="../images.qrc"/>
+ </resources>
  <connections/>
 </ui>
