@@ -51,6 +51,7 @@ private:
             std::vector<std::vector<int>>(maxLevel, std::vector<int>(maxLevel, 0));
     QtDataVisualization::QBar3DSeries *_series;
     void update();
+    bool eventFilter(QObject *watched, QEvent *event);
 };
 
 #endif // HISTOGRAM2D_H

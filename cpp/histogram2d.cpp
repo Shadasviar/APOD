@@ -73,6 +73,7 @@ Histogram2D::Histogram2D(QImage *img1, QImage *img2, QWidget *parent) :
     bars->activeTheme()->setSingleHighlightColor(QColor(100,250,250));
 
     ui->histlayout->addWidget(container);
+    ui->tableWidget->viewport()->installEventFilter(this);
 
     update();
 }
@@ -84,11 +85,7 @@ Histogram2D::~Histogram2D()
 
 void Histogram2D::sourceChanged(QImage *img)
 {
-    if(_img1 == img) {
-        *_img2 = img->scaled(_img1->size());
-    } else {
-        _img1 = img;
-    }
+    *_img2 = img->scaled(_img1->size());
 
     update();
 }
@@ -126,7 +123,7 @@ void Histogram2D::update()
         hLabels << QString::number(i);
         for (size_t j(0); j < _histTable[i].size(); ++j) {
             vLabels << QString::number(j);
-            ui->tableWidget->setItem(i, j, new QTableWidgetItem(QString::number(_histTable[i][j])));
+            ui->tableWidget->setItem(i, j, new QTableWidgetItem(QString::number(_histTable[j][i])));
             ui->tableWidget->setColumnWidth(i, 55);
         }
     }
@@ -134,3 +131,40 @@ void Histogram2D::update()
     ui->tableWidget->setVerticalHeaderLabels(vLabels);
 
 }
+
+bool Histogram2D::eventFilter(QObject *watched, QEvent *event)
+{
+    if (watched == ui->tableWidget->viewport()
+            && event->type() == QEvent::Drop) {
+        /* source rows */
+        if (ui->tableWidget->selectedRanges().size() <= 0) return false;
+        auto selected = ui->tableWidget->selectedRanges()[0];
+        auto* dropEvent = (QDropEvent*)event;
+        /* destination row */
+        if (!ui->tableWidget->itemAt(dropEvent->pos()))
+            return false;
+        auto dropped = ui->tableWidget->itemAt(dropEvent->pos())->row();
+
+        QImage* res = new QImage();
+        *res = _img1->convertToFormat(QImage::Format_Grayscale8);
+
+        for (int i(0); i < _img1->width(); ++i) {
+            emit setProgressBar((100./res->width())*i);
+            for (int j(0); j < _img1->height(); ++j) {
+                auto px = Settings::grayCurrLvl(_img2->pixel(i,j));
+                if (px <= selected.bottomRow()
+                        && px >= selected.topRow()) {
+                    auto dpx = Settings::to256gray(dropped);
+                    res->setPixel(i,j, qRgb(dpx, dpx, dpx));
+                } else {
+                    res->setPixel(i, j, _img2->pixel(i,j));
+                }
+            }
+        }
+
+        emit hideProgressBar();
+        emit setPreview(res);
+    }
+    return false;
+}
+
