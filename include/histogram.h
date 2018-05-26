@@ -80,6 +80,7 @@ private:
     Ui::Histogram *ui;
     bool _lastSetLower = false;
     QString _title = "";
+    int _n_cols = 0;
     void init();
 };
 

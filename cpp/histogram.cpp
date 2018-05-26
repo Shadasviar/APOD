@@ -34,9 +34,12 @@ Histogram::Histogram(QImage *img, QWidget *parent, QString title):
 void Histogram::chartMouseMovedTo(QPointF x)
 {
     int x_val = _chartView->chart()->mapToValue(x).x();
-    emit showStatusMsg(QString("X: %1\t Y: %2").arg(x_val).arg(x_val >= 0 && x_val < maxLevels
-                                                             ?(int)_hist[x_val]
-                                                              : 0));
+    emit showStatusMsg(QString("%3 columns; \tX: %1\t Y: %2")
+                       .arg(x_val)
+                       .arg(x_val >= 0 && x_val < maxLevels
+                       ?(int)_hist[x_val]
+                       : 0)
+                       .arg(_n_cols));
 }
 
 void Histogram::chartMousePressedAt(QPointF x)
@@ -67,10 +70,15 @@ void Histogram::init()
 
     _hist.clear();
     _hist.resize(maxLevels);
-    for(int i(0); i < _image->width(); ++i){
+    for (int i(0); i < _image->width(); ++i) {
         for (int j(0); j < _image->height(); ++j) {
             ++_hist[Settings::grayCurrLvl(_image->pixel(i,j))];
         }
+    }
+
+    _n_cols = 0;
+    for(int i(0); i < maxLevels; ++i) {
+        if (_hist[i] > 0) ++_n_cols;
     }
 
     auto* _histSet = new QBarSet("Grayscale");
