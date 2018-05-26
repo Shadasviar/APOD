@@ -37,6 +37,18 @@ ScalableImageView::ScalableImageView(QImage* image, QWidget *parent) :
     ui->graphicsView->setScene(&_scene);
 }
 
+ScalableImageView::ScalableImageView(ScalableImageView &&rhs) :
+    ScalableImageView(rhs.parentWidget())
+{
+    qSwap(_image, rhs._image);
+    _scene.clear();
+    _scene.addPixmap(QPixmap::fromImage(*_image));
+    _scene.setSceneRect(_image->rect());
+    ui->graphicsView->setScene(&_scene);
+    emit on_horizontalSlider_valueChanged(ui->horizontalSlider->value());
+    emit imageChanged(_image);
+}
+
 ScalableImageView &ScalableImageView::operator=(ScalableImageView &&rhs)
 {
     qSwap(_image, rhs._image);

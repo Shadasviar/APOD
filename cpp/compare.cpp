@@ -32,8 +32,10 @@ Compare::Compare(QImage *img1, QImage *img2, QWidget *parent) :
     ui->setupUi(this);
     BinaryImageOperation diffop(_image1, this);
 
-    std::list<std::unique_ptr<QImage>> images;
-    images.push_back(std::make_unique<QImage>(_image2->copy()));
+    std::list<ScalableImageView> images;
+    auto* tmpImg = new QImage;
+    *tmpImg = _image2->copy();
+    images.push_back(ScalableImageView(tmpImg));
 
     QImage* diffImg = diffop.reduceImages(images,
                                       BinaryImageOperation::operations["Difference"], _image1);
@@ -68,8 +70,11 @@ void Compare::update()
 {
     BinaryImageOperation diffop(_image1, this);
 
-    std::list<std::unique_ptr<QImage>> images;
-    images.push_back(std::make_unique<QImage>(_image2->copy()));
+    std::list<ScalableImageView> images;
+    auto* tmpImg = new QImage;
+    *tmpImg = _image2->copy();
+    images.push_back(ScalableImageView(tmpImg));
+
     QImage* diffImg = diffop.reduceImages(images,
                                       BinaryImageOperation::operations["Difference"], _image1);
     _imageView = ScalableImageView(diffImg);

@@ -66,7 +66,7 @@
      <x>0</x>
      <y>0</y>
      <width>873</width>
-     <height>29</height>
+     <height>36</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -79,24 +79,24 @@
    </widget>
    <widget class="QMenu" name="menuEdit">
     <property name="title">
-     <string>Operations</string>
+     <string>Operatio&amp;ns</string>
     </property>
     <widget class="QMenu" name="menuHistogram">
      <property name="title">
-      <string>Histogram</string>
+      <string>&amp;Histogram</string>
      </property>
      <addaction name="actionHistogram_stratching"/>
      <addaction name="actionHistogram_equalization"/>
     </widget>
     <widget class="QMenu" name="menuType_Here">
      <property name="title">
-      <string>Filtering</string>
+      <string>&amp;Filtering</string>
      </property>
      <addaction name="actionConvolution_matrix"/>
     </widget>
     <widget class="QMenu" name="menuUniversal_Point_Operation">
      <property name="title">
-      <string>Universal Point Operation</string>
+      <string>&amp;Universal Point Operation</string>
      </property>
      <addaction name="actionSingle_Argument_Operation"/>
      <addaction name="actionMultiple_arguments_operation"/>
@@ -107,7 +107,7 @@
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
-     <string>View</string>
+     <string>&amp;View</string>
     </property>
     <addaction name="actionHistogram"/>
     <addaction name="actionHistogram_2D"/>
@@ -116,17 +116,17 @@
    </widget>
    <widget class="QMenu" name="menuInfo">
     <property name="title">
-     <string>Info</string>
+     <string>&amp;Info</string>
     </property>
     <addaction name="actionAbout_program"/>
    </widget>
    <widget class="QMenu" name="menuSettings">
     <property name="title">
-     <string>Settings</string>
+     <string>S&amp;ettings</string>
     </property>
     <widget class="QMenu" name="menuMenu_bar">
      <property name="title">
-      <string>Menu bar</string>
+      <string>&amp;Menu bar</string>
      </property>
      <addaction name="actionText_only"/>
      <addaction name="actionIcons_only"/>
@@ -165,9 +165,9 @@
    <addaction name="actionHistogram"/>
    <addaction name="actionHistogram_2D"/>
    <addaction name="actionCompare"/>
+   <addaction name="actionHistogram_stratching"/>
    <addaction name="actionActive_widget_of_operation_on_image"/>
    <addaction name="separator"/>
-   <addaction name="actionHistogram_stratching"/>
    <addaction name="actionHistogram_equalization"/>
    <addaction name="separator"/>
    <addaction name="actionSingle_Argument_Operation"/>
@@ -185,7 +185,7 @@
     </iconset>
    </property>
    <property name="text">
-    <string>Open</string>
+    <string>&amp;Open</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+O</string>
@@ -197,7 +197,7 @@
      <normaloff>:/Resources/exit.png</normaloff>:/Resources/exit.png</iconset>
    </property>
    <property name="text">
-    <string>Exit</string>
+    <string>&amp;Exit</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+E</string>
@@ -212,7 +212,7 @@
      <normaloff>:/Resources/Histogram-512.png</normaloff>:/Resources/Histogram-512.png</iconset>
    </property>
    <property name="text">
-    <string>Histogram</string>
+    <string>&amp;Histogram</string>
    </property>
    <property name="toolTip">
     <string>Histogram is function which show how much pixels of image has bright's level of value on X asix</string>
@@ -222,12 +222,15 @@
    </property>
   </action>
   <action name="actionHistogram_stratching">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="icon">
     <iconset resource="../images.qrc">
      <normaloff>:/Resources/expand.png</normaloff>:/Resources/expand.png</iconset>
    </property>
    <property name="text">
-    <string>Histogram stratching</string>
+    <string>&amp;Histogram stratching</string>
    </property>
   </action>
   <action name="actionHistogram_equalization">
@@ -236,7 +239,7 @@
      <normaloff>:/Resources/Histogrameq.png</normaloff>:/Resources/Histogrameq.png</iconset>
    </property>
    <property name="text">
-    <string>Histogram equalization</string>
+    <string>Histogram &amp;equalization</string>
    </property>
   </action>
   <action name="actionSingle_Argument_Operation">
@@ -245,7 +248,7 @@
      <normaloff>:/Resources/Line-Chart-512.png</normaloff>:/Resources/Line-Chart-512.png</iconset>
    </property>
    <property name="text">
-    <string>Single argument operation</string>
+    <string>&amp;Single argument operation</string>
    </property>
    <property name="toolTip">
     <string>Editable line of brigthness level mutation</string>
@@ -258,7 +261,7 @@
     </iconset>
    </property>
    <property name="text">
-    <string>Multiple arguments operation</string>
+    <string>&amp;Multiple arguments operation</string>
    </property>
    <property name="toolTip">
     <string>Set of operations on one pixel from one or more images</string>
@@ -266,22 +269,22 @@
   </action>
   <action name="actionText_only">
    <property name="text">
-    <string>Text only</string>
+    <string>&amp;Text only</string>
    </property>
   </action>
   <action name="actionIcons_only">
    <property name="text">
-    <string>Icons only</string>
+    <string>&amp;Icons only</string>
    </property>
   </action>
   <action name="actionText_under_icons">
    <property name="text">
-    <string>Text under icons</string>
+    <string>Text &amp;under icons</string>
    </property>
   </action>
   <action name="actionText_beside_icons">
    <property name="text">
-    <string>Text beside icons</string>
+    <string>Text &amp;beside icons</string>
    </property>
   </action>
   <action name="actionConvolution_matrix">
@@ -291,7 +294,7 @@
     </iconset>
    </property>
    <property name="text">
-    <string>Filters </string>
+    <string>&amp;Filters </string>
    </property>
    <property name="toolTip">
     <string>Convolution matrix based filters</string>
@@ -302,7 +305,7 @@
   </action>
   <action name="actionAbout_program">
    <property name="text">
-    <string>About program</string>
+    <string>&amp;About program</string>
    </property>
   </action>
   <action name="actionHistogram_2D">
@@ -314,7 +317,7 @@
      <normaloff>:/Resources/3d.png</normaloff>:/Resources/3d.png</iconset>
    </property>
    <property name="text">
-    <string>Histogram 2D</string>
+    <string>Histogram &amp;2D</string>
    </property>
   </action>
   <action name="actionActive_widget_of_operation_on_image">
@@ -326,7 +329,7 @@
      <normaloff>:/Resources/creative-process.png</normaloff>:/Resources/creative-process.png</iconset>
    </property>
    <property name="text">
-    <string>Active widget of operation on image</string>
+    <string>&amp;Active widget of operation on image</string>
    </property>
   </action>
   <action name="actionSave">
@@ -335,7 +338,7 @@
      <normaloff>:/Resources/save-icon-silhouette.png</normaloff>:/Resources/save-icon-silhouette.png</iconset>
    </property>
    <property name="text">
-    <string>Save as</string>
+    <string>&amp;Save as</string>
    </property>
    <property name="toolTip">
     <string>Save image as</string>
@@ -350,7 +353,7 @@
      <normaloff>:/Resources/settings.png</normaloff>:/Resources/settings.png</iconset>
    </property>
    <property name="text">
-    <string>Settings</string>
+    <string>&amp;Settings</string>
    </property>
   </action>
   <action name="actionCompare">
@@ -363,7 +366,7 @@
     </iconset>
    </property>
    <property name="text">
-    <string>Compare</string>
+    <string>&amp;Compare</string>
    </property>
   </action>
  </widget>

@@ -35,6 +35,7 @@ public:
     ScalableImageView(QWidget* parent = nullptr);
     explicit ScalableImageView(QImage* image, QWidget *parent = 0);
 
+    ScalableImageView(ScalableImageView&& rhs);
     ScalableImageView& operator=(ScalableImageView&& rhs);
 
     QImage* getImage() {return _image;}

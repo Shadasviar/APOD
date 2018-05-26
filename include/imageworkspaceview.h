@@ -26,6 +26,7 @@
 #include "itoolwidget.h"
 #include "compare.h"
 #include "histogram2d.h"
+#include "histogramstratching.h"
 
 #define TWO_IMAGE_REQUIRED_ERROR_STR "You must have two images for\
     this operation (image and preview of it). \
@@ -117,6 +118,16 @@ void inline ImageWorkspaceView::addToolsAreaItem<Histogram2D>(){
     auto* item = new Histogram2D(_image.getImage(), _preview.getImage(), this);
     doSpecifiedStuff(item, &_image);
     doSpecifiedStuff(item, &_preview);
+    _tools.addInfoTool(item);
+}
+
+template <>
+void inline ImageWorkspaceView::addToolsAreaItem<HistogramStratching>(){
+    HistogramStratching* item;
+    if(_image.getImage()) {
+        item = new HistogramStratching(_image.getImage(), this, "Original image");
+        doSpecifiedStuff<HistogramStratching>(item, &_image);
+    } return
     _tools.addInfoTool(item);
 }
 

@@ -29,6 +29,7 @@
 #include <list>
 #include <QMap>
 #include <functional>
+#include "scalableimageview.h"
 
 namespace Ui {
 class BinaryImageOperation;
@@ -41,7 +42,7 @@ class BinaryImageOperation : public IToolWidget
 public:
     explicit BinaryImageOperation(QImage *img, QWidget *parent = 0);
     ~BinaryImageOperation();
-    QImage* reduceImages(const std::list<std::unique_ptr<QImage>>& images,
+    QImage* reduceImages(std::list<ScalableImageView> &images,
                                 std::function<uint8_t(const uint8_t, const uint8_t)> op,
                                 QImage *startImg);
 
@@ -55,8 +56,7 @@ private slots:
 
 private:
     Ui::BinaryImageOperation *ui;
-    QList<QGraphicsView*> _views;
-    std::list<std::unique_ptr<QImage>> _images;
+    std::list<ScalableImageView> _images;
     QFileInfo _lastOpenedDir;
     QImage* _image;
     void addImage();

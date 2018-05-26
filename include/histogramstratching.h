@@ -33,7 +33,7 @@ class HistogramStratching : public IToolWidget
     Q_OBJECT
 
 public:
-    explicit HistogramStratching(QImage* img, QWidget *parent = 0);
+    explicit HistogramStratching(QImage* img, QWidget *parent = 0, QString title = "Stratching");
     ~HistogramStratching();
 
 private slots:

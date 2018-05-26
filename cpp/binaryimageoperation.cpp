@@ -45,8 +45,7 @@ BinaryImageOperation::~BinaryImageOperation()
     delete ui;
 }
 
-QImage *BinaryImageOperation::reduceImages(
-        const std::list<std::unique_ptr<QImage> > &images,
+QImage *BinaryImageOperation::reduceImages(std::list<ScalableImageView> &images,
         std::function<uint8_t(const uint8_t, const uint8_t)> op,
         QImage* startImg)
 {
@@ -54,7 +53,7 @@ QImage *BinaryImageOperation::reduceImages(
     *accumulator = startImg->convertToFormat(QImage::Format_Grayscale8);
     QImage buf;
     for (auto& image : images) {
-        buf = image->scaled(accumulator->size())
+        buf = image.getImage()->scaled(accumulator->size())
                 .convertToFormat(QImage::Format_Grayscale8);
         uint8_t px(0);
         for (int i(0); i < accumulator->width(); ++i) {
@@ -83,11 +82,9 @@ void BinaryImageOperation::addImage()
     auto* scene = new QGraphicsScene();
     scene->addPixmap(QPixmap::fromImage(*img));
     scene->setSceneRect(img->rect());
-    _images.push_back(std::make_unique<QImage>());
-    _images.back().reset(img);
+    _images.push_back(ScalableImageView(img, this));
 
-    _views.push_back(new QGraphicsView(scene, this));
-    ui->imagesFrameLayout->addWidget(_views.back());
+    ui->imagesFrameLayout->addWidget(&_images.back());
 }
 
 
@@ -98,6 +95,7 @@ void BinaryImageOperation::on_addImageButton_clicked()
 
 void BinaryImageOperation::on_applyButton_clicked()
 {
+
     QString op = ui->comboBox->currentText();
     if (operations.count(op) > 0) {
         emit setPreview(reduceImages(_images, operations[op], _image));

@@ -47,7 +47,7 @@ private slots:
     void on_mainTabWidget_tabCloseRequested(int index);
     void on_mainTabWidget_currentChanged(int index);
     void on_actionHistogram_toggled(bool checked);
-    void on_actionHistogram_stratching_triggered();
+    void on_actionHistogram_stratching_triggered(bool checked);
     void on_actionHistogram_equalization_triggered();
     void on_actionSingle_Argument_Operation_triggered();
     void on_actionMultiple_arguments_operation_triggered();

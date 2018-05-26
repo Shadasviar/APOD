@@ -20,10 +20,10 @@
 #include "ui_histogramstratching.h"
 #include "settings.h"
 
-HistogramStratching::HistogramStratching(QImage *img, QWidget *parent) :
+HistogramStratching::HistogramStratching(QImage *img, QWidget *parent, QString title) :
     IToolWidget(parent),
     ui(new Ui::HistogramStratching),
-    _histogram(std::make_unique<Histogram>(img, this, "Stratched image")),
+    _histogram(std::make_unique<Histogram>(img, this, title)),
     _image(img)
 {
     ui->setupUi(this);
@@ -61,7 +61,6 @@ void HistogramStratching::on_applyButton_clicked()
 
     emit hideProgressBar();
     emit setPreview(res);
-    _image = res;
 }
 
 void HistogramStratching::sourceChanged(QImage *img)

@@ -63,6 +63,7 @@ MainWindow::MainWindow(QWidget *parent) :
             ui->actionHistogram_2D,
             ui->actionActive_widget_of_operation_on_image,
             ui->actionCompare,
+            ui->actionHistogram_stratching,
     };
 
     ui->statusBar->addPermanentWidget(_statusText, 0);
@@ -141,9 +142,9 @@ void MainWindow::on_actionHistogram_toggled(bool checked)
     toolButtonToggled(Histogram, addInfoTool, checked);
 }
 
-void MainWindow::on_actionHistogram_stratching_triggered()
+void MainWindow::on_actionHistogram_stratching_triggered(bool checked)
 {
-    toolButtonToggled(HistogramStratching, setOperationTool, true);
+    toolButtonToggled(HistogramStratching, addInfoTool, checked);
 }
 
 void MainWindow::on_actionHistogram_equalization_triggered()
