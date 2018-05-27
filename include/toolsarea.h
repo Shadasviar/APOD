@@ -48,6 +48,7 @@ private:
 public:
     template <typename T>
     void addInfoTool(T* tool){
+        if (!tool) return;
         if (!_enabledInfoTools.contains(std::type_index(typeid(T)))) {
             _enabledInfoTools[std::type_index(typeid(T))] = tool;
             _layout.addWidget(tool);

@@ -127,7 +127,7 @@ void inline ImageWorkspaceView::addToolsAreaItem<HistogramStratching>(){
     if(_image.getImage()) {
         item = new HistogramStratching(_image.getImage(), this, "Original image");
         doSpecifiedStuff<HistogramStratching>(item, &_image);
-    } return
+    } else item = nullptr;
     _tools.addInfoTool(item);
 }
 
