@@ -227,7 +227,7 @@
    </property>
    <property name="icon">
     <iconset resource="../images.qrc">
-     <normaloff>:/Resources/expand.png</normaloff>:/Resources/expand.png</iconset>
+     <normaloff>:/Resources/Histogrameq.png</normaloff>:/Resources/Histogrameq.png</iconset>
    </property>
    <property name="text">
     <string>&amp;Histogram stratching</string>
@@ -236,7 +236,7 @@
   <action name="actionHistogram_equalization">
    <property name="icon">
     <iconset resource="../images.qrc">
-     <normaloff>:/Resources/Histogrameq.png</normaloff>:/Resources/Histogrameq.png</iconset>
+     <normaloff>:/Resources/expand.png</normaloff>:/Resources/expand.png</iconset>
    </property>
    <property name="text">
     <string>Histogram &amp;equalization</string>
