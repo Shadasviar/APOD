@@ -75,6 +75,7 @@
     </property>
     <addaction name="actionSave"/>
     <addaction name="actionOpen"/>
+    <addaction name="actionOpen_processed_image"/>
     <addaction name="actionExit"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
@@ -367,6 +368,19 @@
    </property>
    <property name="text">
     <string>&amp;Compare</string>
+   </property>
+  </action>
+  <action name="actionOpen_processed_image">
+   <property name="icon">
+    <iconset>
+     <normalon>:/Resources/folder_2_open-512.png</normalon>
+    </iconset>
+   </property>
+   <property name="text">
+    <string>Open processed image</string>
+   </property>
+   <property name="toolTip">
+    <string>Open image as processed for compare it with original</string>
    </property>
   </action>
  </widget>

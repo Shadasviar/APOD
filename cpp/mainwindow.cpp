@@ -270,3 +270,26 @@ void MainWindow::on_actionCompare_triggered(bool checked)
 {
     toolButtonToggled(Compare, addInfoTool, checked);
 }
+
+void MainWindow::on_actionOpen_processed_image_triggered()
+{
+    if (ui->mainTabWidget->currentWidget()) {
+        QString filename = QFileDialog::getOpenFileName(
+                    this,
+                    "Open processed file",
+                    lastOpenedDir.absolutePath(),
+                    "ALL(*);;JPEG(*.jpg, *.jpeg);;PNG(*.png);;BMP(*.bmp)"
+                    );
+        lastOpenedDir = QFileInfo(filename);
+        auto*img = new QImage;
+        *img = QImage(filename);
+
+        qobject_cast<ImageWorkspaceView*>(ui->mainTabWidget->currentWidget())->modifyPreview(img);
+    } else {
+        QMessageBox messageBox;
+        messageBox.critical(0,"Warning","You can not open processed image without original image."
+                                        "Open usual image first.");
+        messageBox.setFixedSize(500,200);
+        return;
+    }
+}

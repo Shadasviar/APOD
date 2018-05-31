@@ -66,6 +66,8 @@ private slots:
     void on_actionSettings_triggered();
     void on_actionCompare_triggered(bool checked);
 
+    void on_actionOpen_processed_image_triggered();
+
 private:
     Ui::MainWindow *ui;
     QFileInfo lastOpenedDir;

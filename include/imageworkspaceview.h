@@ -58,7 +58,7 @@ private:
     QSplitter* _splitter;
     QSplitter* _imageSplitter;
 
-protected slots:
+public slots:
     void modifyPreview(QImage* img);
 
 signals:
