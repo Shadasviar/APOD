@@ -55,6 +55,7 @@ jobs:
     #    uses a compiled language
 
     - run: |
+       apt install -y qtbase5-dev
        qmake
        make
 
